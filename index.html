@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Preparatório AWS Cloud · Profa. Maristela</title>
+<meta name="description" content="Tudo do preparatório AWS Cloud Foundations em um só lugar: cronograma, vídeos, links, treinos e caminho até a prova.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<!--
+  ============================================================
+  COMO EDITAR (Profa. Maristela)
+  - Links públicos (AWS Academy, Skill Builder etc.): procure LINKS_TURMA no script.
+  - Área da turma (Teams, Moodle, WhatsApp e links dos vídeos) é protegida por senha.
+    Para criar ou trocar a senha e os links, abra o arquivo gerador-area-turma.html,
+    preencha, clique em Gerar e cole o resultado na linha AREA_TURMA deste arquivo.
+  - Encontros: lista ENCONTROS (datas, laboratório, desafio, tarefas).
+  Depois é só subir este arquivo como index.html no GitHub Pages.
+  ============================================================
+-->
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:dark;
+  --noite:#0D0221;     /* fundo: noite roxa */
+  --painel:#190A3A;
+  --painel2:#241052;
+  --tinta:#EDE7FF;
+  --suave:#B3A6DA;
+  --linha:#3D2775;
+  --itn:#05D9E8;       /* ciano – Conceitos */
+  --srwe:#F9F002;      /* amarelo – Cobrança */
+  --ensa:#FF2A6D;      /* magenta – Segurança */
+  --tec:#B967FF;       /* lilás – Tecnologia */
+  --ok:#39FF9E;
+  --erro:#FF5C7A;
+  --corte:14px;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px);scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--noite);color:var(--tinta);font:400 1.05rem/1.6 "IBM Plex Sans",system-ui,sans-serif;
+  background-image:radial-gradient(circle at 85% -10%,rgba(255,42,109,.22),transparent 45%),radial-gradient(circle at -10% 30%,rgba(5,217,232,.14),transparent 40%);background-attachment:fixed}
+a{color:var(--itn)}
+:focus-visible{outline:2px solid var(--srwe);outline-offset:3px}
+h1,h2,h3{font-family:"Chakra Petch",system-ui,sans-serif;line-height:1.1;margin:0;font-weight:700}
+h2{font-size:clamp(1.7rem,3.4vw,2.5rem);margin-bottom:.4rem;text-transform:none}
+h2::before{content:"// ";color:var(--ensa)}
+h3{font-size:1.15rem}
+.wrap{max-width:1080px;margin:0 auto;padding:0 1.25rem}
+.corte{clip-path:polygon(0 0,calc(100% - var(--corte)) 0,100% var(--corte),100% 100%,var(--corte) 100%,0 calc(100% - var(--corte)))}
+
+/* topo */
+nav.topo{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:rgba(13,2,33,.88);backdrop-filter:blur(8px);border-bottom:1px solid var(--linha)}
+nav.topo .wrap{display:flex;align-items:center;gap:1.1rem;min-height:58px;overflow-x:auto}
+nav.topo b{font-family:"Chakra Petch";white-space:nowrap;color:var(--srwe)}
+nav.topo a{color:var(--tinta);text-decoration:none;white-space:nowrap;font-size:.95rem;padding:.3rem .1rem;border-bottom:2px solid transparent;font-family:"Chakra Petch"}
+nav.topo a:hover{border-color:var(--ensa);color:var(--ensa)}
+
+/* hero */
+header.hero{position:relative;padding:3.5rem 0 3rem;overflow:hidden}
+header.hero::before{content:"";position:absolute;left:-20%;right:-20%;bottom:-40%;height:70%;
+  background-image:linear-gradient(rgba(255,42,109,.45) 1px,transparent 1px),linear-gradient(90deg,rgba(255,42,109,.45) 1px,transparent 1px);
+  background-size:48px 48px;transform:perspective(420px) rotateX(62deg);transform-origin:center top;opacity:.45;pointer-events:none;
+  mask-image:linear-gradient(transparent,#000 60%)}
+header.hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(transparent 0 3px,rgba(0,0,0,.18) 3px 4px)}
+.hero .grade{position:relative;z-index:1;display:grid;grid-template-columns:1.05fr 1fr;gap:2.5rem;align-items:center}
+.hero h1{font-size:clamp(2.6rem,6.4vw,4.8rem);line-height:.95;letter-spacing:.01em;color:#fff;
+  text-shadow:0 0 6px rgba(5,217,232,.9),0 0 22px rgba(5,217,232,.55),3px 0 0 rgba(255,42,109,.85)}
+.glitch{animation:glitch 1.1s steps(2) 1 .3s}
+@keyframes glitch{0%{transform:translate(0)}20%{transform:translate(-3px,1px);text-shadow:-4px 0 var(--ensa),4px 0 var(--itn)}40%{transform:translate(3px,-1px)}60%{transform:translate(-2px,0);text-shadow:4px 0 var(--ensa),-4px 0 var(--itn)}100%{transform:translate(0)}}
+@media (prefers-reduced-motion:reduce){.glitch{animation:none}}
+.hero .quem{font-family:"Share Tech Mono",monospace;color:var(--srwe);margin:.9rem 0 0;font-size:1rem}
+.hero p.sub{font-size:1.15rem;color:var(--suave);max-width:34ch;margin:.8rem 0 1.6rem}
+.cabos{display:flex;gap:8px;margin:1.4rem 0 0}
+.cabos span{height:6px;flex:1;box-shadow:0 0 12px currentColor}
+.terminal{background:rgba(9,2,24,.92);color:var(--tinta);border:1px solid var(--itn);padding:1.1rem 1.2rem 1.3rem;font:400 .95rem/1.7 "Share Tech Mono",monospace;min-height:290px;box-shadow:0 0 0 1px rgba(5,217,232,.2),0 0 38px -8px rgba(5,217,232,.55);overflow-x:auto}
+.terminal .bar{display:flex;gap:6px;margin-bottom:.8rem}
+.terminal .bar i{width:11px;height:11px;background:var(--linha)}
+.terminal .bar i:first-child{background:var(--ensa)}
+.terminal .p{color:var(--ensa)}
+.hop{display:grid;grid-template-columns:2ch 1fr auto;gap:1ch;opacity:0}
+.hop.on{opacity:1;transition:opacity .35s}
+@media (prefers-reduced-motion:reduce){.hop{opacity:1}}
+.hop .t{color:var(--suave)}
+.hop.fim{color:var(--ok);text-shadow:0 0 10px rgba(57,255,158,.6)}
+.cursor{display:inline-block;width:.6em;height:1em;background:var(--itn);vertical-align:-2px;animation:pisca 1s steps(1) infinite}
+@keyframes pisca{50%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.cursor{animation:none}}
+.botoes{display:flex;flex-wrap:wrap;gap:.7rem}
+.btn{display:inline-block;text-decoration:none;font:700 1rem "Chakra Petch";padding:.75rem 1.2rem;color:var(--noite);background:var(--srwe);
+  clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px))}
+.btn.sec{background:var(--itn)}
+.btn:hover{filter:brightness(1.15)}
+
+section{padding:3rem 0;border-top:1px solid var(--linha)}
+.intro{color:var(--suave);max-width:65ch;margin:0 0 1.6rem}
+
+/* próximo encontro */
+.proximo{background:var(--painel);border-left:6px solid var(--itn);padding:1.5rem 1.7rem;display:grid;grid-template-columns:auto 1fr;gap:1.6rem;align-items:start;
+  box-shadow:inset 0 0 0 1px var(--linha)}
+.proximo .data{font:700 3.2rem/1 "Chakra Petch";color:var(--srwe);text-shadow:0 0 16px rgba(249,240,2,.45)}
+.proximo .data small{display:block;font:400 .95rem "Share Tech Mono";color:var(--suave);margin-top:.4rem;text-shadow:none}
+.proximo ul{margin:.4rem 0 0;padding-left:1.1rem}
+
+/* trilha */
+.trilha{list-style:none;margin:0;padding:0;position:relative}
+.trilha::before{content:"";position:absolute;left:21px;top:8px;bottom:8px;width:3px;background:linear-gradient(var(--itn) 0 10%,var(--srwe) 10% 20%,var(--ensa) 20% 30%,var(--tec) 30% 90%,#fff 90%);box-shadow:0 0 10px rgba(5,217,232,.5)}
+.trilha>li{position:relative;padding-left:62px;margin-bottom:.8rem}
+.trilha .no{position:absolute;left:5px;top:.55rem;width:36px;height:36px;display:grid;place-items:center;font:400 .9rem "Share Tech Mono";color:var(--noite);background:var(--c);
+  clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)}
+.trilha>li.feito .no{opacity:.45}
+.trilha>li.feito details{opacity:.75}
+.trilha details{background:var(--painel);box-shadow:inset 0 0 0 1px var(--linha)}
+.trilha summary{cursor:pointer;list-style:none;padding:.85rem 1rem;display:flex;flex-wrap:wrap;gap:.3rem 1rem;align-items:baseline}
+.trilha summary::-webkit-details-marker{display:none}
+.trilha summary .d{font:400 .95rem "Share Tech Mono";color:var(--suave);min-width:5.5ch}
+.trilha summary h3{flex:1;min-width:14ch}
+.tag{font:700 .78rem "Chakra Petch";padding:.1rem .55rem;color:var(--c);border:1px solid var(--c)}
+.trilha .corpo{padding:0 1rem 1rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
+.trilha .corpo h4{margin:.2rem 0;font:600 .88rem "Chakra Petch";color:var(--c)}
+.trilha .corpo ul{margin:0;padding-left:1.1rem;list-style:square}
+.trilha>li.agora details{box-shadow:inset 0 0 0 2px var(--c),0 0 26px -6px var(--c)}
+
+/* cursos */
+.cursos{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem}
+.curso{background:var(--painel);border-top:4px solid var(--c);padding:1.1rem 1.2rem;box-shadow:inset 0 0 0 1px var(--linha)}
+.curso h3{color:var(--c)}
+.curso .barra{height:8px;background:var(--noite);margin:.6rem 0 .3rem;overflow:hidden}
+.curso .barra i{display:block;height:100%;width:0;background:var(--c);box-shadow:0 0 12px var(--c);transition:width .3s}
+.curso .pct{font-size:.9rem;color:var(--suave)}
+.curso ol{padding-left:2.1rem;margin:.8rem 0 0;max-height:320px;overflow:auto}
+.curso li{margin:.15rem 0}
+.curso label{cursor:pointer;display:flex;gap:.5rem;align-items:flex-start}
+.curso input{margin-top:.35rem;accent-color:var(--c)}
+.curso li.ck span{text-decoration:line-through;color:var(--suave)}
+
+/* vídeos */
+.filtros{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
+.filtros button{font:600 .92rem "Chakra Petch";border:1px solid var(--linha);background:var(--painel);color:var(--tinta);padding:.35rem .95rem;cursor:pointer}
+.filtros button[aria-pressed="true"]{border-color:var(--ensa);color:var(--ensa);box-shadow:0 0 12px -2px var(--ensa)}
+.videos{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:.7rem}
+.videos li{background:var(--painel);padding:.75rem .9rem;border-left:3px solid var(--c);display:flex;flex-direction:column;gap:.3rem;box-shadow:inset 0 0 0 1px var(--linha)}
+.videos .n{font:400 .85rem "Share Tech Mono";color:var(--c)}
+.videos .em{font-size:.85rem;color:var(--suave)}
+
+/* treinos */
+.treinos{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.2rem}
+.cartao{background:var(--painel);padding:1.4rem;box-shadow:inset 0 0 0 1px var(--linha)}
+.desafio-ip{font:400 1.5rem "Share Tech Mono";margin:.6rem 0 1rem;color:var(--itn);text-shadow:0 0 10px rgba(5,217,232,.5);overflow-wrap:anywhere}
+.campos{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.campos label{font-size:.88rem;color:var(--suave);display:flex;flex-direction:column;gap:.2rem}
+.campos input{font:400 1.02rem "Share Tech Mono";padding:.45rem .55rem;border:1px solid var(--linha);background:var(--noite);color:var(--tinta);width:100%}
+.campos input:focus{border-color:var(--itn)}
+.campos input.certo{border-color:var(--ok);box-shadow:0 0 10px -2px var(--ok)} .campos input.errado{border-color:var(--erro);box-shadow:0 0 10px -2px var(--erro)}
+.acoes{display:flex;gap:.6rem;margin-top:1rem;flex-wrap:wrap}
+.acoes button,.quiz button.prox{font:700 .95rem "Chakra Petch";padding:.55rem 1rem;cursor:pointer;border:0;background:var(--srwe);color:var(--noite)}
+.acoes button.sec{background:transparent;color:var(--tinta);box-shadow:inset 0 0 0 1px var(--linha)}
+.retorno{margin-top:.8rem;min-height:1.5em;font-weight:600}
+.retorno.ok{color:var(--ok)} .retorno.no{color:var(--erro)}
+.placar{font-size:.9rem;color:var(--suave)}
+.quiz .opcoes{display:grid;gap:.5rem;margin:.8rem 0}
+.quiz .opcoes button{text-align:left;font:inherit;padding:.6rem .8rem;border:1px solid var(--linha);background:var(--noite);color:var(--tinta);cursor:pointer}
+.quiz .opcoes button:hover:not(:disabled){border-color:var(--itn)}
+.quiz .opcoes button.certo{border-color:var(--ok);color:var(--ok)}
+.quiz .opcoes button.errado{border-color:var(--erro);color:var(--erro)}
+.quiz .expl{font-size:.95rem;color:var(--suave)}
+
+/* prova */
+.passos{counter-reset:p;list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem}
+.passos li{counter-increment:p;background:var(--painel);padding:1.1rem 1.1rem 1.1rem 3.8rem;position:relative;box-shadow:inset 0 0 0 1px var(--linha)}
+.passos li::before{content:counter(p);position:absolute;left:1rem;top:1rem;width:2rem;height:2rem;background:var(--ensa);color:#fff;display:grid;place-items:center;font:700 1rem "Chakra Petch";
+  clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)}
+.links{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.8rem}
+.links a{display:block;background:var(--painel);padding:1rem;text-decoration:none;color:var(--tinta);box-shadow:inset 0 0 0 1px var(--linha)}
+.links a strong{display:block;font-family:"Chakra Petch";color:var(--itn)}
+.links a span{font-size:.92rem;color:var(--suave)}
+.links a:hover{box-shadow:inset 0 0 0 1px var(--itn),0 0 18px -6px var(--itn)}
+.cofre{max-width:520px}
+.cofre label{font:600 .95rem "Chakra Petch";color:var(--suave)}
+.linha-senha{display:flex;gap:.6rem;margin-top:.4rem}
+.linha-senha input{flex:1;font:400 1.05rem "Share Tech Mono";padding:.55rem .7rem;border:1px solid var(--linha);background:var(--noite);color:var(--tinta);min-width:0}
+.linha-senha input:focus{border-color:var(--itn)}
+.linha-senha button{font:700 .95rem "Chakra Petch";border:0;background:var(--ensa);color:#fff;padding:.55rem 1.1rem;cursor:pointer}
+.aberto{color:var(--ok);font-family:"Share Tech Mono"}
+[hidden]{display:none!important}
+footer{padding:2.5rem 0 3rem;border-top:1px solid var(--linha);color:var(--suave);font:400 .95rem "Share Tech Mono"}
+
+@media (max-width:820px){
+  .hero .grade{grid-template-columns:1fr}
+  .proximo{grid-template-columns:1fr}
+  .campos{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<nav class="topo" aria-label="Seções">
+  <div class="wrap">
+    <b>&gt;_ AWS</b>
+    <a href="#proximo">Próximo encontro</a>
+    <a href="#trilha">Cronograma</a>
+    <a href="#cursos">Meu progresso</a>
+    <a href="#videos">Vídeos</a>
+    <a href="#treinos">Treinos</a>
+    <a href="#prova">Prova e voucher</a>
+    <a href="#turma">Área da turma</a>
+    <a href="#links">Links</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap grade">
+    <div>
+      <h1 class="glitch">Preparatório AWS Cloud</h1>
+      <p class="quem">&gt; Profa. Maristela_ · AWS Academy · Senac-DF</p>
+      <p class="sub">Teoria em casa, prática no sábado. Tudo o que você precisa até a prova, em um só lugar.</p>
+      <div class="botoes">
+        <a class="btn" href="#proximo">Ver o próximo encontro</a>
+        <a class="btn sec" href="https://awsacademy.instructure.com/" target="_blank" rel="noopener">Abrir a AWS Academy</a>
+      </div>
+      <div class="cabos" aria-hidden="true"><span style="background:var(--itn);color:var(--itn)"></span><span style="background:var(--srwe);color:var(--srwe)"></span><span style="background:var(--ensa);color:var(--ensa)"></span><span style="background:var(--tec);color:var(--tec)"></span></div>
+    </div>
+    <div class="terminal corte" role="img" aria-label="Simulação de implantação na AWS mostrando os quatro domínios da prova Cloud Practitioner concluídos e a certificação alcançada">
+      <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div><span class="p">maristela@aws:~$</span> aws cloudformation deploy --stack-name certificacao</div>
+      <div class="t" style="color:#9FB3C8">Criando a pilha da sua certificação…</div>
+      <div id="hops"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="proximo">
+  <div class="wrap">
+    <h2>Próximo encontro</h2>
+    <p class="intro">Sábados alternados, das 8h30 às 11h50. Antes de vir, assista aos vídeos e faça as tarefas da quinzena.</p>
+    <div class="proximo corte" id="cartaoProximo"></div>
+  </div>
+</section>
+
+<section id="trilha">
+  <div class="wrap">
+    <h2>Cronograma do semestre</h2>
+    <p class="intro">Toque em um encontro para ver o laboratório, o desafio e o que estudar na quinzena. A cor indica o domínio da prova: ciano para conceitos de nuvem, amarelo para cobrança, magenta para segurança e lilás para tecnologia e serviços.</p>
+    <ol class="trilha" id="listaTrilha"></ol>
+  </div>
+</section>
+
+<section id="cursos">
+  <div class="wrap">
+    <h2>Meu progresso</h2>
+    <p class="intro">Marque os módulos que você já concluiu na AWS Academy e as etapas da reta final. O progresso fica salvo só neste navegador.</p>
+    <div class="cursos" id="cursos-lista"></div>
+  </div>
+</section>
+
+<section id="videos">
+  <div class="wrap">
+    <h2>Vídeos de apoio</h2>
+    <p class="intro">Pílulas de 8 a 12 minutos com o essencial de cada módulo, demonstração no console da AWS e as pegadinhas de prova.</p>
+    <div class="filtros" role="group" aria-label="Filtrar vídeos por curso">
+      <button type="button" data-f="todos" aria-pressed="true">Todos</button>
+      <button type="button" data-f="Conceitos" aria-pressed="false">Conceitos</button>
+      <button type="button" data-f="Cobrança" aria-pressed="false">Cobrança</button>
+      <button type="button" data-f="Segurança" aria-pressed="false">Segurança</button>
+      <button type="button" data-f="Tecnologia" aria-pressed="false">Tecnologia</button>
+    </div>
+    <ul class="videos" id="listaVideos"></ul>
+  </div>
+</section>
+
+<section id="treinos">
+  <div class="wrap">
+    <h2>Treinos rápidos</h2>
+    <p class="intro">Pratique quando quiser. Cada resposta mostra na hora o que está certo e o porquê.</p>
+    <div class="treinos">
+      <div class="cartao quiz corte" id="servico">
+        <h3>Qual é o serviço?</h3>
+        <p class="placar" id="svPlacar">Leia a necessidade e escolha o serviço da AWS que resolve.</p>
+        <p id="svPerg" style="font-weight:600"></p>
+        <div class="opcoes" id="svOpc"></div>
+        <p class="expl" id="svExpl" aria-live="polite"></p>
+        <button type="button" class="prox" id="svProx" hidden>Próximo desafio</button>
+      </div>
+      <div class="cartao quiz corte" id="quiz">
+        <h3>Mini-simulado Cloud Practitioner</h3>
+        <p class="placar" id="qPos"></p>
+        <p id="qPerg" style="font-weight:700"></p>
+        <div class="opcoes" id="qOpc"></div>
+        <p class="expl" id="qExpl" aria-live="polite"></p>
+        <button type="button" class="prox" id="qProx" hidden>Próxima pergunta</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="prova">
+  <div class="wrap">
+    <h2>Da AWS Academy até a prova</h2>
+    <p class="intro">A certificação de referência é a AWS Certified Cloud Practitioner (CLF-C02): 65 questões em 90 minutos, com nota mínima de 700 de 1000. Os quatro domínios valem 24% (conceitos de nuvem), 30% (segurança e conformidade), 34% (tecnologia e serviços) e 12% (cobrança, preços e suporte).</p>
+    <ol class="passos">
+      <li><h3>Conclua o Cloud Foundations</h3>Módulos, laboratórios e o exame final na AWS Academy.</li>
+      <li><h3>Reforce no Skill Builder</h3>Curso Cloud Practitioner Essentials e o conjunto oficial de questões práticas, ambos gratuitos.</li>
+      <li><h3>Crie a conta de certificação</h3>Conta no portal de certificação da AWS, que leva ao agendamento com a Pearson VUE.</li>
+      <li><h3>Use o voucher</h3>Insira o código no agendamento. Confira a validade e não compartilhe o código.</li>
+      <li><h3>Escolha o formato</h3>Presencial em centro credenciado ou online em casa, com câmera, documento com foto e ambiente silencioso.</li>
+      <li><h3>Divulgue sua conquista</h3>Compartilhe o badge digital no LinkedIn e no currículo.</li>
+    </ol>
+  </div>
+</section>
+
+<section id="turma">
+  <div class="wrap">
+    <h2>Área da turma</h2>
+    <p class="intro">Links do Teams, do Moodle e dos vídeos, só para alunos matriculados. Use a senha informada no primeiro encontro.</p>
+    <form class="cartao corte cofre" id="cofreForm" autocomplete="off">
+      <label for="cofreSenha">Senha da turma</label>
+      <div class="linha-senha"><input id="cofreSenha" type="password" required><button type="submit">Entrar</button></div>
+      <p class="retorno" id="cofreMsg" aria-live="polite"></p>
+    </form>
+    <div class="links" id="cofreLinks" hidden></div>
+  </div>
+</section>
+
+<section id="links">
+  <div class="wrap">
+    <h2>Links da turma</h2>
+    <div class="links" id="listaLinks"></div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">Preparatório AWS Cloud Foundations · AWS Academy da Faculdade de Tecnologia e Inovação Senac-DF · Profa. Maristela Oliveira · 2026.2</div>
+</footer>
+
+<script>
+/* ===================== DADOS (edite aqui) ===================== */
+const LINKS_TURMA=[
+  {t:"AWS Academy",d:"Módulos, laboratórios e Learner Lab",u:"https://awsacademy.instructure.com/"},
+  {t:"AWS Skill Builder",d:"Cloud Practitioner Essentials e questões práticas",u:"https://skillbuilder.aws/"},
+  {t:"Página da certificação",d:"Guia oficial da prova Cloud Practitioner",u:"https://aws.amazon.com/certification/certified-cloud-practitioner/"},
+  {t:"AWS Pricing Calculator",d:"Estimativa de custos",u:"https://calculator.aws/"}
+];
+const CORES={"Conceitos":"var(--itn)","Cobrança":"var(--srwe)","Segurança":"var(--ensa)","Tecnologia":"var(--tec)","Prova":"#ffffff","ACF":"var(--itn)","PREP":"var(--ensa)"};
+const ENCONTROS=[
+ {d:"2026-08-01",c:"Conceitos",t:"Boas-vindas e conceitos de nuvem",lab:["Tour pelo console no Learner Lab"],des:["Nuvem no dia a dia"],casa:["Vídeos 1 e 2","Módulos 1 e 2"]},
+ {d:"2026-08-15",c:"Cobrança",t:"Economia e cobrança na nuvem",lab:["AWS Pricing Calculator","Painel de faturamento e planos de suporte"],des:["Desafio do orçamento"],casa:["Vídeos 3 e 4","Módulos 3 e 4"]},
+ {d:"2026-08-29",c:"Segurança",t:"Infraestrutura global e segurança",lab:["Introdução ao IAM"],des:["Quem é responsável?"],casa:["Vídeo 5","Módulo 5"]},
+ {d:"2026-09-12",c:"Tecnologia",t:"Redes e entrega de conteúdo",lab:["Criar a VPC e lançar um servidor web"],des:["Arquitetura no quadro"],casa:["Vídeo 6","Módulo 6"]},
+ {d:"2026-09-26",c:"Tecnologia",t:"Computação na nuvem",lab:["Introdução ao Amazon EC2"],des:["Corrida “Qual serviço?”","Simulado parcial dos módulos 1 a 6"],casa:["Vídeo 7","Módulo 7"]},
+ {d:"2026-10-10",c:"Tecnologia",t:"Armazenamento",lab:["Amazon EBS","Bucket no Amazon S3"],des:["Escolha certa: S3, EBS, EFS ou Glacier"],casa:["Vídeo 8","Módulo 8"]},
+ {d:"2026-10-24",c:"Tecnologia",t:"Bancos de dados",lab:["Servidor de banco de dados com Amazon RDS"],des:["Escolha certa: RDS, Aurora, DynamoDB ou Redshift"],casa:["Vídeo 9","Módulo 9"]},
+ {d:"2026-11-07",c:"Tecnologia",t:"Arquitetura: Well-Architected",lab:["Análise de arquiteturas reais"],des:["Projeto relâmpago para um órgão público de Brasília"],casa:["Vídeos 10 e 11","Módulo 10 e exame final do Cloud Foundations"]},
+ {d:"2026-11-21",c:"Tecnologia",t:"Escalabilidade, monitoramento e revisão",lab:["Load balancing, Auto Scaling e CloudWatch"],des:["Jeopardy da nuvem"],casa:["Vídeo 12","Skill Builder: Essentials e questões práticas"]},
+ {d:"2026-12-05",c:"Prova",t:"Simulado final e caminho até a prova",lab:["Simulado completo com tempo de prova"],des:["Correção por domínio"],casa:["Tutorial do voucher","Plano de estudos até a prova"]}
+];
+const MODULOS={
+ ACF:["Visão geral dos conceitos de nuvem","Economia e cobrança na nuvem","Infraestrutura global da AWS","Segurança na nuvem AWS","Redes e entrega de conteúdo","Computação","Armazenamento","Bancos de dados","Arquitetura em nuvem","Escalabilidade automática e monitoramento"],
+ PREP:["Exame final do Cloud Foundations","Cloud Practitioner Essentials (Skill Builder)","Questões práticas oficiais (Skill Builder)","Simulado final do preparatório","Conta de certificação criada","Prova agendada com o voucher"]
+};
+const NOMES={ACF:"AWS Academy Cloud Foundations",PREP:"Reta final até a prova"};
+const VIDEOS=[ /* as URLs ficam na área da turma (protegida) */
+ ["Conceitos","O que é computação em nuvem"],["Cobrança","Economia e cobrança"],["Conceitos","Infraestrutura global"],["Segurança","Responsabilidade compartilhada e IAM"],
+ ["Tecnologia","Redes: VPC"],["Tecnologia","Computação: EC2 e além"],["Tecnologia","Armazenamento"],["Tecnologia","Bancos de dados"],
+ ["Tecnologia","Arquitetura: Well-Architected"],["Tecnologia","Escalabilidade e monitoramento"],["Tecnologia","Serviços que caem na prova"],["Prova","Como é a prova Cloud Practitioner"]
+].map((v,i)=>({n:i+1,c:v[0],t:v[1],u:v[2]||""}));
+const SERVICOS=[
+ ["Guardar arquivos e imagens de um site com alta durabilidade e pagar só pelo que usar.","Amazon S3"],
+ ["Criar um servidor virtual para rodar uma aplicação.","Amazon EC2"],
+ ["Executar um código só quando um evento acontece, sem gerenciar servidores.","AWS Lambda"],
+ ["Usar um banco de dados relacional gerenciado, sem cuidar de instalação e backup.","Amazon RDS"],
+ ["Guardar dados de acesso raro, como arquivos de anos anteriores, pelo menor custo.","Amazon S3 Glacier"],
+ ["Controlar quem pode acessar quais recursos da conta.","AWS IAM"],
+ ["Registrar todas as ações feitas na conta para auditoria.","AWS CloudTrail"],
+ ["Monitorar métricas e criar alarmes de uso de CPU.","Amazon CloudWatch"],
+ ["Distribuir o tráfego entre várias instâncias.","Elastic Load Balancing"],
+ ["Aumentar e diminuir automaticamente a quantidade de instâncias conforme a demanda.","Amazon EC2 Auto Scaling"],
+ ["Entregar conteúdo com baixa latência para usuários do mundo todo.","Amazon CloudFront"],
+ ["Registrar domínios e resolver nomes (DNS).","Amazon Route 53"],
+ ["Usar um banco NoSQL de chave-valor com desempenho em milissegundos.","Amazon DynamoDB"],
+ ["Baixar relatórios de conformidade da AWS.","AWS Artifact"],
+ ["Proteger a aplicação contra ataques DDoS.","AWS Shield"],
+ ["Receber recomendações de custo, segurança e desempenho da conta.","AWS Trusted Advisor"],
+ ["Visualizar e analisar os gastos da conta ao longo do tempo.","AWS Cost Explorer"],
+ ["Criar a infraestrutura a partir de modelos de código.","AWS CloudFormation"]
+];
+const QUIZ=[
+ {p:"No modelo de responsabilidade compartilhada, quem é responsável pela segurança física dos datacenters?",o:["O cliente","A AWS","Os dois, igualmente","O provedor de internet"],r:1,e:"A AWS cuida da segurança da nuvem (instalações, hardware e infraestrutura). O cliente cuida da segurança na nuvem (dados, acessos e configurações)."},
+ {p:"Qual opção de compra do EC2 oferece o maior desconto para cargas que podem ser interrompidas?",o:["Sob demanda","Instâncias reservadas","Instâncias spot","Hosts dedicados"],r:2,e:"As instâncias spot usam capacidade ociosa com grande desconto, mas podem ser interrompidas pela AWS."},
+ {p:"Uma zona de disponibilidade é:",o:["Um país onde a AWS atua","Um ou mais datacenters isolados dentro de uma região","Um ponto de presença do CloudFront","Uma conta da AWS"],r:1,e:"Cada região tem várias zonas de disponibilidade, isoladas entre si, para dar alta disponibilidade."},
+ {p:"Qual serviço ajuda a estimar o custo de uma arquitetura antes de criá-la?",o:["AWS Cost Explorer","AWS Budgets","AWS Pricing Calculator","AWS Artifact"],r:2,e:"A Pricing Calculator estima custos futuros. O Cost Explorer analisa gastos que já aconteceram."},
+ {p:"Qual prática segue o princípio do menor privilégio?",o:["Usar a conta raiz no dia a dia","Dar acesso de administrador a todos","Conceder só as permissões necessárias para cada função","Compartilhar a mesma senha entre a equipe"],r:2,e:"Menor privilégio significa dar a cada pessoa ou serviço apenas o acesso de que precisa."},
+ {p:"Qual pilar do Well-Architected Framework trata de se recuperar de falhas e atender à demanda?",o:["Excelência operacional","Confiabilidade","Otimização de custos","Sustentabilidade"],r:1,e:"O pilar de confiabilidade cuida da capacidade de a carga de trabalho funcionar corretamente e se recuperar de falhas."}
+];
+/* Área da turma: conteúdo criptografado (gere com gerador-area-turma.html) */
+const AREA_TURMA="xchKtXFk6hCcdrtXR6tAALNshzbP9xyAGZV8jxJnjsWmQqo2E1gfRy7lZJ2mtGy2kpNL+uUK3dsw8m1M98SxQN6aHDX31HA/4ZT3UP8uvy47qR0dCdkKmN8R4ltR57BTKawWwmB30pooWZWLvUg0ZBJFxqTisWlMXY/Pm8t073RR4gBcHFdU/6tRbVjefaFzs0bNisi1A7UZDc/utQFrFmHFXD1/lpEuptXPY+oKFQ2NfVY4+vb6rCiCj0PEXikW5Fezi3J0ME/cRTi4jMjQMGi1Vj181N51fZ5wl6iVczHC6dAb8eMHfDmY81GZdIvjb73l5ssUr4F/gw==";
+/* ============================================================== */
+
+const $=s=>document.querySelector(s);
+const fmt=d=>{const [a,m,dd]=d.split("-");return dd+"/"+m};
+const hoje=new Date();hoje.setHours(0,0,0,0);
+const dataDe=s=>{const [a,m,d]=s.split("-").map(Number);return new Date(a,m-1,d)};
+
+/* traceroute do hero */
+(function(){
+  const saltos=[["✓","Conceitos de nuvem","CREATE_COMPLETE"],["✓","Segurança e conformidade","CREATE_COMPLETE"],["✓","Tecnologia e serviços","CREATE_COMPLETE"],["✓","Cobrança, preços e suporte","CREATE_COMPLETE"],["★","Cloud Practitioner","você chegou!"]];
+  const box=$("#hops");
+  saltos.forEach((s,i)=>{const d=document.createElement("div");d.className="hop"+(i===4?" fim":"");d.innerHTML=`<span>${s[0]}</span><span>${s[1]}</span><span class="t">${s[2]}</span>`;box.appendChild(d);
+    const lento=matchMedia("(prefers-reduced-motion: reduce)").matches;setTimeout(()=>d.classList.add("on"),lento?0:500+i*650)});
+  const c=document.createElement('div');c.innerHTML='<span class="p">maristela@aws:~$</span> <span class="cursor"></span>';c.className='hop';c.style.display='block';box.appendChild(c);setTimeout(()=>c.classList.add('on'),matchMedia('(prefers-reduced-motion: reduce)').matches?0:500+5*650);
+})();
+
+/* próximo encontro + trilha */
+(function(){
+  let idx=ENCONTROS.findIndex(e=>dataDe(e.d)>=hoje);
+  const fim=idx===-1;
+  const lista=$("#listaTrilha");
+  ENCONTROS.forEach((e,i)=>{
+    const li=document.createElement("li");li.style.setProperty("--c",CORES[e.c]);
+    if(!fim&&i<idx) li.classList.add("feito"); if(i===idx) li.classList.add("agora");
+    const ul=a=>"<ul>"+a.map(x=>`<li>${x}</li>`).join("")+"</ul>";
+    li.innerHTML=`<span class="no">${String(i+1).padStart(2,"0")}</span><details ${i===idx?"open":""}><summary><span class="d">${fmt(e.d)}</span><h3>${e.t}</h3><span class="tag">${e.c}</span></summary><div class="corpo"><div><h4>Laboratório</h4>${ul(e.lab)}</div><div><h4>Desafio</h4>${ul(e.des)}</div><div><h4>Para a quinzena</h4>${ul(e.casa)}</div></div></details>`;
+    lista.appendChild(li);
+  });
+  const c=$("#cartaoProximo");
+  if(fim){c.innerHTML=`<div class="data">Fim</div><div><h3>O semestre terminou</h3><p>Agora é com você: agende a prova com o voucher e siga o seu plano de estudos.</p></div>`;return}
+  const e=ENCONTROS[idx];c.style.borderLeftColor=CORES[e.c];
+  const dias=Math.round((dataDe(e.d)-hoje)/864e5);
+  const quando=dias===0?"é hoje!":dias===1?"amanhã":`em ${dias} dias`;
+  const ant=ENCONTROS[idx-1];
+  c.innerHTML=`<div class="data">${fmt(e.d)}<small>${quando}</small></div><div><h3>Encontro ${idx+1}: ${e.t}</h3><p style="margin:.3rem 0 0">No laboratório: ${e.lab.join("; ")}. Desafio: ${e.des.join(" e ")}.</p>${ant?`<p style="margin:.8rem 0 0;font-weight:700">Antes de vir:</p><ul>${ant.casa.map(x=>`<li>${x}</li>`).join("")}</ul>`:""}</div>`;
+})();
+
+/* progresso nos cursos */
+(function(){
+  let feito={};try{feito=JSON.parse(localStorage.getItem("aws-progresso")||"{}")}catch(e){}
+  const salvar=()=>{try{localStorage.setItem("aws-progresso",JSON.stringify(feito))}catch(e){}};
+  const box=$("#cursos-lista");
+  Object.keys(MODULOS).forEach(k=>{
+    const d=document.createElement("div");d.className="curso";d.style.setProperty("--c",CORES[k]);
+    d.innerHTML=`<h3>${({ACF:"Cloud Foundations",PREP:"Reta final"})[k]||k}</h3><span class="pct">${NOMES[k]}</span><div class="barra"><i></i></div><span class="pct" data-pct></span><ol></ol>`;
+    const ol=d.querySelector("ol");
+    MODULOS[k].forEach((m,i)=>{const id=k+"-"+(i+1);const li=document.createElement("li");if(feito[id])li.classList.add("ck");
+      li.innerHTML=`<label><input type="checkbox" ${feito[id]?"checked":""}><span>${m}</span></label>`;
+      li.querySelector("input").onchange=ev=>{feito[id]=ev.target.checked;li.classList.toggle("ck",ev.target.checked);salvar();atual()};ol.appendChild(li)});
+    const atual=()=>{const t=MODULOS[k].length,n=MODULOS[k].filter((_,i)=>feito[k+"-"+(i+1)]).length;d.querySelector(".barra i").style.width=(n/t*100)+"%";d.querySelector("[data-pct]").textContent=`${n} de ${t} ${k==="PREP"?"etapas concluídas":"módulos concluídos"}`};
+    atual();box.appendChild(d);
+  });
+})();
+
+/* vídeos */
+(function(){
+  const ul=$("#listaVideos");
+  const pinta=f=>{ul.innerHTML="";VIDEOS.filter(v=>f==="todos"||v.c===f).forEach(v=>{const li=document.createElement("li");li.style.setProperty("--c",CORES[v.c]);
+    li.innerHTML=`<span class="n">Vídeo ${String(v.n).padStart(2,"0")} · ${v.c}</span><strong>${v.t}</strong>${v.u?`<a href="${v.u}" target="_blank" rel="noopener">Assistir</a>`:`<span class="em">Em breve</span>`}`;ul.appendChild(li)})};
+  document.querySelectorAll(".filtros button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".filtros button").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");pinta(b.dataset.f)});
+  pinta("todos");
+})();
+
+/* qual é o serviço? */
+(function(){
+  let feitos=0,certos=0;
+  const nomes=[...new Set(SERVICOS.map(x=>x[1]))];
+  const embaralha=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]);
+  const novo=()=>{const [desc,resp]=SERVICOS[Math.floor(Math.random()*SERVICOS.length)];
+    const opc=embaralha([resp,...embaralha(nomes.filter(n=>n!==resp)).slice(0,3)]);
+    $("#svPerg").textContent=desc;$("#svExpl").textContent="";$("#svProx").hidden=true;
+    const box=$("#svOpc");box.innerHTML="";
+    opc.forEach(o=>{const b=document.createElement("button");b.type="button";b.textContent=o;
+      b.onclick=()=>{box.querySelectorAll("button").forEach(x=>{x.disabled=true;if(x.textContent===resp)x.classList.add("certo")});
+        feitos++;if(o===resp){certos++;$("#svExpl").textContent="Isso! "+resp+" é o serviço certo para essa necessidade."}else{b.classList.add("errado");$("#svExpl").textContent="Não é esse. A resposta é "+resp+"."}
+        $("#svPlacar").textContent=`Acertos: ${certos} de ${feitos}`;$("#svProx").hidden=false};
+      box.appendChild(b)})};
+  $("#svProx").onclick=novo;novo();
+})();
+
+/* mini-simulado */
+(function(){
+  let i=0,pts=0;
+  const mostra=()=>{const q=QUIZ[i];$("#qPos").textContent=`Pergunta ${i+1} de ${QUIZ.length} · acertos: ${pts}`;$("#qPerg").textContent=q.p;$("#qExpl").textContent="";$("#qProx").hidden=true;
+    const box=$("#qOpc");box.innerHTML="";q.o.forEach((o,k)=>{const b=document.createElement("button");b.type="button";b.textContent=o;
+      b.onclick=()=>{box.querySelectorAll("button").forEach(x=>x.disabled=true);b.classList.add(k===q.r?"certo":"errado");box.children[q.r].classList.add("certo");if(k===q.r)pts++;
+        $("#qExpl").textContent=(k===q.r?"Correto. ":"Não foi dessa vez. ")+q.e;$("#qPos").textContent=`Pergunta ${i+1} de ${QUIZ.length} · acertos: ${pts}`;$("#qProx").hidden=false;$("#qProx").textContent=i<QUIZ.length-1?"Próxima pergunta":"Ver resultado"};box.appendChild(b)})};
+  $("#qProx").onclick=()=>{i++;if(i<QUIZ.length){mostra();return}
+    $("#qPerg").textContent=`Você acertou ${pts} de ${QUIZ.length}.`;$("#qOpc").innerHTML="";$("#qExpl").textContent=pts>=5?"Excelente! Continue com as questões práticas do Skill Builder.":"Revise os vídeos e os módulos e tente de novo.";$("#qProx").textContent="Recomeçar";$("#qProx").onclick=()=>location.reload()};
+  mostra();
+})();
+
+/* área da turma (AES-GCM + PBKDF2 no navegador) */
+async function abrirCofre(senha){
+  const bin=Uint8Array.from(atob(AREA_TURMA),c=>c.charCodeAt(0));
+  const salt=bin.slice(0,16),iv=bin.slice(16,28),dados=bin.slice(28);
+  const base=await crypto.subtle.importKey("raw",new TextEncoder().encode(senha),"PBKDF2",false,["deriveKey"]);
+  const chave=await crypto.subtle.deriveKey({name:"PBKDF2",salt,iterations:250000,hash:"SHA-256"},base,{name:"AES-GCM",length:256},false,["decrypt"]);
+  const txt=await crypto.subtle.decrypt({name:"AES-GCM",iv},chave,dados);
+  return JSON.parse(new TextDecoder().decode(txt));
+}
+function mostrarCofre(c){
+  const box=$("#cofreLinks");box.innerHTML="";
+  (c.links||[]).forEach(l=>{const a=document.createElement("a");a.href=l.u;a.target="_blank";a.rel="noopener";a.innerHTML=`<strong>${l.t}</strong><span>${l.d||""}</span>`;box.appendChild(a)});
+  box.hidden=false;$("#cofreForm").hidden=true;
+  const v=c.videos||{};VIDEOS.forEach(x=>{if(v[x.n])x.u=v[x.n]});
+  const ativo=document.querySelector('.filtros button[aria-pressed="true"]');if(ativo)ativo.click();
+}
+(function(){
+  const form=$("#cofreForm"),msg=$("#cofreMsg");
+  const tentar=async(senha,silencioso)=>{
+    try{const c=await abrirCofre(senha);try{sessionStorage.setItem("aws-turma",senha)}catch(e){}mostrarCofre(c)}
+    catch(e){if(!silencioso){msg.textContent="Senha incorreta. Confira a senha informada no primeiro encontro.";msg.className="retorno no"}}
+  };
+  form.onsubmit=ev=>{ev.preventDefault();msg.textContent="Verificando…";msg.className="retorno";tentar($("#cofreSenha").value,false)};
+  let salva=null;try{salva=sessionStorage.getItem("aws-turma")}catch(e){}
+  if(salva) tentar(salva,true);
+})();
+
+/* links */
+(function(){const box=$("#listaLinks");LINKS_TURMA.forEach(l=>{const a=document.createElement("a");a.href=l.u;if(l.u.startsWith("http")){a.target="_blank";a.rel="noopener"}a.innerHTML=`<strong>${l.t}</strong><span>${l.d}</span>`;box.appendChild(a)})})();
+</script>
+</body>
+</html>
