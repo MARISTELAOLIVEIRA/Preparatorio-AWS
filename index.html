@@ -25,7 +25,7 @@
   ============================================================
 -->
 <link rel="stylesheet" href="assets/css/estilo.css">
-<link rel="stylesheet" href="assets/css/neon.css">
+<link rel="stylesheet" href="assets/css/neon.css?v=2">
 <link rel="stylesheet" href="css/aws.css">
 </head>
 <body>
@@ -33,7 +33,7 @@
 <header class="barra">
   <div class="envolve">
     <div class="marcas">
-      <a class="marca-disc" href="./" title="Página inicial do preparatório" aria-current="page">AWS</a>
+      <a class="marca-disc marca-logo" href="./" title="Página inicial do preparatório" aria-current="page"><img src="assets/img/tec/aws.svg" alt="Preparatório AWS: página inicial" width="32" height="32"></a>
     </div>
     <button type="button" class="btn-menu" id="btn-menu" aria-expanded="false" aria-controls="menu">Menu</button>
     <nav class="nav" id="menu" aria-label="Seções do preparatório">
@@ -76,6 +76,7 @@
         <a class="btn" href="#proximo">Ver o próximo encontro</a>
         <a class="btn sec" href="https://awsacademy.instructure.com/" target="_blank" rel="noopener">Abrir a AWS Academy</a>
       </div>
+      <a class="logo-faculdade" href="https://www.df.senac.br/" title="Site da Faculdade de Tecnologia e Inovação Senac-DF"><img src="assets/img/logo-faculdade.webp" alt="Faculdade de Tecnologia e Inovação Senac-DF" width="768" height="210"></a>
       <div class="cabos" aria-hidden="true"><span style="background:var(--itn);color:var(--itn)"></span><span style="background:var(--srwe);color:var(--srwe)"></span><span style="background:var(--ensa);color:var(--ensa)"></span><span style="background:var(--tec);color:var(--tec)"></span></div>
     </div>
     <div class="terminal corte" role="img" aria-label="Simulação de implantação na AWS mostrando os quatro domínios da prova Cloud Practitioner concluídos e a certificação alcançada">
@@ -375,6 +376,6 @@ function mostrarCofre(c){
 /* links */
 (function(){const box=$("#listaLinks");LINKS_TURMA.forEach(l=>{const a=document.createElement("a");a.href=l.u;if(l.u.startsWith("http")){a.target="_blank";a.rel="noopener"}a.innerHTML=`<strong>${l.t}</strong><span>${l.d}</span>`;box.appendChild(a)})})();
 </script>
-<script src="assets/js/matrix.js"></script>
+<script src="assets/js/matrix.js?v=2"></script>
 </body>
 </html>
