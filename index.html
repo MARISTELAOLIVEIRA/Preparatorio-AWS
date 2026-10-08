@@ -16,9 +16,8 @@
   ============================================================
   COMO EDITAR (Profa. Maristela)
   - Links públicos (AWS Academy, Skill Builder etc.): procure LINKS_TURMA no script.
-  - Área da turma (Teams, Moodle, WhatsApp e links dos vídeos) é protegida por senha.
-    Para criar ou trocar a senha e os links, abra o arquivo gerador-area-turma.html,
-    preencha, clique em Gerar e cole o resultado na linha AREA_TURMA deste arquivo.
+  - Área da turma (Teams e links dos vídeos): listas AREA_TURMA e VIDEOS_LINKS no script.
+    Não há senha: os links só abrem com a conta institucional do Senac.
   - Encontros: lista ENCONTROS (datas, laboratório, desafio, tarefas).
   - Visual: assets/css/estilo.css e neon.css (comuns a todos os sites da Stela, não editar aqui)
     e css/aws.css (os componentes deste preparatório).
@@ -26,7 +25,7 @@
 -->
 <link rel="stylesheet" href="assets/css/estilo.css">
 <link rel="stylesheet" href="assets/css/neon.css?v=4">
-<link rel="stylesheet" href="css/aws.css">
+<link rel="stylesheet" href="css/aws.css?v=2">
 </head>
 <body>
 <!-- ===================== BARRA DO TOPO (igual em todos os sites) ===================== -->
@@ -174,13 +173,8 @@
 <section id="turma">
   <div class="wrap">
     <h2>Área da turma</h2>
-    <p class="intro">Links do Teams, do Moodle e dos vídeos, só para alunos matriculados. Use a senha informada no primeiro encontro.</p>
-    <form class="painel corte cofre" id="cofreForm" autocomplete="off">
-      <label for="cofreSenha">Senha da turma</label>
-      <div class="linha-senha"><input id="cofreSenha" type="password" required><button type="submit">Entrar</button></div>
-      <p class="retorno" id="cofreMsg" aria-live="polite"></p>
-    </form>
-    <div class="links" id="cofreLinks" hidden></div>
+    <p class="intro">Links do Teams e das gravações, só para alunos matriculados: eles abrem com a sua conta institucional do Senac.</p>
+    <div class="links" id="areaLinks"></div>
   </div>
 </section>
 
@@ -222,7 +216,7 @@ const MODULOS={
  PREP:["Exame final do Cloud Foundations","Cloud Practitioner Essentials (Skill Builder)","Questões práticas oficiais (Skill Builder)","Simulado final do preparatório","Conta de certificação criada","Prova agendada com o voucher"]
 };
 const NOMES={ACF:"AWS Academy Cloud Foundations",PREP:"Reta final até a prova"};
-const VIDEOS=[ /* as URLs ficam na área da turma (protegida) */
+const VIDEOS=[ /* os links das gravações ficam em VIDEOS_LINKS */
  ["Conceitos","O que é computação em nuvem"],["Cobrança","Economia e cobrança"],["Conceitos","Infraestrutura global"],["Segurança","Responsabilidade compartilhada e IAM"],
  ["Tecnologia","Redes: VPC"],["Tecnologia","Computação: EC2 e além"],["Tecnologia","Armazenamento"],["Tecnologia","Bancos de dados"],
  ["Tecnologia","Arquitetura: Well-Architected"],["Tecnologia","Escalabilidade e monitoramento"],["Tecnologia","Serviços que caem na prova"],["Prova","Como é a prova Cloud Practitioner"]
@@ -255,8 +249,16 @@ const QUIZ=[
  {p:"Qual prática segue o princípio do menor privilégio?",o:["Usar a conta raiz no dia a dia","Dar acesso de administrador a todos","Conceder só as permissões necessárias para cada função","Compartilhar a mesma senha entre a equipe"],r:2,e:"Menor privilégio significa dar a cada pessoa ou serviço apenas o acesso de que precisa."},
  {p:"Qual pilar do Well-Architected Framework trata de se recuperar de falhas e atender à demanda?",o:["Excelência operacional","Confiabilidade","Otimização de custos","Sustentabilidade"],r:1,e:"O pilar de confiabilidade cuida da capacidade de a carga de trabalho funcionar corretamente e se recuperar de falhas."}
 ];
-/* Área da turma: conteúdo criptografado (gere com gerador-area-turma.html) */
-const AREA_TURMA="xchKtXFk6hCcdrtXR6tAALNshzbP9xyAGZV8jxJnjsWmQqo2E1gfRy7lZJ2mtGy2kpNL+uUK3dsw8m1M98SxQN6aHDX31HA/4ZT3UP8uvy47qR0dCdkKmN8R4ltR57BTKawWwmB30pooWZWLvUg0ZBJFxqTisWlMXY/Pm8t073RR4gBcHFdU/6tRbVjefaFzs0bNisi1A7UZDc/utQFrFmHFXD1/lpEuptXPY+oKFQ2NfVY4+vb6rCiCj0PEXikW5Fezi3J0ME/cRTi4jMjQMGi1Vj181N51fZ5wl6iVczHC6dAb8eMHfDmY81GZdIvjb73l5ssUr4F/gw==";
+/* Área da turma: links que só abrem com a conta institucional (não precisa de senha).
+   t: título  d: descrição curta  u: link  i: ícone (opcional) */
+const AREA_TURMA=[
+  {t:"Equipe do Teams",d:"Gravações, avisos e conversas da turma",i:"assets/img/tec/teams.svg",u:"https://teams.cloud.microsoft/l/team/19%3AKrKfXYppVLbW6y8nm0LTsXynWTVA-ILbukatKyN4iPo1%40thread.tacv2/conversations?groupId=b2093c3c-6e87-4db5-8b35-a12f846946cf&tenantId=85cccaae-eea0-478c-8062-60536e374ef5"},
+  {t:"Sala de aula",d:"Entre aqui na hora do encontro ao vivo, no Teams",i:"assets/img/tec/teams.svg",u:"https://teams.microsoft.com/meet/287705011051384?p=TukiNJkwLiSAPTbS5d"},
+];
+/* Links das gravações: número do vídeo → link. Vídeo sem link aparece como "Em breve".
+   Exemplo: 1:"https://...", */
+const VIDEOS_LINKS={
+};
 /* ============================================================== */
 
 const $=s=>document.querySelector(s);
@@ -349,31 +351,19 @@ const dataDe=s=>{const [a,m,d]=s.split("-").map(Number);return new Date(a,m-1,d)
   mostra();
 })();
 
-/* área da turma (AES-GCM + PBKDF2 no navegador) */
-async function abrirCofre(senha){
-  const bin=Uint8Array.from(atob(AREA_TURMA),c=>c.charCodeAt(0));
-  const salt=bin.slice(0,16),iv=bin.slice(16,28),dados=bin.slice(28);
-  const base=await crypto.subtle.importKey("raw",new TextEncoder().encode(senha),"PBKDF2",false,["deriveKey"]);
-  const chave=await crypto.subtle.deriveKey({name:"PBKDF2",salt,iterations:250000,hash:"SHA-256"},base,{name:"AES-GCM",length:256},false,["decrypt"]);
-  const txt=await crypto.subtle.decrypt({name:"AES-GCM",iv},chave,dados);
-  return JSON.parse(new TextDecoder().decode(txt));
-}
-function mostrarCofre(c){
-  const box=$("#cofreLinks");box.innerHTML="";
-  (c.links||[]).forEach(l=>{const a=document.createElement("a");a.href=l.u;a.target="_blank";a.rel="noopener";a.innerHTML=`<strong>${l.t}</strong><span>${l.d||""}</span>`;box.appendChild(a)});
-  box.hidden=false;$("#cofreForm").hidden=true;
-  const v=c.videos||{};VIDEOS.forEach(x=>{if(v[x.n])x.u=v[x.n]});
-  const ativo=document.querySelector('.filtros button[aria-pressed="true"]');if(ativo)ativo.click();
-}
+/* área da turma: os links aparecem direto (abrem só com a conta institucional) */
 (function(){
-  const form=$("#cofreForm"),msg=$("#cofreMsg");
-  const tentar=async(senha,silencioso)=>{
-    try{const c=await abrirCofre(senha);try{sessionStorage.setItem("aws-turma",senha)}catch(e){}mostrarCofre(c)}
-    catch(e){if(!silencioso){msg.textContent="Senha incorreta. Confira a senha informada no primeiro encontro.";msg.className="retorno no"}}
-  };
-  form.onsubmit=ev=>{ev.preventDefault();msg.textContent="Verificando…";msg.className="retorno";tentar($("#cofreSenha").value,false)};
-  let salva=null;try{salva=sessionStorage.getItem("aws-turma")}catch(e){}
-  if(salva) tentar(salva,true);
+  const box=$("#areaLinks");
+  AREA_TURMA.forEach(l=>{
+    const a=document.createElement("a");a.href=l.u;a.target="_blank";a.rel="noopener";
+    a.innerHTML=`<strong>${l.t}</strong><span>${l.d||""}</span>`;
+    // com ícone (ex.: o do Teams), ele fica à esquerda do texto
+    if(l.i){a.classList.add("com-icone");a.insertAdjacentHTML("afterbegin",`<img src="${l.i}" alt="" width="40" height="40">`)}
+    box.appendChild(a);
+  });
+  // coloca os links das gravações nos vídeos e desenha a lista de novo
+  VIDEOS.forEach(x=>{if(VIDEOS_LINKS[x.n])x.u=VIDEOS_LINKS[x.n]});
+  const ativo=document.querySelector('.filtros button[aria-pressed="true"]');if(ativo)ativo.click();
 })();
 
 /* links */
