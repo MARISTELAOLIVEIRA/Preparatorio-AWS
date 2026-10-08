@@ -17,6 +17,7 @@
   COMO EDITAR (Profa. Maristela)
   - Links públicos (AWS Academy, Skill Builder etc.): procure LINKS_TURMA no script.
   - Área da turma (Teams e links dos vídeos): listas AREA_TURMA e VIDEOS_LINKS no script.
+  - Módulos do "Meu progresso": js/modulos.js. Login opcional (Supabase): js/conta.js; painel: painel.html.
     Não há senha: os links só abrem com a conta institucional do Senac.
   - Encontros: lista ENCONTROS (datas, laboratório, desafio, tarefas).
   - Visual: assets/css/estilo.css e neon.css (comuns a todos os sites da Stela, não editar aqui)
@@ -25,7 +26,7 @@
 -->
 <link rel="stylesheet" href="assets/css/estilo.css">
 <link rel="stylesheet" href="assets/css/neon.css?v=4">
-<link rel="stylesheet" href="css/aws.css?v=2">
+<link rel="stylesheet" href="css/aws.css?v=3">
 </head>
 <body>
 <!-- ===================== BARRA DO TOPO (igual em todos os sites) ===================== -->
@@ -110,7 +111,7 @@
 <section id="cursos">
   <div class="wrap">
     <h2>Meu progresso</h2>
-    <p class="intro">Marque os módulos que você já concluiu na AWS Academy e as etapas da reta final. O progresso fica salvo só neste navegador.</p>
+    <p class="intro">Marque os módulos que você já concluiu na AWS Academy e as etapas da reta final. O progresso fica salvo neste navegador. Quer guardar na nuvem e a professora acompanhar? Use o botão <strong>Entrar</strong>, no topo (é opcional).</p>
     <div class="cursos" id="cursos-lista"></div>
   </div>
 </section>
@@ -190,6 +191,9 @@
   <div class="envolve"><img src="assets/img/coracao.webp" alt="" width="30" height="28"><span>Preparatório AWS Cloud Foundations · AWS Academy da Faculdade de Tecnologia e Inovação Senac-DF · Profa. Maristela Oliveira · <a href="/">Portal da Stela</a></span></div>
 </footer>
 
+<script src="js/modulos.js?v=1"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/conta.js?v=1"></script>
 <script>
 /* ===================== DADOS (edite aqui) ===================== */
 const LINKS_TURMA=[
@@ -211,11 +215,7 @@ const ENCONTROS=[
  {d:"2026-11-21",c:"Tecnologia",t:"Escalabilidade, monitoramento e revisão",lab:["Load balancing, Auto Scaling e CloudWatch"],des:["Jeopardy da nuvem"],casa:["Vídeo 12","Skill Builder: Essentials e questões práticas"]},
  {d:"2026-12-05",c:"Prova",t:"Simulado final e caminho até a prova",lab:["Simulado completo com tempo de prova"],des:["Correção por domínio"],casa:["Tutorial do voucher","Plano de estudos até a prova"]}
 ];
-const MODULOS={
- ACF:["Visão geral dos conceitos de nuvem","Economia e cobrança na nuvem","Infraestrutura global da AWS","Segurança na nuvem AWS","Redes e entrega de conteúdo","Computação","Armazenamento","Bancos de dados","Arquitetura em nuvem","Escalabilidade automática e monitoramento"],
- PREP:["Exame final do Cloud Foundations","Cloud Practitioner Essentials (Skill Builder)","Questões práticas oficiais (Skill Builder)","Simulado final do preparatório","Conta de certificação criada","Prova agendada com o voucher"]
-};
-const NOMES={ACF:"AWS Academy Cloud Foundations",PREP:"Reta final até a prova"};
+/* MODULOS e NOMES (o "Meu progresso") ficam em js/modulos.js */
 const VIDEOS=[ /* os links das gravações ficam em VIDEOS_LINKS */
  ["Conceitos","O que é computação em nuvem"],["Cobrança","Economia e cobrança"],["Conceitos","Infraestrutura global"],["Segurança","Responsabilidade compartilhada e IAM"],
  ["Tecnologia","Redes: VPC"],["Tecnologia","Computação: EC2 e além"],["Tecnologia","Armazenamento"],["Tecnologia","Bancos de dados"],
@@ -296,21 +296,28 @@ const dataDe=s=>{const [a,m,d]=s.split("-").map(Number);return new Date(a,m-1,d)
   c.innerHTML=`<div class="data">${fmt(e.d)}<small>${quando}</small></div><div><h3>Encontro ${idx+1}: ${e.t}</h3><p style="margin:.3rem 0 0">No laboratório: ${e.lab.join("; ")}. Desafio: ${e.des.join(" e ")}.</p>${ant?`<p style="margin:.8rem 0 0;font-weight:700">Antes de vir:</p><ul>${ant.casa.map(x=>`<li>${x}</li>`).join("")}</ul>`:""}</div>`;
 })();
 
-/* progresso nos cursos */
+/* progresso nos cursos (no navegador; com login, também na nuvem: js/conta.js) */
 (function(){
   let feito={};try{feito=JSON.parse(localStorage.getItem("aws-progresso")||"{}")}catch(e){}
   const salvar=()=>{try{localStorage.setItem("aws-progresso",JSON.stringify(feito))}catch(e){}};
   const box=$("#cursos-lista");
+  const desenhar=()=>{box.innerHTML="";
   Object.keys(MODULOS).forEach(k=>{
     const d=document.createElement("div");d.className="curso";d.style.setProperty("--c",CORES[k]);
     d.innerHTML=`<h3>${({ACF:"Cloud Foundations",PREP:"Reta final"})[k]||k}</h3><span class="pct">${NOMES[k]}</span><div class="medidor"><i></i></div><span class="pct" data-pct></span><ol></ol>`;
     const ol=d.querySelector("ol");
     MODULOS[k].forEach((m,i)=>{const id=k+"-"+(i+1);const li=document.createElement("li");if(feito[id])li.classList.add("ck");
       li.innerHTML=`<label><input type="checkbox" ${feito[id]?"checked":""}><span>${m}</span></label>`;
-      li.querySelector("input").onchange=ev=>{feito[id]=ev.target.checked;li.classList.toggle("ck",ev.target.checked);salvar();atual()};ol.appendChild(li)});
+      li.querySelector("input").onchange=ev=>{feito[id]=ev.target.checked;li.classList.toggle("ck",ev.target.checked);salvar();atual();
+        if(window.CONTA)CONTA.salvarProgresso({[id]:ev.target.checked})};ol.appendChild(li)});
     const atual=()=>{const t=MODULOS[k].length,n=MODULOS[k].filter((_,i)=>feito[k+"-"+(i+1)]).length;d.querySelector(".medidor i").style.width=(n/t*100)+"%";d.querySelector("[data-pct]").textContent=`${n} de ${t} ${k==="PREP"?"etapas concluídas":"módulos concluídos"}`};
     atual();box.appendChild(d);
-  });
+  });};
+  desenhar();
+  // ao entrar: junta o que está no navegador com o que está na nuvem (o que foi marcado em qualquer um vale)
+  if(window.CONTA)CONTA.aoMudar(async u=>{if(!u)return;const nuvem=await CONTA.carregarProgresso();if(!nuvem)return;
+    const soAqui={};Object.keys(feito).forEach(it=>{if(feito[it]&&!(it in nuvem))soAqui[it]=true});
+    Object.assign(feito,nuvem,soAqui);salvar();desenhar();CONTA.salvarProgresso(soAqui)});
 })();
 
 /* vídeos */
@@ -347,7 +354,7 @@ const dataDe=s=>{const [a,m,d]=s.split("-").map(Number);return new Date(a,m-1,d)
       b.onclick=()=>{box.querySelectorAll("button").forEach(x=>x.disabled=true);b.classList.add(k===q.r?"certo":"errado");box.children[q.r].classList.add("certo");if(k===q.r)pts++;
         $("#qExpl").textContent=(k===q.r?"Correto. ":"Não foi dessa vez. ")+q.e;$("#qPos").textContent=`Pergunta ${i+1} de ${QUIZ.length} · acertos: ${pts}`;$("#qProx").hidden=false;$("#qProx").textContent=i<QUIZ.length-1?"Próxima pergunta":"Ver resultado"};box.appendChild(b)})};
   $("#qProx").onclick=()=>{i++;if(i<QUIZ.length){mostra();return}
-    $("#qPerg").textContent=`Você acertou ${pts} de ${QUIZ.length}.`;$("#qOpc").innerHTML="";$("#qExpl").textContent=pts>=5?"Excelente! Continue com as questões práticas do Skill Builder.":"Revise os vídeos e os módulos e tente de novo.";$("#qProx").textContent="Recomeçar";$("#qProx").onclick=()=>location.reload()};
+    $("#qPerg").textContent=`Você acertou ${pts} de ${QUIZ.length}.`;if(window.CONTA&&CONTA.usuario())CONTA.salvarTreino("mini-simulado","estudo",pts,QUIZ.length).then(ok=>{if(ok)$("#qPos").textContent+=" · nota guardada na sua conta"});$("#qOpc").innerHTML="";$("#qExpl").textContent=pts>=5?"Excelente! Continue com as questões práticas do Skill Builder.":"Revise os vídeos e os módulos e tente de novo.";$("#qProx").textContent="Recomeçar";$("#qProx").onclick=()=>location.reload()};
   mostra();
 })();
 
