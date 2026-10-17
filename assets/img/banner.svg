@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="titulo descricao">
+  <title id="titulo">Preparatório AWS Cloud · Profa. Maristela · AWS Academy · Senac-DF</title>
+  <desc id="descricao">Banner azul-marinho com laranja: o título do preparatório à esquerda, nuvens no fundo e, à direita, um terminal com o comando aws cloudformation deploy criando a pilha da certificação, com os quatro domínios da prova em CREATE_COMPLETE e o Cloud Practitioner no fim.</desc>
+
+  <defs>
+    <clipPath id="cantos">
+      <rect width="1200" height="360" rx="24"/>
+    </clipPath>
+
+    <linearGradient id="fundo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#232F3E"/>
+      <stop offset="1" stop-color="#131A24"/>
+    </linearGradient>
+    <radialGradient id="brilhoLaranja" cx="8%" cy="0%" r="60%">
+      <stop offset="0" stop-color="#FF9900" stop-opacity=".30"/>
+      <stop offset="1" stop-color="#FF9900" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="brilho" x="-20%" y="-60%" width="140%" height="220%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="halo"/>
+      <feMerge>
+        <feMergeNode in="halo"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Uma nuvem, reaproveitada em vários tamanhos -->
+    <path id="nuvem" d="M30 60 H130 A26 26 0 0 0 126 8 A38 38 0 0 0 56 14 A24 24 0 0 0 30 60 Z"/>
+
+    <style>
+      .titulo { font: 700 64px "Segoe UI", Arial, "Helvetica Neue", sans-serif; fill: #FFFFFF; }
+      .olho   { font: 700 16px Consolas, "Courier New", monospace; fill: #FF9900; letter-spacing: 2px; }
+      .assina { font: 400 19px Consolas, "Courier New", monospace; fill: #FFB84D; }
+      .frase  { font: 400 19px "Segoe UI", Arial, sans-serif; fill: #C9D3E0; }
+      .mono   { font: 400 16px Consolas, "Courier New", monospace; fill: #E6EDF5; white-space: pre; }
+      .prompt { fill: #FF9900; }
+      .suave  { fill: #8B9BB0; }
+      .ok     { fill: #3DDC97; }
+      .cursor { animation: pisca 1s steps(1) infinite; }
+      @keyframes pisca { 50% { opacity: 0; } }
+      @media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
+    </style>
+  </defs>
+
+  <g clip-path="url(#cantos)">
+    <rect width="1200" height="360" fill="url(#fundo)"/>
+    <rect width="1200" height="360" fill="url(#brilhoLaranja)"/>
+
+    <!-- Nuvens no fundo -->
+    <g fill="#FFFFFF">
+      <use href="#nuvem" transform="translate(470 250) scale(1.1)" opacity=".06"/>
+      <use href="#nuvem" transform="translate(560 18) scale(.7)" opacity=".07"/>
+      <use href="#nuvem" transform="translate(20 268) scale(.8)" opacity=".05"/>
+    </g>
+
+    <!-- Título -->
+    <text x="60" y="88" class="olho">AWS ACADEMY · CLOUD FOUNDATIONS</text>
+    <text x="58" y="160" class="titulo" textLength="440" lengthAdjust="spacingAndGlyphs">Preparatório</text>
+    <text x="58" y="228" class="titulo" textLength="330" lengthAdjust="spacingAndGlyphs">AWS Cloud</text>
+    <text x="60" y="272" class="assina">&gt; Profa. Maristela_ · Senac-DF</text>
+    <text x="60" y="306" class="frase">Teoria em casa, prática no sábado.</text>
+
+    <!-- Quatro faixas: os quatro domínios da prova -->
+    <g filter="url(#brilho)">
+      <rect x="410" y="210" width="40" height="6" rx="3" fill="#05D9E8"/>
+      <rect x="456" y="210" width="40" height="6" rx="3" fill="#F9F002"/>
+      <rect x="502" y="210" width="40" height="6" rx="3" fill="#FF2A6D"/>
+      <rect x="548" y="210" width="40" height="6" rx="3" fill="#B794F6"/>
+    </g>
+
+    <!-- Terminal -->
+    <g transform="translate(660 44)">
+      <rect width="494" height="280" rx="12" fill="#0D131B" fill-opacity=".95" stroke="#FF9900" stroke-opacity=".7" stroke-width="1.5"/>
+      <rect width="494" height="34" rx="12" fill="#1B2533"/>
+      <rect y="22" width="494" height="12" fill="#1B2533"/>
+      <circle cx="22" cy="17" r="6" fill="#FF5F57"/>
+      <circle cx="42" cy="17" r="6" fill="#FEBC2E"/>
+      <circle cx="62" cy="17" r="6" fill="#28C840"/>
+      <text x="247" y="22" text-anchor="middle" style="font: 400 14px Consolas, 'Courier New', monospace; fill: #8B9BB0">aws cli — bash</text>
+
+      <text x="20" y="66" class="mono"><tspan class="prompt">aluno@aws:~$</tspan> aws cloudformation deploy \</text>
+      <text x="20" y="88" class="mono">    --stack-name certificacao</text>
+      <text x="20" y="114" class="mono suave">Criando a pilha da sua certificação…</text>
+      <text x="20" y="142" class="mono"><tspan class="ok">✓</tspan> Conceitos de nuvem       <tspan class="ok">CREATE_COMPLETE</tspan></text>
+      <text x="20" y="166" class="mono"><tspan class="ok">✓</tspan> Segurança e conformidade<tspan class="ok"> CREATE_COMPLETE</tspan></text>
+      <text x="20" y="190" class="mono"><tspan class="ok">✓</tspan> Tecnologia e serviços    <tspan class="ok">CREATE_COMPLETE</tspan></text>
+      <text x="20" y="214" class="mono"><tspan class="ok">✓</tspan> Cobrança e suporte       <tspan class="ok">CREATE_COMPLETE</tspan></text>
+      <text x="20" y="240" class="mono prompt" filter="url(#brilho)">★ Cloud Practitioner       você chegou!</text>
+      <text x="20" y="262" class="mono"><tspan class="prompt">aluno@aws:~$</tspan> <tspan class="cursor prompt">█</tspan></text>
+    </g>
+  </g>
+</svg>
