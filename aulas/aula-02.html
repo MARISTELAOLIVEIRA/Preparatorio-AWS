@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <!-- EDITE AQUI: número e tema da aula -->
+  <title>Aula 2: Economia e cobrança · Preparatório AWS · Stela</title>
+  <meta name="description" content="Aula 2 do Preparatório AWS Cloud Foundations: o que pesa na conta, os jeitos de pagar, o TCO, as ferramentas de custo, o faturamento consolidado e os planos de suporte novos, com a Pricing Calculator e treinos.">
+
+  <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../assets/img/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <script src="../assets/js/placa.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wdth,wght@100..125,400..900&family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,700;1,400&family=Atkinson+Hyperlegible+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../assets/css/estilo.css">
+  <link rel="stylesheet" href="../assets/css/disciplina.css?v=4">
+  <link rel="stylesheet" href="../assets/css/aula.css?v=2">
+  <link rel="stylesheet" href="../assets/css/neon.css?v=5">
+  <link rel="stylesheet" href="../css/interativos.css?v=1">
+  <link rel="stylesheet" href="../css/aula-aws.css?v=6">
+</head>
+<body>
+
+  <!-- ===================== BARRA DO TOPO (igual em todos os sites) ===================== -->
+  <header class="barra">
+    <div class="envolve">
+      <div class="marcas">
+        <a class="marca-disc marca-logo" href="../" title="Página inicial do preparatório"><img src="../assets/img/tec/aws.svg" alt="Preparatório AWS: página inicial" width="32" height="32"></a>
+      </div>
+      <button type="button" class="btn-menu" id="btn-menu" aria-expanded="false" aria-controls="menu">Menu</button>
+      <nav class="nav" id="menu" aria-label="Partes da aula">
+        <a href="../#videos">← Preparatório</a>
+        <a href="#caso">Caso</a>
+        <a href="#conceitos">Conceitos</a>
+        <a href="#demonstracao">Calculadora</a>
+        <a href="#pegadinha">Pegadinha</a>
+        <a href="#treino">Treino</a>
+        <a href="#atividade">Checklist</a>
+      </nav>
+      <div class="ajustes">
+        <button type="button" id="btn-tema" aria-label="Mudar para o tema claro">
+          <svg class="sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="lua" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"/></svg>
+        </button>
+        <button type="button" id="btn-fonte" aria-label="Aumentar o tamanho do texto">A+</button>
+        <button type="button" id="btn-movimento" aria-pressed="false">
+          <svg class="pausar" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+          <svg class="tocar" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"/></svg>
+          <span class="rotulo">Pausar animações</span>
+        </button>
+        <a class="marca" href="/" title="Portal da Stela">
+          <img src="../assets/img/estrela.webp" alt="" width="26" height="24">
+          <span class="marca-texto">Stela</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="inicio">
+
+    <!-- ===================== CABEÇALHO DA AULA ===================== -->
+    <section class="aula-cab">
+      <canvas class="chuva-matrix" aria-hidden="true"></canvas>
+      <div class="envolve">
+        <p class="trilha-migalhas">
+          <a href="/">Stela</a> <span aria-hidden="true">/</span>
+          <a href="../">Preparatório AWS</a> <span aria-hidden="true">/</span>
+          <a href="../#videos">Vídeos e aulas</a> <span aria-hidden="true">/</span>
+          <span>Aula 2</span>
+        </p>
+
+        <!-- EDITE AQUI: número, vídeo, domínio da prova e título -->
+        <div class="aula-etiquetas">
+          <span class="etiqueta senac">Fac Senac DF</span>
+          <span class="etiqueta ouro">Aula 2</span>
+          <span class="etiqueta">Vídeo 2</span>
+          <span class="etiqueta dominio" style="--cor:var(--srwe)">Domínio 4 · Cobrança, preços e suporte</span>
+        </div>
+        <h1>Economia e <span class="neon">cobrança</span> na nuvem</h1>
+        <p class="subtitulo">O que pesa na conta, os jeitos de pagar, as ferramentas que estimam e vigiam o gasto, e os planos de suporte, que acabaram de mudar.</p>
+      </div>
+    </section>
+
+    <!-- ===================== RESUMO ===================== -->
+    <section class="bloco faixa alt" aria-label="Resumo da aula">
+      <div class="envolve">
+        <div class="resumo">
+          <div class="cartao">
+            <span class="olho">Objetivo</span>
+            <p>Escolher, numa questão, o jeito de pagar, a ferramenta de custo e o plano de suporte certos para cada situação.</p>
+          </div>
+          <div class="cartao">
+            <span class="olho">Revezamento</span>
+            <p>Primeiro o vídeo e esta página. Depois, o <strong>Módulo 2</strong> do Cloud Foundations, na AWS Academy.</p>
+          </div>
+          <div class="cartao">
+            <span class="olho">Na prova</span>
+            <p>Domínio 4, Cobrança, preços e suporte: <strong>12%</strong> das questões. O TCO e a despesa variável também caem no Domínio 1.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="bloco">
+      <div class="envolve aula-corpo">
+
+        <!-- ===================== ORDEM DO VÍDEO ===================== -->
+        <section class="parte" id="video">
+          <div class="cab">
+            <span class="olho">V1 · vídeo</span>
+            <h2>Neste vídeo, em uns 11 minutos</h2>
+            <p>A página segue a mesma ordem. Quer rever só um pedaço? Pule direto para ele.</p>
+          </div>
+          <div class="cartao">
+            <ol class="roteiro-video">
+              <li><time>0:00</time><a href="#caso">O caso: a primeira conta da Ingresso Candango</a></li>
+              <li><time>0:45</time><a href="#c1">C1 · As três coisas que pesam na conta</a></li>
+              <li><time>2:00</time><a href="#c2">C2 · Os jeitos de pagar a mesma máquina</a></li>
+              <li><time>3:30</time><a href="#c3">C3 · O custo total do servidor próprio (TCO)</a></li>
+              <li><time>5:00</time><a href="#c4">C4 · As ferramentas: estimar, analisar e avisar</a></li>
+              <li><time>6:00</time><a href="#c5">C5 · Várias contas, uma fatura: o AWS Organizations</a></li>
+              <li><time>6:45</time><a href="#demonstracao">D1 · A estimativa na AWS Pricing Calculator</a></li>
+              <li><time>8:30</time><a href="#pegadinha">P1 · A pegadinha: os planos de suporte novos</a></li>
+              <li><time>10:15</time><a href="#academy">Agora é na AWS Academy</a></li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- ===================== ESTUDO DE CASO ===================== -->
+        <section class="parte" id="caso">
+          <div class="cab">
+            <span class="olho">EC1 · estudo de caso</span>
+            <h2>Quanto vai custar, e quem atende às três da manhã?</h2>
+          </div>
+          <div class="cartao caso">
+            <p>A <strong>Ingresso Candango</strong>, da aula 1, decidiu levar o site para a AWS. Antes de mudar, os sócios têm três perguntas.</p>
+            <ol>
+              <li><strong>A sócia:</strong> "Quanto vai custar por mês? Quero o número antes de assinar qualquer coisa."</li>
+              <li><strong>O sócio:</strong> "E se a conta vier enorme e ninguém perceber?"</li>
+              <li><strong>A equipe:</strong> "Se o site cair às três da manhã, na abertura de uma venda, a quem a gente pede ajuda?"</li>
+            </ol>
+            <h3>Para pensar</h3>
+            <ol>
+              <li>O que você precisa saber sobre o site para estimar o custo?</li>
+              <li>A empresa paga do mesmo jeito o site, que fica no ar o mês todo, e os servidores extras, que só ligam na venda?</li>
+              <li>Ajuda de especialista 24 horas é de graça?</li>
+            </ol>
+            <p class="fonte">Empresa fictícia, criada para as aulas. Cada pergunta é respondida por um conceito.</p>
+          </div>
+        </section>
+
+        <!-- ===================== CONCEITOS ===================== -->
+        <section class="parte" id="conceitos">
+          <div class="cab">
+            <span class="olho">C1–C5 · conceitos</span>
+            <h2>Para onde vai o dinheiro</h2>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="c1">
+            <div class="texto">
+              <span class="olho">C1</span>
+              <h3>As três coisas que pesam na conta</h3>
+              <p>Segundo a AWS, quase toda conta se explica por três coisas:</p>
+              <ul>
+                <li><strong>Computação:</strong> paga por hora ou por segundo, do momento em que você liga a máquina até desligar.</li>
+                <li><strong>Armazenamento:</strong> paga por gigabyte guardado.</li>
+                <li><strong>Transferência de dados para fora:</strong> paga por gigabyte que sai da AWS para a internet.</li>
+              </ul>
+              <p>Na maioria dos casos, <strong>a entrada de dados não é cobrada</strong>, nem a transferência entre serviços da mesma região.</p>
+              <p class="fonte">Fonte: <a href="https://docs.aws.amazon.com/whitepapers/latest/how-aws-pricing-works/key-principles.html">AWS, How AWS Pricing Works: key principles</a>, consultado em 04/11/2026.</p>
+              <p class="dica"><strong>Na prova:</strong> "dados que entram" costumam ser grátis; "dados que saem" (<em>data transfer out</em>) são cobrados. A pegadinha troca os dois.</p>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="c2">
+            <div class="texto">
+              <span class="olho">C2</span>
+              <h3>Os jeitos de pagar a mesma máquina</h3>
+              <p>A mesma máquina do Amazon EC2 tem preços diferentes, conforme o compromisso que você assume.</p>
+              <div class="tabela-rola"><table class="metodos"><thead><tr><th>Jeito de pagar</th><th>Como funciona</th><th>Na Ingresso Candango</th></tr></thead><tbody>
+                <tr><td><strong>Sob demanda</strong><span class="termo-en">On-Demand</span></td><td>Paga por hora ou por segundo, sem compromisso e sem pagar antes.</td><td>Os servidores extras, ligados só nas horas da venda.</td></tr>
+                <tr><td><strong>Savings Plans</strong></td><td>Você se compromete a gastar um valor por hora durante 1 ou 3 anos. Desconto de até 72%.</td><td>O site, que fica no ar o ano inteiro.</td></tr>
+                <tr><td><strong>Instâncias reservadas</strong><span class="termo-en">Reserved Instances</span></td><td>Reserva uma máquina por 1 ou 3 anos, com desconto. É o modelo mais antigo de compromisso.</td><td>Também serviria para o site.</td></tr>
+                <tr><td><strong>Instâncias spot</strong><span class="termo-en">Spot Instances</span></td><td>Usa a capacidade que sobra na AWS, com desconto de até 90%, mas a máquina pode ser interrompida.</td><td>Gerar os relatórios de vendas à noite: se parar, recomeça.</td></tr>
+                <tr><td><strong>Hosts dedicados</strong><span class="termo-en">Dedicated Hosts</span></td><td>Um servidor físico só seu.</td><td>Não precisa. Serve para licença presa ao servidor físico ou regra de conformidade.</td></tr>
+              </tbody></table></div>
+              <p class="fonte">Fonte: <a href="https://aws.amazon.com/ec2/pricing/">AWS, Amazon EC2 pricing</a>, consultado em 04/11/2026.</p>
+              <p class="dica cuidado"><strong>A regra da prova:</strong> pode parar? Spot. Fica ligado anos? Savings Plans ou reserva. Não sabe quanto vai usar, ou é curto? Sob demanda. Licença ou regra exige servidor físico só seu? Host dedicado.</p>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="c3">
+            <div class="texto">
+              <span class="olho">C3</span>
+              <h3>O custo total do servidor próprio (TCO)</h3>
+              <p>O preço do servidor é só a ponta do iceberg. O <strong>custo total de propriedade</strong> (TCO, <em>total cost of ownership</em>) soma tudo o que a empresa gasta para mantê-lo funcionando:</p>
+              <ul>
+                <li><strong>Compra:</strong> servidores, discos, nobreak, rack.</li>
+                <li><strong>Espaço e energia:</strong> a sala, a luz do servidor e a do ar-condicionado.</li>
+                <li><strong>Pessoas:</strong> quem instala, atualiza, faz o backup e conserta.</li>
+                <li><strong>Licenças e manutenção:</strong> programas, garantia, peças.</li>
+              </ul>
+              <p>Faça a conta da Ingresso Candango. Os números já vêm preenchidos com os <strong>valores de exemplo</strong> (fictícios): os vinte servidores que o sócio queria comprar, contra a nuvem ligada só nas horas de venda.</p>
+              <form class="calc-custo" aria-label="Calculadora comprar ou alugar">
+                <div class="calc-campos">
+                  <label>Preço dos 20 servidores, à vista (R$)<input type="number" min="0" step="any" inputmode="decimal" data-papel="preco" value="240000"></label>
+                  <label>Vida útil dos servidores (anos)<input type="number" min="0" step="any" inputmode="decimal" data-papel="anos" value="4"></label>
+                  <label>Energia dos servidores e do ar, por mês (R$)<input type="number" min="0" step="any" inputmode="decimal" data-papel="mensal" value="2400"></label>
+                  <label>Manutenção e peças, por mês (R$)<input type="number" min="0" step="any" inputmode="decimal" data-papel="mensal" value="1500"></label>
+                  <label>Técnico que cuida dos servidores, por mês (R$)<input type="number" min="0" step="any" inputmode="decimal" data-papel="mensal" value="4000"></label>
+                  <label class="calc-nuvem">Estimativa da nuvem, por mês (R$)<input type="number" min="0" step="any" inputmode="decimal" data-papel="nuvem" value="3000"></label>
+                </div>
+                <output class="calc-resultado" aria-live="polite"></output>
+              </form>
+              <p class="dica">Dois termos do Domínio 1 que andam junto com o TCO: <strong>dimensionamento correto</strong> (<em>rightsizing</em>, usar a máquina do tamanho certo, nem maior nem menor) e <strong>trazer a sua licença</strong> (<em>BYOL, bring your own license</em>, usar na AWS uma licença que a empresa já comprou).</p>
+              <p class="dica"><strong>Como é no Azure:</strong> a mesma conversa aparece como trocar <strong>CapEx</strong> (comprar antes) por <strong>OpEx</strong> (pagar pelo uso), e a Microsoft também tem uma calculadora de TCO.</p>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="c4">
+            <div class="texto">
+              <span class="olho">C4</span>
+              <h3>As ferramentas: estimar, analisar e avisar</h3>
+              <p>Cada pergunta dos sócios tem a sua ferramenta. A diferença entre elas é <strong>quando</strong> você usa.</p>
+              <div class="tabela-rola"><table class="metodos"><thead><tr><th>Ferramenta</th><th>Para quê</th><th>Quando</th></tr></thead><tbody>
+                <tr><td><strong>AWS Pricing Calculator</strong></td><td>Estimar o custo de uma arquitetura que ainda não existe.</td><td><strong>Antes</strong> de criar. Não precisa de conta.</td></tr>
+                <tr><td><strong>AWS Cost Explorer</strong></td><td>Ver e analisar o que já foi gasto, com gráficos e previsão.</td><td><strong>Depois</strong>, olhando para trás.</td></tr>
+                <tr><td><strong>AWS Budgets</strong></td><td>Definir um limite e receber um alerta quando o gasto chega perto.</td><td><strong>Durante</strong> o mês, para não ter susto.</td></tr>
+                <tr><td><strong>AWS Cost and Usage Report</strong></td><td>O relatório mais detalhado de custo e uso, linha a linha.</td><td>Quando precisa de todos os detalhes.</td></tr>
+                <tr><td><strong>Tags de alocação de custos</strong></td><td>Etiquetas nos recursos para separar a conta por projeto ou setor.</td><td>Ao criar cada recurso.</td></tr>
+              </tbody></table></div>
+              <p class="dica cuidado"><strong>A pegadinha mais comum do domínio:</strong> estimar o futuro é Pricing Calculator; analisar o passado é Cost Explorer; ser avisado é Budgets.</p>
+              <p class="dica"><strong>Como é no Azure:</strong> a <strong>Calculadora de preços</strong> estima, e o <strong>Gerenciamento de Custos</strong> analisa e avisa, com orçamentos e alertas.</p>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="c5">
+            <div class="texto">
+              <span class="olho">C5</span>
+              <h3>Várias contas, uma fatura: o AWS Organizations</h3>
+              <p>Empresas costumam ter várias contas da AWS: uma para o site, outra para os testes, outra por setor. O <strong>AWS Organizations</strong> junta todas numa organização, e uma <strong>conta de gerenciamento</strong> paga a fatura de todas. É o <strong>faturamento consolidado</strong>:</p>
+              <ul>
+                <li><strong>Uma fatura só</strong> para todas as contas.</li>
+                <li><strong>Acompanhamento fácil</strong> do gasto de cada conta.</li>
+                <li><strong>Uso somado:</strong> o desconto por volume e os descontos de reservas e Savings Plans valem para a organização inteira.</li>
+                <li><strong>Sem custo extra.</strong></li>
+              </ul>
+              <p class="fonte">Fonte: <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/consolidated-billing.html">AWS, Consolidating billing for AWS Organizations</a>, consultado em 04/11/2026.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== DEMONSTRAÇÃO ===================== -->
+        <section class="parte" id="demonstracao">
+          <div class="cab">
+            <span class="olho">D1 · demonstração</span>
+            <h2>A estimativa na AWS Pricing Calculator</h2>
+            <p>A calculadora é aberta: não precisa do Learner Lab nem de conta. No vídeo eu faço junto com você.</p>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr">
+            <div class="texto">
+              <div class="faca-assim">
+                <strong>Faça assim:</strong>
+                <ol>
+                  <li>Abra a <a href="https://calculator.aws/">AWS Pricing Calculator</a> e clique em <strong>Create estimate</strong> (criar estimativa).</li>
+                  <li>Escolha a região <strong>South America (São Paulo)</strong>.</li>
+                  <li>Procure <strong>Amazon EC2</strong> e clique em <strong>Configure</strong>.</li>
+                  <li>Peça uma máquina Linux com <strong>2 vCPU e 4 GB de memória</strong>, como a <code>t3.medium</code>.</li>
+                  <li>No jeito de pagar, troque para <strong>On-Demand</strong>: a calculadora costuma vir marcada com um Savings Plan de 3 anos.</li>
+                  <li>Coloque o uso de <strong>20 máquinas por 6 horas no mês</strong>, os servidores da venda.</li>
+                  <li>Clique em <strong>Save and view summary</strong> e anote o valor mensal, em dólar.</li>
+                </ol>
+              </div>
+              <div class="faca-assim">
+                <strong>Teste:</strong>
+                <ol>
+                  <li>Volte e mude o uso para as 20 máquinas ligadas <strong>o mês inteiro</strong> (730 horas, o mês da calculadora). Quantas vezes a conta aumentou?</li>
+                  <li>Agora troque para o Savings Plan de 1 ano. Para qual das duas situações ele vale a pena?</li>
+                </ol>
+              </div>
+              <p class="dica cuidado"><strong>Os preços da AWS vêm em dólar</strong>, e as telas da calculadora mudam de vez em quando. Achou um nome diferente? Procure a mesma ideia: região, serviço, tamanho, tempo e jeito de pagar.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== PEGADINHA ===================== -->
+        <section class="parte" id="pegadinha">
+          <div class="cab">
+            <span class="olho">P1 · pegadinha de prova</span>
+            <h2>Os planos de suporte mudaram</h2>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr">
+            <div class="texto">
+              <p>A AWS lançou novos planos em 02/12/2025. Os planos <strong>Developer</strong>, <strong>Business</strong> e <strong>Enterprise On-Ramp</strong> acabam em <strong>01/01/2027</strong>. O guia da prova, na versão de 29/10/2026, já cobra os planos novos.</p>
+              <div class="tabela-rola"><table class="metodos"><thead><tr><th>Plano</th><th>O que tem de especial</th><th>Caso crítico respondido em</th></tr></thead><tbody>
+                <tr><td><strong>Basic</strong><span class="termo-en">grátis, para todo cliente</span></td><td>Atendimento ao cliente 24 horas, documentação, re:Post e as verificações principais do Trusted Advisor.</td><td>não tem suporte técnico</td></tr>
+                <tr><td><strong>Business Support+</strong><span class="termo-en">a partir de US$ 29 por mês</span></td><td>Especialistas da AWS 24 horas, assistente com IA e todas as verificações do Trusted Advisor. Para desenvolvedores, startups e pequenas empresas.</td><td>até 30 minutos</td></tr>
+                <tr><td><strong>Enterprise</strong><span class="termo-en">a partir de US$ 5.000 por mês</span></td><td><strong>Gerente técnico de conta (TAM) designado</strong> e resposta a incidentes de segurança.</td><td>até 15 minutos</td></tr>
+                <tr><td><strong>Unified Operations</strong><span class="termo-en">a partir de US$ 50.000 por mês</span></td><td>Uma equipe dedicada, para cargas de trabalho de missão crítica.</td><td>até 5 minutos</td></tr>
+              </tbody></table></div>
+              <p class="fonte">Fontes: <a href="https://aws.amazon.com/blogs/aws/new-and-enhanced-aws-support-plans-add-ai-capabilities-to-expert-guidance">AWS News Blog, 02/12/2025</a>; <a href="https://docs.aws.amazon.com/awssupport/latest/user/support-plans-eos.html">AWS Support, fim dos planos antigos</a>; <a href="https://docs.aws.amazon.com/aws-certification/latest/cloud-practitioner-02/cloud-practitioner-02-domain4.html">guia da CLF-C02, Domínio 4</a>. Consultados em 04/11/2026.</p>
+              <p class="dica cuidado"><strong>Cuidado com material antigo.</strong> A AWS Academy, simulados e vídeos da internet ainda podem mostrar os cinco planos antigos. Na prova, vale o guia atual.</p>
+              <div class="faca-assim">
+                <strong>As pistas na questão:</strong>
+                <ol>
+                  <li>"Sem custo" ou "incluído para todos": <strong>Basic</strong>.</li>
+                  <li>"Menor custo com acesso 24 horas a especialistas": <strong>Business Support+</strong>.</li>
+                  <li>"TAM designado" ou "resposta em 15 minutos": <strong>Enterprise</strong>.</li>
+                  <li>"Missão crítica, resposta em 5 minutos": <strong>Unified Operations</strong>.</li>
+                </ol>
+              </div>
+              <p>E a Ingresso Candango? Uma startup que precisa de ajuda às três da manhã, com o menor custo: <strong>Business Support+</strong>.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== TREINO ===================== -->
+        <section class="parte" id="treino">
+          <div class="cab">
+            <span class="olho">T1–T3 · treino</span>
+            <h2>Classifique!</h2>
+            <p>Cada acerto de primeira vale <strong>10 XP</strong>. Errou? A dica aparece e você tenta de novo. No fim, você ganha uma insígnia.</p>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="treino-1">
+            <div class="texto">
+              <span class="olho">T1</span>
+              <h3>Qual jeito de pagar?</h3>
+              <div class="faca-assim desafio">
+                <strong>Agora é com você:</strong>
+                <div class="classifica" data-opcoes="demanda:Sob demanda,compromisso:Savings Plans,spot:Spot,dedicado:Host dedicado" data-dica="Pergunte: pode parar? Fica ligado anos? Precisa de servidor físico só seu?">
+                  <p class="classifica-placar" aria-live="polite"></p>
+                  <ol class="classifica-itens">
+                    <li data-resposta="compromisso" data-explica="Uso constante e previsível por anos combina com compromisso de 1 ou 3 anos.">O sistema de uma clínica fica ligado 24 horas, todos os dias, há anos.</li>
+                    <li data-resposta="spot" data-explica="Tarefa que pode ser interrompida e recomeçar aproveita o desconto do spot.">Gerar milhares de relatórios à noite; se uma máquina parar, a tarefa recomeça.</li>
+                    <li data-resposta="demanda" data-explica="Uso curto e sem previsão pede sob demanda: sem compromisso.">Um teste de duas semanas de um aplicativo novo, sem saber se ele vai continuar.</li>
+                    <li data-resposta="dedicado" data-explica="Licença presa ao servidor físico pede um host dedicado.">Uma empresa tem uma licença de software que só vale num servidor físico identificado.</li>
+                    <li data-resposta="demanda" data-explica="Pico curto e imprevisível: liga sob demanda e desliga depois.">Os servidores extras da Ingresso Candango, só nas horas da venda.</li>
+                    <li data-resposta="compromisso" data-explica="O site fica no ar o ano todo: compromisso com desconto.">O site da Ingresso Candango, que fica no ar o ano inteiro.</li>
+                  </ol>
+                  <button type="button" class="botao contorno classifica-reiniciar">Jogar de novo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="treino-2">
+            <div class="texto">
+              <span class="olho">T2</span>
+              <h3>Qual ferramenta?</h3>
+              <div class="faca-assim desafio">
+                <strong>Agora é com você:</strong>
+                <div class="classifica" data-opcoes="calculadora:Pricing Calculator,explorer:Cost Explorer,budgets:Budgets,organizations:Organizations" data-dica="Pergunte: é antes de criar, depois de gastar, para ser avisado ou para juntar contas?">
+                  <p class="classifica-placar" aria-live="polite"></p>
+                  <ol class="classifica-itens">
+                    <li data-resposta="calculadora" data-explica="Estimar o que ainda não existe é com a Pricing Calculator.">Saber quanto vai custar um sistema antes de criar qualquer coisa na AWS.</li>
+                    <li data-resposta="explorer" data-explica="Analisar o gasto que já aconteceu é com o Cost Explorer.">Ver em gráfico quanto a empresa gastou em cada serviço nos últimos seis meses.</li>
+                    <li data-resposta="budgets" data-explica="Limite com alerta é o AWS Budgets.">Receber um e-mail quando o gasto do mês passar de US$ 500.</li>
+                    <li data-resposta="organizations" data-explica="Várias contas numa fatura só é o faturamento consolidado do AWS Organizations.">Pagar as contas de cinco setores numa fatura só, somando o uso para ter desconto.</li>
+                    <li data-resposta="explorer" data-explica="Descobrir de onde veio o gasto que já aconteceu é com o Cost Explorer.">Descobrir por que a conta do mês passado veio mais alta do que a do anterior.</li>
+                    <li data-resposta="budgets" data-explica="Acompanhar o mês contra um limite, com aviso, é o Budgets.">Ser avisado antes que os testes da equipe estourem o valor combinado do mês.</li>
+                  </ol>
+                  <button type="button" class="botao contorno classifica-reiniciar">Jogar de novo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="treino-3">
+            <div class="texto">
+              <span class="olho">T3</span>
+              <h3>Qual plano de suporte?</h3>
+              <div class="faca-assim desafio">
+                <strong>Agora é com você:</strong>
+                <div class="classifica" data-opcoes="basic:Basic,business:Business Support+,enterprise:Enterprise,unified:Unified Operations" data-dica="Volte às pistas da pegadinha P1: custo, TAM e tempo de resposta.">
+                  <p class="classifica-placar" aria-live="polite"></p>
+                  <ol class="classifica-itens">
+                    <li data-resposta="basic" data-explica="Sem pagar nada, o plano é o Basic, que vem com toda conta.">Um estudante quer só a documentação e o atendimento de conta, sem pagar nada.</li>
+                    <li data-resposta="business" data-explica="O menor custo com especialistas 24 horas é o Business Support+.">Uma startup quer falar com especialistas da AWS a qualquer hora, pelo menor preço.</li>
+                    <li data-resposta="enterprise" data-explica="TAM designado com resposta em até 15 minutos é o Enterprise.">Uma empresa quer um gerente técnico de conta (TAM) designado e resposta em até 15 minutos.</li>
+                    <li data-resposta="unified" data-explica="Missão crítica com resposta em até 5 minutos e equipe dedicada é o Unified Operations.">Um banco precisa de uma equipe dedicada e resposta em até 5 minutos para os sistemas críticos.</li>
+                  </ol>
+                  <button type="button" class="botao contorno classifica-reiniciar">Jogar de novo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== ATIVIDADE ===================== -->
+        <section class="parte" id="atividade">
+          <div class="cab">
+            <span class="olho">A1 · checklist</span>
+            <h2>Checklist da aula</h2>
+            <p>O que você marcar fica salvo neste navegador.</p>
+          </div>
+
+          <div class="cartao">
+            <div class="progresso-atividade" data-progresso="passos-aula-02">
+              <span class="contagem">0 de 8</span>
+              <span class="barra-progresso"><span></span></span>
+            </div>
+            <ol class="checklist" id="passos-aula-02">
+              <li><label><input type="checkbox"><span>Assisti ao vídeo 2 ou li esta página até o fim. <a href="#video">Veja a ordem do vídeo</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Sei as três coisas que pesam na conta e o que costuma ser grátis. <a href="#c1">Veja o C1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Escolho o jeito de pagar pela situação. <a href="#c2">Veja o C2</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Fiz a conta do TCO da Ingresso Candango e mudei os números. <a href="#c3">Veja o C3</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Separo Pricing Calculator, Cost Explorer e Budgets. <a href="#c4">Veja o C4</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Fiz a estimativa na Pricing Calculator. <a href="#demonstracao">Veja o D1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Sei os quatro planos de suporte novos e fiz os três treinos. <a href="#pegadinha">Veja a P1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Fiz o Módulo 2 na AWS Academy e marquei no <a href="../#cursos">Meu progresso</a>.</span></label></li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- ===================== CONEXÃO STEAM ===================== -->
+        <section class="parte" id="steam">
+          <div class="cab">
+            <span class="olho">S1 · conexão STEAM</span>
+            <h2>A conta fora da tela</h2>
+          </div>
+          <div class="steam">
+            <div class="cartao">
+              <span class="letra">M</span>
+              <h3>Matemática</h3>
+              <p>Uma máquina ligada só em horário comercial, 10 horas em 22 dias, fica 220 horas no ar, contra 730 do mês inteiro. Quanto por cento a conta cai? Compare com o que a AWS diz: desligar o que não está em uso corta 70% ou mais.</p>
+            </div>
+            <div class="cartao">
+              <span class="letra">A</span>
+              <h3>Arte</h3>
+              <p>Desenhe a conta da Ingresso Candango como uma placa: cada serviço é um LED, e o brilho de cada um mostra quanto ele gasta. Qual LED brilha mais no dia da venda?</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== AWS ACADEMY E MATERIAIS ===================== -->
+        <section class="parte" id="academy">
+          <div class="cab">
+            <span class="olho">J1 · agora é na AWS Academy</span>
+            <h2>O revezamento: a sua vez na Academy</h2>
+            <p>Esta aula preparou o terreno. O módulo da Academy aprofunda, com o vídeo e o teste de conhecimento oficiais.</p>
+          </div>
+          <div class="repos">
+            <a class="repo luz" href="https://awsacademy.instructure.com/">
+              <span class="repo-nome"><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#ic-repo"/></svg>AWS Academy</span>
+              <h4>Cloud Foundations</h4>
+              <p>Módulo 2: Economia e cobrança na nuvem, com o teste de conhecimento.</p>
+              <span class="repo-pe"><span class="ling"><span class="tec" style="--t:1.45rem"><img src="../assets/img/tec/aws.svg" alt="" width="20" height="20"></span>AWS</span><span class="etiqueta">próximo passo</span></span>
+            </a>
+            <a class="repo luz" href="https://docs.aws.amazon.com/aws-certification/latest/cloud-practitioner-02/cloud-practitioner-02-domain4.html">
+              <span class="repo-nome"><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#ic-repo"/></svg>Guia da prova</span>
+              <h4>CLF-C02, Domínio 4</h4>
+              <p>O que a AWS diz que cai sobre cobrança, preços e suporte, em inglês.</p>
+              <span class="repo-pe"><span class="ling" style="--cor:var(--srwe)"><i></i>Cobrança</span><span class="etiqueta">fonte</span></span>
+            </a>
+            <a class="repo luz" href="https://learn.microsoft.com/pt-br/training/modules/describe-cost-management-azure/">
+              <span class="repo-nome"><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#ic-repo"/></svg>Microsoft Learn</span>
+              <h4>Descrever o gerenciamento de custos no Azure</h4>
+              <p>O mesmo assunto pelo lado do Azure, de graça e em português.</p>
+              <span class="repo-pe"><span class="ling"><span class="tec" style="--t:1.45rem"><img src="../assets/img/tec/azure.svg" alt="" width="20" height="20"></span>Azure</span><span class="etiqueta">como é no Azure</span></span>
+            </a>
+          </div>
+          <p class="dica cuidado"><strong>O material da AWS Academy é só para quem está no curso.</strong> Não copie nem compartilhe vídeos, slides ou questões fora da plataforma.</p>
+        </section>
+
+        <nav class="nav-aulas" aria-label="Outras aulas">
+          <!-- EDITE AQUI: use <a href="aula-NN.html"> quando a página da aula vizinha for liberada; <span> enquanto não for -->
+          <a class="anterior" href="aula-01.html">
+            <span class="olho">← aula anterior</span>
+            <strong>Aula 1: O que é computação em nuvem</strong>
+          </a>
+          <a class="proxima" href="aula-03.html">
+            <span class="olho">próxima aula →</span>
+            <strong>Aula 3: Infraestrutura global</strong>
+          </a>
+        </nav>
+
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="rodape">
+    <div class="envolve">
+      <div class="rodape-fim" style="margin-top:0; padding-top:0; border-top:0">
+        <span><a href="../">Preparatório AWS Cloud Foundations</a> · Feito com ♥ e sucata eletrônica.</span>
+        <span>aws ce get-cost-and-usage --granularity MONTHLY</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ícone de repositório (Octicons, licença MIT) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="ic-repo" viewBox="0 0 16 16"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"/></symbol>
+  </svg>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="../js/conta.js?v=1"></script>
+  <script src="../assets/js/aulas.js?v=3"></script>
+  <script src="../assets/js/classifica.js?v=2"></script>
+  <script src="../assets/js/contas.js?v=1"></script>
+  <script src="../assets/js/matrix.js?v=3"></script>
+</body>
+</html>

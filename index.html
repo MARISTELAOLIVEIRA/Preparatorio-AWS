@@ -26,7 +26,7 @@
 -->
 <link rel="stylesheet" href="assets/css/estilo.css">
 <link rel="stylesheet" href="assets/css/neon.css?v=5">
-<link rel="stylesheet" href="css/aws.css?v=4">
+<link rel="stylesheet" href="css/aws.css?v=5">
 </head>
 <body>
 <!-- ===================== BARRA DO TOPO (igual em todos os sites) ===================== -->
@@ -119,7 +119,7 @@
 <section id="videos">
   <div class="wrap">
     <h2>Vídeos de apoio</h2>
-    <p class="intro">Pílulas de 8 a 12 minutos com o essencial de cada módulo, demonstração no console da AWS e as pegadinhas de prova.</p>
+    <p class="intro">Pílulas de 8 a 12 minutos com o essencial de cada módulo, demonstração no console da AWS e as pegadinhas de prova. Cada vídeo tem a sua aula, com o resumo, os treinos e o checklist.</p>
     <div class="filtros" role="group" aria-label="Filtrar vídeos por curso">
       <button type="button" data-f="todos" aria-pressed="true">Todos</button>
       <button type="button" data-f="Conceitos" aria-pressed="false">Conceitos</button>
@@ -255,10 +255,13 @@ const AREA_TURMA=[
   {t:"Equipe do Teams",d:"Gravações, avisos e conversas da turma",i:"assets/img/tec/teams.svg",u:"https://teams.cloud.microsoft/l/team/19%3AKrKfXYppVLbW6y8nm0LTsXynWTVA-ILbukatKyN4iPo1%40thread.tacv2/conversations?groupId=b2093c3c-6e87-4db5-8b35-a12f846946cf&tenantId=85cccaae-eea0-478c-8062-60536e374ef5"},
   {t:"Sala de aula",d:"Entre aqui na hora do encontro ao vivo, no Teams",i:"assets/img/tec/teams.svg",u:"https://teams.microsoft.com/meet/287705011051384?p=TukiNJkwLiSAPTbS5d"},
 ];
-/* Links das gravações: número do vídeo → link. Vídeo sem link aparece como "Em breve".
+/* Links das gravações: número do vídeo → link. Vídeo sem link aparece como "Vídeo em breve".
    Exemplo: 1:"https://...", */
 const VIDEOS_LINKS={
 };
+/* Aulas no ar: número do vídeo que já tem a página aulas/aula-NN.html publicada (o card ganha "Abrir a aula").
+   Para liberar uma aula, tire-a do .git/info/exclude e acrescente o número aqui. */
+const AULAS_NO_AR=[1,2,3,4,5,6,7,8,9,10,11,12];
 /* ============================================================== */
 
 const $=s=>document.querySelector(s);
@@ -324,7 +327,10 @@ const dataDe=s=>{const [a,m,d]=s.split("-").map(Number);return new Date(a,m-1,d)
 (function(){
   const ul=$("#listaVideos");
   const pinta=f=>{ul.innerHTML="";VIDEOS.filter(v=>f==="todos"||v.c===f).forEach(v=>{const li=document.createElement("li");li.style.setProperty("--c",CORES[v.c]);
-    li.innerHTML=`<span class="n">Vídeo ${String(v.n).padStart(2,"0")} · ${v.c}</span><strong>${v.t}</strong>${v.u?`<a href="${v.u}" target="_blank" rel="noopener">Assistir</a>`:`<span class="em">Em breve</span>`}`;ul.appendChild(li)})};
+    const nn=String(v.n).padStart(2,"0");
+    const aula=AULAS_NO_AR.includes(v.n)?`<a href="aulas/aula-${nn}.html">Abrir a aula</a>`:"";
+    const video=v.u?`<a href="${v.u}" target="_blank" rel="noopener">Assistir ao vídeo</a>`:`<span class="em">Vídeo em breve</span>`;
+    li.innerHTML=`<span class="n">Vídeo ${nn} · ${v.c}</span><strong>${v.t}</strong><span class="video-acoes">${aula}${video}</span>`;ul.appendChild(li)})};
   document.querySelectorAll(".filtros button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".filtros button").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");pinta(b.dataset.f)});
   pinta("todos");
 })();

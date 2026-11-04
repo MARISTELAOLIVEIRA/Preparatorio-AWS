@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <!-- EDITE AQUI: número e tema da aula -->
+  <title>Aula 12: Como é a prova · Preparatório AWS · Stela</title>
+  <meta name="description" content="Aula 12 do Preparatório AWS Cloud Foundations: como é a prova AWS Certified Cloud Practitioner (CLF-C02), o peso de cada domínio, como ler uma questão, o caminho do voucher até o dia da prova e as pistas que mais aparecem, com treinos.">
+
+  <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../assets/img/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <script src="../assets/js/placa.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wdth,wght@100..125,400..900&family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,700;1,400&family=Atkinson+Hyperlegible+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../assets/css/estilo.css">
+  <link rel="stylesheet" href="../assets/css/disciplina.css?v=4">
+  <link rel="stylesheet" href="../assets/css/aula.css?v=2">
+  <link rel="stylesheet" href="../assets/css/neon.css?v=5">
+  <link rel="stylesheet" href="../css/interativos.css?v=1">
+  <link rel="stylesheet" href="../css/aula-aws.css?v=6">
+</head>
+<body>
+
+  <!-- ===================== BARRA DO TOPO (igual em todos os sites) ===================== -->
+  <header class="barra">
+    <div class="envolve">
+      <div class="marcas">
+        <a class="marca-disc marca-logo" href="../" title="Página inicial do preparatório"><img src="../assets/img/tec/aws.svg" alt="Preparatório AWS: página inicial" width="32" height="32"></a>
+      </div>
+      <button type="button" class="btn-menu" id="btn-menu" aria-expanded="false" aria-controls="menu">Menu</button>
+      <nav class="nav" id="menu" aria-label="Partes da aula">
+        <a href="../#videos">← Preparatório</a>
+        <a href="#caso">Caso</a>
+        <a href="#conceitos">A prova</a>
+        <a href="#demonstracao">Questões práticas</a>
+        <a href="#pegadinha">Pistas</a>
+        <a href="#treino">Treino</a>
+        <a href="#atividade">Checklist</a>
+      </nav>
+      <div class="ajustes">
+        <button type="button" id="btn-tema" aria-label="Mudar para o tema claro">
+          <svg class="sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="lua" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"/></svg>
+        </button>
+        <button type="button" id="btn-fonte" aria-label="Aumentar o tamanho do texto">A+</button>
+        <button type="button" id="btn-movimento" aria-pressed="false">
+          <svg class="pausar" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+          <svg class="tocar" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"/></svg>
+          <span class="rotulo">Pausar animações</span>
+        </button>
+        <a class="marca" href="/" title="Portal da Stela">
+          <img src="../assets/img/estrela.webp" alt="" width="26" height="24">
+          <span class="marca-texto">Stela</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="inicio">
+
+    <!-- ===================== CABEÇALHO DA AULA ===================== -->
+    <section class="aula-cab">
+      <canvas class="chuva-matrix" aria-hidden="true"></canvas>
+      <div class="envolve">
+        <p class="trilha-migalhas">
+          <a href="/">Stela</a> <span aria-hidden="true">/</span>
+          <a href="../">Preparatório AWS</a> <span aria-hidden="true">/</span>
+          <a href="../#videos">Vídeos e aulas</a> <span aria-hidden="true">/</span>
+          <span>Aula 12</span>
+        </p>
+
+        <!-- EDITE AQUI: número, vídeo, domínio da prova e título -->
+        <div class="aula-etiquetas">
+          <span class="etiqueta senac">Fac Senac DF</span>
+          <span class="etiqueta ouro">Aula 12</span>
+          <span class="etiqueta">Vídeo 12</span>
+          <span class="etiqueta dominio" style="--cor:var(--neon)">Os quatro domínios · CLF-C02</span>
+        </div>
+        <h1>Como é a <span class="neon">prova</span> Cloud Practitioner</h1>
+        <p class="subtitulo">O formato, o peso de cada domínio, o jeito de ler cada questão e a cola das doze aulas numa tabela só.</p>
+      </div>
+    </section>
+
+    <!-- ===================== RESUMO ===================== -->
+    <section class="bloco faixa alt" aria-label="Resumo da aula">
+      <div class="envolve">
+        <div class="resumo">
+          <div class="cartao">
+            <span class="olho">Objetivo</span>
+            <p>Chegar à prova sabendo como ela é, quanto pesa cada domínio e como ler cada questão para achar a pista.</p>
+          </div>
+          <div class="cartao">
+            <span class="olho">Revezamento</span>
+            <p>Depois desta aula: as <strong>questões práticas oficiais</strong> no Skill Builder e o <strong>simulado final</strong> do preparatório.</p>
+          </div>
+          <div class="cartao">
+            <span class="olho">Na prova</span>
+            <p>65 questões em 90 minutos, nota mínima de <strong>700</strong> de 1.000. Você consegue.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="bloco">
+      <div class="envolve aula-corpo">
+
+        <!-- ===================== ORDEM DO VÍDEO ===================== -->
+        <section class="parte" id="video">
+          <div class="cab">
+            <span class="olho">V1 · vídeo</span>
+            <h2>Neste vídeo, em uns 10 minutos</h2>
+            <p>A página segue a mesma ordem. Quer rever só um pedaço? Pule direto para ele.</p>
+          </div>
+          <div class="cartao">
+            <ol class="roteiro-video">
+              <li><time>0:00</time><a href="#caso">O caso: a equipe que vai fazer a prova</a></li>
+              <li><time>0:45</time><a href="#c1">C1 · Como é a prova</a></li>
+              <li><time>2:15</time><a href="#c2">C2 · O peso de cada domínio, e onde ele está nas aulas</a></li>
+              <li><time>3:30</time><a href="#c3">C3 · Como ler uma questão</a></li>
+              <li><time>5:00</time><a href="#c4">C4 · Do voucher ao dia da prova</a></li>
+              <li><time>6:15</time><a href="#demonstracao">D1 · As questões práticas oficiais</a></li>
+              <li><time>7:30</time><a href="#pegadinha">P1 · As pistas que mais aparecem</a></li>
+              <li><time>9:15</time><a href="#academy">A reta final</a></li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- ===================== ESTUDO DE CASO ===================== -->
+        <section class="parte" id="caso">
+          <div class="cab">
+            <span class="olho">EC1 · estudo de caso</span>
+            <h2>A equipe que vai fazer a prova</h2>
+          </div>
+          <div class="cartao caso">
+            <p>O investidor da aula 9 gostou da arquitetura da <strong>Ingresso Candango</strong>, com uma condição: a equipe inteira vai tirar a <strong>AWS Certified Cloud Practitioner</strong>. As dúvidas da equipe:</p>
+            <ol>
+              <li>"Quantas questões são, e quanto tempo dá?"</li>
+              <li>"Errar uma questão de segurança me reprova, se eu for bem no resto?"</li>
+              <li>"Chutar tira ponto?"</li>
+              <li>"Dá para fazer em português, de casa?"</li>
+              <li>"Por onde eu começo a revisar, se o tempo é pouco?"</li>
+            </ol>
+            <p class="fonte">Empresa e equipe fictícias, criadas para as aulas. As respostas estão no C1 e no C2, com as fontes oficiais.</p>
+          </div>
+        </section>
+
+        <!-- ===================== CONCEITOS ===================== -->
+        <section class="parte" id="conceitos">
+          <div class="cab">
+            <span class="olho">C1–C4 · conceitos</span>
+            <h2>A prova, sem mistério</h2>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="c1">
+            <div class="texto">
+              <span class="olho">C1</span>
+              <h3>Como é a prova</h3>
+              <div class="tabela-rola"><table class="metodos"><thead><tr><th>Item</th><th>Como é</th></tr></thead><tbody>
+                <tr><td><strong>Questões</strong></td><td>65: <strong>50 contam ponto</strong> e 15 não contam. As 15 servem para a AWS testar questões novas, e você não sabe quais são.</td></tr>
+                <tr><td><strong>Tempo</strong></td><td>90 minutos. Dá uns 1 minuto e 20 segundos por questão.</td></tr>
+                <tr><td><strong>Tipos</strong></td><td><strong>Múltipla escolha</strong> (uma certa entre quatro) e <strong>múltipla resposta</strong> (duas ou mais certas entre cinco ou mais).</td></tr>
+                <tr><td><strong>Nota</strong></td><td>De 100 a 1.000. Passa com <strong>700</strong>.</td></tr>
+                <tr><td><strong>Reprovar num domínio</strong></td><td>Não existe. O modelo é <strong>compensatório</strong>: vale a nota da prova inteira.</td></tr>
+                <tr><td><strong>Chute</strong></td><td><strong>Não tira ponto.</strong> Questão em branco conta como errada: nunca deixe em branco.</td></tr>
+                <tr><td><strong>Onde</strong></td><td>Num centro de provas da Pearson VUE ou on-line, em casa, com fiscal pela câmera.</td></tr>
+                <tr><td><strong>Idioma</strong></td><td>Tem em <strong>português (Brasil)</strong>.</td></tr>
+                <tr><td><strong>Preço e validade</strong></td><td>US$ 100 (o voucher pode cobrir) e vale por 3 anos.</td></tr>
+              </tbody></table></div>
+              <p class="fonte">Fontes: <a href="https://docs.aws.amazon.com/aws-certification/latest/cloud-practitioner-02/cloud-practitioner-02.html">guia da CLF-C02</a> e <a href="https://aws.amazon.com/certification/certified-cloud-practitioner/">AWS Certified Cloud Practitioner</a>, consultados em 04/11/2026. Confira de novo antes de agendar: a AWS atualiza o guia de tempos em tempos.</p>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="c2">
+            <div class="texto">
+              <span class="olho">C2</span>
+              <h3>O peso de cada domínio, e onde ele está nas aulas</h3>
+              <ul class="barras-dominio">
+                <li style="--cor:var(--tec); --peso:34%"><span class="rotulo-barra"><span>Domínio 3 · Tecnologia e serviços · aulas 3, 5, 6, 7, 8, 10 e 11</span><b>34%</b></span><span class="trilho"><span></span></span></li>
+                <li style="--cor:var(--ensa); --peso:30%"><span class="rotulo-barra"><span>Domínio 2 · Segurança e conformidade · aula 4, e partes da 5 e da 10</span><b>30%</b></span><span class="trilho"><span></span></span></li>
+                <li style="--cor:var(--itn); --peso:24%"><span class="rotulo-barra"><span>Domínio 1 · Conceitos de nuvem · aulas 1 e 9</span><b>24%</b></span><span class="trilho"><span></span></span></li>
+                <li style="--cor:var(--srwe); --peso:12%"><span class="rotulo-barra"><span>Domínio 4 · Cobrança, preços e suporte · aula 2</span><b>12%</b></span><span class="trilho"><span></span></span></li>
+              </ul>
+              <p class="dica"><strong>Pouco tempo para revisar?</strong> Comece pelo que pesa mais: o Domínio 3 e o Domínio 2 juntos são quase dois terços da prova. Mas não pule a aula 2: os planos de suporte mudaram, e material antigo engana.</p>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="c3">
+            <div class="texto">
+              <span class="olho">C3</span>
+              <h3>Como ler uma questão</h3>
+              <div class="faca-assim">
+                <strong>Faça assim, em toda questão:</strong>
+                <ol>
+                  <li><strong>Leia a última frase primeiro.</strong> Ela diz o que está sendo pedido: o serviço, a vantagem, o mais barato?</li>
+                  <li><strong>Sublinhe a pista</strong>: "menor custo", "menor esforço operacional", "alta disponibilidade", "pode ser interrompido".</li>
+                  <li><strong>Elimine as absurdas.</strong> Quase sempre sobram duas.</li>
+                  <li><strong>Entre as duas, volte à pista.</strong> Ela decide.</li>
+                  <li><strong>Múltipla resposta?</strong> A questão diz quantas marcar. Marque exatamente essa quantidade.</li>
+                  <li><strong>Travou?</strong> Marque a mais provável, sinalize para revisar e siga. Nunca deixe em branco.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="c4">
+            <div class="texto">
+              <span class="olho">C4</span>
+              <h3>Do voucher ao dia da prova</h3>
+              <div class="faca-assim">
+                <strong>O caminho, em passos:</strong>
+                <ol>
+                  <li>Termine o <strong>Cloud Foundations</strong> na AWS Academy, com o exame final.</li>
+                  <li>Faça o <strong>Cloud Practitioner Essentials</strong> e as <strong>questões práticas oficiais</strong>, no Skill Builder.</li>
+                  <li>Faça o <a href="../#treinos">simulado final do preparatório</a>.</li>
+                  <li>Crie a sua <strong>conta de certificação</strong> da AWS, que leva ao agendamento na Pearson VUE.</li>
+                  <li>Agende escolhendo o <strong>português (Brasil)</strong> e use o <strong>voucher</strong>. Confira a validade dele e não compartilhe o código.</li>
+                  <li>Escolha o formato: <strong>presencial</strong>, num centro credenciado, ou <strong>on-line</strong>, com câmera, documento com foto e um ambiente silencioso.</li>
+                </ol>
+              </div>
+              <p class="dica cuidado"><strong>Prova on-line:</strong> teste o computador e a câmera antes, com o sistema da Pearson VUE, e deixe a mesa vazia. Detalhes de prazo e de regras mudam: leia o e-mail de confirmação com calma.</p>
+              <p class="dica"><strong>Como é no Azure:</strong> o caminho do <strong>AZ-900</strong> é parecido, e tem o <a href="/Preparatorio-AZ900/">preparatório AZ-900</a> aqui no portal. Com as duas, a sua base de nuvem fica completa.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== DEMONSTRAÇÃO ===================== -->
+        <section class="parte" id="demonstracao">
+          <div class="cab">
+            <span class="olho">D1 · demonstração</span>
+            <h2>As questões práticas oficiais</h2>
+            <p>No vídeo eu mostro onde ficam. São gratuitas, no AWS Skill Builder, e têm a cara da prova de verdade.</p>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr">
+            <div class="texto">
+              <div class="faca-assim">
+                <strong>Faça assim:</strong>
+                <ol>
+                  <li>Abra o <a href="https://skillbuilder.aws/">AWS Skill Builder</a> e entre com uma conta (dá para criar de graça).</li>
+                  <li>Na busca, procure <strong>Cloud Practitioner Official Practice Question Set</strong> e escolha a versão em português, se houver.</li>
+                  <li>Faça o conjunto inteiro, com tempo, como se fosse a prova.</li>
+                  <li>No fim, leia a explicação de <strong>cada</strong> questão, até das que acertou.</li>
+                  <li>Anote os domínios em que errou mais e volte à aula daquele domínio (C2).</li>
+                </ol>
+              </div>
+              <div class="faca-assim">
+                <strong>Teste:</strong>
+                <ol>
+                  <li>Em quantas questões você achou a pista antes de ler as alternativas?</li>
+                  <li>Qual domínio pediu mais revisão? Marque no <a href="../#cursos">Meu progresso</a> e traga a dúvida para o encontro.</li>
+                </ol>
+              </div>
+              <p class="dica cuidado"><strong>Fuja de "dumps"</strong>, as listas de questões vazadas da prova. Além de ser contra as regras da AWS, elas costumam estar erradas ou velhas, como as que ainda mostram os planos de suporte antigos.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== PEGADINHA ===================== -->
+        <section class="parte" id="pegadinha">
+          <div class="cab">
+            <span class="olho">P1 · pegadinha de prova</span>
+            <h2>As pistas que mais aparecem</h2>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr">
+            <div class="texto">
+              <p>A cola das doze aulas, numa tabela só. Cada pista costuma levar à mesma resposta:</p>
+              <div class="tabela-rola"><table class="metodos"><thead><tr><th>Se a questão diz…</th><th>Pense em…</th><th>Aula</th></tr></thead><tbody>
+                <tr><td>"Pagar só pelo que usar", "sem investimento antecipado"</td><td>Despesa variável, sob demanda</td><td>1 e 2</td></tr>
+                <tr><td>"Cresce e diminui conforme a demanda"</td><td>Elasticidade, Auto Scaling</td><td>1 e 10</td></tr>
+                <tr><td>"Estimar o custo antes de criar"</td><td>Pricing Calculator</td><td>2</td></tr>
+                <tr><td>"Pode ser interrompido", "o mais barato para lote"</td><td>Instâncias spot</td><td>2 e 6</td></tr>
+                <tr><td>"TAM designado"</td><td>Plano Enterprise</td><td>2</td></tr>
+                <tr><td>"Continuar no ar se um data center falhar"</td><td>Várias zonas de disponibilidade, Multi-AZ</td><td>3 e 8</td></tr>
+                <tr><td>"Lei exige os dados no país"</td><td>Escolher a região pela conformidade</td><td>3</td></tr>
+                <tr><td>"Segurança física do data center"</td><td>Responsabilidade da AWS</td><td>4</td></tr>
+                <tr><td>"Só as permissões necessárias"</td><td>Menor privilégio, IAM</td><td>4</td></tr>
+                <tr><td>"Quem fez o quê na conta"</td><td>CloudTrail</td><td>4 e 10</td></tr>
+                <tr><td>"Bloquear um IP na sub-rede"</td><td>ACL de rede</td><td>5</td></tr>
+                <tr><td>"Menor esforço operacional", "sem gerenciar servidor"</td><td>Serviço gerenciado ou sem servidor: Lambda, Fargate, RDS, DynamoDB</td><td>6 e 8</td></tr>
+                <tr><td>"Guardar por anos, acesso raro, o mais barato"</td><td>S3 Glacier Deep Archive</td><td>7</td></tr>
+                <tr><td>"Várias instâncias Linux na mesma pasta"</td><td>EFS</td><td>7</td></tr>
+                <tr><td>"Recuperar de falhas"</td><td>Pilar da confiabilidade</td><td>9</td></tr>
+                <tr><td>"Levar sem mudar nada"</td><td>Rehost, lift and shift</td><td>9</td></tr>
+                <tr><td>"Alarme quando a CPU passar de 80%"</td><td>CloudWatch</td><td>10</td></tr>
+                <tr><td>"Texto em voz", "voz em texto"</td><td>Polly, Transcribe</td><td>11</td></tr>
+              </tbody></table></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== TREINO ===================== -->
+        <section class="parte" id="treino">
+          <div class="cab">
+            <span class="olho">T1–T2 · treino</span>
+            <h2>Classifique!</h2>
+            <p>Cada acerto de primeira vale <strong>10 XP</strong>. Errou? A dica aparece e você tenta de novo. No fim, você ganha uma insígnia.</p>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="treino-1">
+            <div class="texto">
+              <span class="olho">T1</span>
+              <h3>Verdadeiro ou falso sobre a prova?</h3>
+              <div class="faca-assim desafio">
+                <strong>Agora é com você:</strong>
+                <div class="classifica" data-opcoes="v:Verdadeiro,f:Falso" data-dica="Volte à tabela do C1.">
+                  <p class="classifica-placar" aria-live="polite"></p>
+                  <ol class="classifica-itens">
+                    <li data-resposta="f" data-explica="Não há penalidade: chutar é melhor que deixar em branco.">Chutar tira ponto, então é melhor deixar em branco.</li>
+                    <li data-resposta="v" data-explica="São 65 questões, mas só 50 contam ponto.">Das 65 questões, só 50 contam para a nota.</li>
+                    <li data-resposta="f" data-explica="O modelo é compensatório: vale a nota da prova inteira.">Quem vai mal no Domínio 4 é reprovado, mesmo indo bem no resto.</li>
+                    <li data-resposta="v" data-explica="A nota vai de 100 a 1.000, e passa com 700.">Para passar, a nota precisa ser 700 ou mais, de 1.000.</li>
+                    <li data-resposta="v" data-explica="A prova tem versão em português (Brasil).">Dá para fazer a prova em português.</li>
+                    <li data-resposta="f" data-explica="As 15 questões que não contam não são identificadas.">A prova avisa quais questões não contam ponto.</li>
+                  </ol>
+                  <button type="button" class="botao contorno classifica-reiniciar">Jogar de novo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="treino-2">
+            <div class="texto">
+              <span class="olho">T2</span>
+              <h3>Revisão geral: qual é a resposta?</h3>
+              <div class="faca-assim desafio">
+                <strong>Agora é com você:</strong>
+                <div class="classifica" data-opcoes="spot:Spot,deep:Deep Archive,multiaz:Multi-AZ,trail:CloudTrail,calc:Pricing Calculator,lambda:Lambda" data-dica="Procure a pista na tabela da P1.">
+                  <p class="classifica-placar" aria-live="polite"></p>
+                  <ol class="classifica-itens">
+                    <li data-resposta="calc" data-explica="Estimar antes de criar: Pricing Calculator (aula 2).">Qual ferramenta estima o custo de uma arquitetura antes de ela existir?</li>
+                    <li data-resposta="multiaz" data-explica="Banco que continua no ar se a zona falhar: Multi-AZ (aula 8).">Como manter o banco do RDS no ar se uma zona de disponibilidade falhar?</li>
+                    <li data-resposta="trail" data-explica="Quem fez o quê na conta: CloudTrail (aulas 4 e 10).">Que serviço mostra quem desligou uma instância ontem?</li>
+                    <li data-resposta="deep" data-explica="Anos guardado, acesso raro, mais barato: Glacier Deep Archive (aula 7).">Onde guardar por dez anos, pelo menor preço, documentos que quase nunca serão abertos?</li>
+                    <li data-resposta="spot" data-explica="Pode parar e recomeçar, com o maior desconto: spot (aulas 2 e 6).">Qual opção de compra é a mais barata para um processamento em lote que pode ser interrompido?</li>
+                    <li data-resposta="lambda" data-explica="Roda com um evento, sem servidor, poucos segundos: Lambda (aula 6).">O que roda um código de três segundos sempre que um arquivo chega no S3, sem servidor?</li>
+                  </ol>
+                  <button type="button" class="botao contorno classifica-reiniciar">Jogar de novo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== ATIVIDADE ===================== -->
+        <section class="parte" id="atividade">
+          <div class="cab">
+            <span class="olho">A1 · checklist</span>
+            <h2>Checklist da reta final</h2>
+            <p>O que você marcar fica salvo neste navegador. Os mesmos passos estão no <a href="../#cursos">Meu progresso</a>, na parte "Reta final até a prova".</p>
+          </div>
+
+          <div class="cartao">
+            <div class="progresso-atividade" data-progresso="passos-aula-12">
+              <span class="contagem">0 de 8</span>
+              <span class="barra-progresso"><span></span></span>
+            </div>
+            <ol class="checklist" id="passos-aula-12">
+              <li><label><input type="checkbox"><span>Assisti ao vídeo 12 ou li esta página até o fim. <a href="#video">Veja a ordem do vídeo</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Sei como é a prova: questões, tempo, nota e tipos. <a href="#c1">Veja o C1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Fiz o exame final do Cloud Foundations, na AWS Academy.</span></label></li>
+              <li><label><input type="checkbox"><span>Fiz o Cloud Practitioner Essentials, no Skill Builder.</span></label></li>
+              <li><label><input type="checkbox"><span>Fiz as questões práticas oficiais e li todas as explicações. <a href="#demonstracao">Veja o D1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Fiz o <a href="../#treinos">simulado final</a> do preparatório.</span></label></li>
+              <li><label><input type="checkbox"><span>Criei a conta de certificação da AWS. <a href="#c4">Veja o C4</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Agendei a prova com o voucher.</span></label></li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- ===================== CONEXÃO STEAM ===================== -->
+        <section class="parte" id="steam">
+          <div class="cab">
+            <span class="olho">S1 · conexão STEAM</span>
+            <h2>A prova fora da tela</h2>
+          </div>
+          <div class="steam">
+            <div class="cartao">
+              <span class="letra">M</span>
+              <h3>Matemática</h3>
+              <p>90 minutos ÷ 65 questões ≈ 1,4 minuto por questão. Se você reservar 10 minutos para revisar no fim, quanto tempo sobra para cada questão na primeira passada?</p>
+            </div>
+            <div class="cartao">
+              <span class="letra">A</span>
+              <h3>Arte</h3>
+              <p>Monte a sua "placa da certificação" com sucata: um componente para cada aula, ligados por trilhas, e um LED no fim. No dia da aprovação, acenda o LED e mande a foto para a turma.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== A RETA FINAL ===================== -->
+        <section class="parte" id="academy">
+          <div class="cab">
+            <span class="olho">J1 · a reta final</span>
+            <h2>Os links da reta final</h2>
+            <p>Bem-vindos à reta final, filhotes. Daqui até a prova, é revisar, treinar e confiar no que vocês aprenderam.</p>
+          </div>
+          <div class="repos">
+            <a class="repo luz" href="https://skillbuilder.aws/">
+              <span class="repo-nome"><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#ic-repo"/></svg>AWS Skill Builder</span>
+              <h4>Essentials e questões práticas</h4>
+              <p>O curso Cloud Practitioner Essentials e o conjunto oficial de questões, gratuitos.</p>
+              <span class="repo-pe"><span class="ling"><span class="tec" style="--t:1.45rem"><img src="../assets/img/tec/aws.svg" alt="" width="20" height="20"></span>AWS</span><span class="etiqueta">próximo passo</span></span>
+            </a>
+            <a class="repo luz" href="https://aws.amazon.com/certification/certified-cloud-practitioner/">
+              <span class="repo-nome"><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#ic-repo"/></svg>AWS Certification</span>
+              <h4>AWS Certified Cloud Practitioner</h4>
+              <p>A página oficial da prova, com o agendamento e o guia atualizado.</p>
+              <span class="repo-pe"><span class="ling" style="--cor:var(--itn)"><i></i>Prova</span><span class="etiqueta">fonte</span></span>
+            </a>
+            <a class="repo luz" href="/Preparatorio-AZ900/">
+              <span class="repo-nome"><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#ic-repo"/></svg>Portal da Stela</span>
+              <h4>Preparatório AZ-900</h4>
+              <p>Depois da AWS, a certificação de fundamentos do Azure.</p>
+              <span class="repo-pe"><span class="ling"><span class="tec" style="--t:1.45rem"><img src="../assets/img/tec/azure.svg" alt="" width="20" height="20"></span>Azure</span><span class="etiqueta">e depois?</span></span>
+            </a>
+          </div>
+        </section>
+
+        <nav class="nav-aulas" aria-label="Outras aulas">
+          <!-- EDITE AQUI: use <a href="aula-NN.html"> quando a página da aula vizinha for liberada; <span> enquanto não for -->
+          <a class="anterior" href="aula-11.html">
+            <span class="olho">← aula anterior</span>
+            <strong>Aula 11: Serviços que caem na prova</strong>
+          </a>
+          <a class="proxima" href="../#treinos">
+            <span class="olho">e agora →</span>
+            <strong>O simulado final do preparatório</strong>
+          </a>
+
+        </nav>
+
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="rodape">
+    <div class="envolve">
+      <div class="rodape-fim" style="margin-top:0; padding-top:0; border-top:0">
+        <span><a href="../">Preparatório AWS Cloud Foundations</a> · Feito com ♥ e sucata eletrônica.</span>
+        <span>aws cloudformation deploy --stack-name certificacao</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ícone de repositório (Octicons, licença MIT) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="ic-repo" viewBox="0 0 16 16"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"/></symbol>
+  </svg>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="../js/conta.js?v=1"></script>
+  <script src="../assets/js/aulas.js?v=3"></script>
+  <script src="../assets/js/classifica.js?v=2"></script>
+  <script src="../assets/js/matrix.js?v=3"></script>
+</body>
+</html>

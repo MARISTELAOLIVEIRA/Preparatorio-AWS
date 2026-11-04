@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <!-- EDITE AQUI: número e tema da aula -->
+  <title>Aula 1: O que é computação em nuvem · Preparatório AWS · Stela</title>
+  <meta name="description" content="Aula 1 do Preparatório AWS Cloud Foundations: a definição de nuvem da AWS, IaaS, PaaS e SaaS, os modelos de implantação, as seis vantagens e a pegadinha da elasticidade, com treinos e o tour pelo console.">
+
+  <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../assets/img/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <script src="../assets/js/placa.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wdth,wght@100..125,400..900&family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,700;1,400&family=Atkinson+Hyperlegible+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../assets/css/estilo.css">
+  <link rel="stylesheet" href="../assets/css/disciplina.css?v=4">
+  <link rel="stylesheet" href="../assets/css/aula.css?v=2">
+  <link rel="stylesheet" href="../assets/css/neon.css?v=5">
+  <link rel="stylesheet" href="../css/interativos.css?v=1">
+  <link rel="stylesheet" href="../css/aula-aws.css?v=6">
+</head>
+<body>
+
+  <!-- ===================== BARRA DO TOPO (igual em todos os sites) ===================== -->
+  <header class="barra">
+    <div class="envolve">
+      <div class="marcas">
+        <a class="marca-disc marca-logo" href="../" title="Página inicial do preparatório"><img src="../assets/img/tec/aws.svg" alt="Preparatório AWS: página inicial" width="32" height="32"></a>
+      </div>
+      <button type="button" class="btn-menu" id="btn-menu" aria-expanded="false" aria-controls="menu">Menu</button>
+      <nav class="nav" id="menu" aria-label="Partes da aula">
+        <a href="../#videos">← Preparatório</a>
+        <a href="#caso">Caso</a>
+        <a href="#conceitos">Conceitos</a>
+        <a href="#demonstracao">Console</a>
+        <a href="#pegadinha">Pegadinha</a>
+        <a href="#treino">Treino</a>
+        <a href="#atividade">Checklist</a>
+      </nav>
+      <div class="ajustes">
+        <button type="button" id="btn-tema" aria-label="Mudar para o tema claro">
+          <svg class="sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="lua" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"/></svg>
+        </button>
+        <button type="button" id="btn-fonte" aria-label="Aumentar o tamanho do texto">A+</button>
+        <button type="button" id="btn-movimento" aria-pressed="false">
+          <svg class="pausar" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+          <svg class="tocar" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"/></svg>
+          <span class="rotulo">Pausar animações</span>
+        </button>
+        <a class="marca" href="/" title="Portal da Stela">
+          <img src="../assets/img/estrela.webp" alt="" width="26" height="24">
+          <span class="marca-texto">Stela</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="inicio">
+
+    <!-- ===================== CABEÇALHO DA AULA ===================== -->
+    <section class="aula-cab">
+      <canvas class="chuva-matrix" aria-hidden="true"></canvas>
+      <div class="envolve">
+        <p class="trilha-migalhas">
+          <a href="/">Stela</a> <span aria-hidden="true">/</span>
+          <a href="../">Preparatório AWS</a> <span aria-hidden="true">/</span>
+          <a href="../#videos">Vídeos e aulas</a> <span aria-hidden="true">/</span>
+          <span>Aula 1</span>
+        </p>
+
+        <!-- EDITE AQUI: número, vídeo, domínio da prova e título -->
+        <div class="aula-etiquetas">
+          <span class="etiqueta senac">Fac Senac DF</span>
+          <span class="etiqueta ouro">Aula 1</span>
+          <span class="etiqueta">Vídeo 1</span>
+          <span class="etiqueta dominio" style="--cor:var(--itn)">Domínio 1 · Conceitos de nuvem</span>
+        </div>
+        <h1>O que é computação em <span class="neon">nuvem</span></h1>
+        <p class="subtitulo">A definição da AWS, os modelos de serviço e de implantação, as seis vantagens e a pegadinha que mais derruba gente na prova.</p>
+      </div>
+    </section>
+
+    <!-- ===================== RESUMO ===================== -->
+    <section class="bloco faixa alt" aria-label="Resumo da aula">
+      <div class="envolve">
+        <div class="resumo">
+          <div class="cartao">
+            <span class="olho">Objetivo</span>
+            <p>Explicar o que é nuvem e reconhecer, numa questão, o modelo de serviço, o modelo de implantação e a vantagem de que ela fala.</p>
+          </div>
+          <div class="cartao">
+            <span class="olho">Revezamento</span>
+            <p>Primeiro o vídeo e esta página. Depois, o <strong>Módulo 1</strong> do Cloud Foundations, na AWS Academy.</p>
+          </div>
+          <div class="cartao">
+            <span class="olho">Na prova</span>
+            <p>Domínio 1, Conceitos de nuvem: <strong>24%</strong> das questões que contam ponto.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="bloco">
+      <div class="envolve aula-corpo">
+
+        <!-- ===================== ORDEM DO VÍDEO ===================== -->
+        <section class="parte" id="video">
+          <div class="cab">
+            <span class="olho">V1 · vídeo</span>
+            <h2>Neste vídeo, em uns 10 minutos</h2>
+            <p>A página segue a mesma ordem. Quer rever só um pedaço? Pule direto para ele.</p>
+          </div>
+          <div class="cartao">
+            <ol class="roteiro-video">
+              <li><time>0:00</time><a href="#caso">O caso: a venda de ingressos que derrubou o site</a></li>
+              <li><time>0:45</time><a href="#c1">C1 · O que é nuvem, na definição da AWS</a></li>
+              <li><time>1:45</time><a href="#c2">C2 · IaaS, PaaS e SaaS: quem cuida de quê</a></li>
+              <li><time>4:00</time><a href="#c3">C3 · Onde a aplicação roda: os modelos de implantação</a></li>
+              <li><time>5:00</time><a href="#c4">C4 · As seis vantagens da nuvem</a></li>
+              <li><time>7:00</time><a href="#demonstracao">D1 · Tour pelo console da AWS</a></li>
+              <li><time>8:45</time><a href="#pegadinha">P1 · A pegadinha: elasticidade não é escalabilidade</a></li>
+              <li><time>9:30</time><a href="#academy">Agora é na AWS Academy</a></li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- ===================== ESTUDO DE CASO ===================== -->
+        <section class="parte" id="caso">
+          <div class="cab">
+            <span class="olho">EC1 · estudo de caso</span>
+            <h2>O site que caiu na abertura das vendas</h2>
+          </div>
+          <div class="cartao caso">
+            <p>A <strong>Ingresso Candango</strong> é uma startup de Brasília que vende ingressos de shows pela internet. Ela tem dois servidores numa salinha do escritório.</p>
+            <p>No dia em que abre a venda de um show grande, o site recebe numa hora mais acesso do que no mês inteiro. Os dois servidores não aguentam, o site cai e os clientes vão comprar em outro lugar.</p>
+            <p>O sócio propõe comprar vinte servidores novos. A sócia pergunta: e nos outros 29 dias do mês, quando quase ninguém entra no site?</p>
+            <h3>Para pensar</h3>
+            <ol>
+              <li>Comprar vinte servidores resolve o dia da venda. Qual é o problema nos outros dias?</li>
+              <li>E se a empresa pudesse ter os vinte só nas horas da venda e pagar só por essas horas?</li>
+              <li>Quem cuida da energia, do ar-condicionado e do conserto dos servidores da salinha?</li>
+            </ol>
+            <p class="fonte">Empresa fictícia, criada para a aula. Volte a ela no fim de cada conceito.</p>
+          </div>
+        </section>
+
+        <!-- ===================== CONCEITOS ===================== -->
+        <section class="parte" id="conceitos">
+          <div class="cab">
+            <span class="olho">C1–C4 · conceitos</span>
+            <h2>O que a prova quer que você saiba</h2>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="c1">
+            <div class="texto">
+              <span class="olho">C1</span>
+              <h3>Nuvem, na definição da AWS</h3>
+              <p>A AWS define assim, numa frase só: computação em nuvem é a <strong>entrega de recursos de TI sob demanda, pela internet, com pagamento conforme o uso</strong>.</p>
+              <ul>
+                <li><strong>Sob demanda:</strong> você pede quando precisa e devolve quando não precisa mais.</li>
+                <li><strong>Pela internet:</strong> servidores, discos e bancos de dados ficam nos data centers da AWS, e você usa de onde estiver.</li>
+                <li><strong>Pagamento conforme o uso:</strong> como a conta de luz, você paga pelo que gastou, e não por um aparelho que fica parado.</li>
+              </ul>
+              <p class="fonte">Fonte: <a href="https://aws.amazon.com/what-is-cloud-computing/">AWS, What is cloud computing?</a>, consultado em 04/11/2026 (tradução da professora).</p>
+              <p class="dica"><strong>Palavras-chave da prova:</strong> <em>on-demand</em> (sob demanda) e <em>pay-as-you-go</em> (pague conforme o uso). Apareceu uma delas, a questão está falando do jeito de cobrar da nuvem.</p>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="c2">
+            <div class="texto">
+              <span class="olho">C2</span>
+              <h3>IaaS, PaaS e SaaS: quem cuida de quê</h3>
+              <p>A pergunta que separa os três é uma só: <strong>até onde você cuida, e a partir de onde a AWS cuida?</strong> Pense numa placa de eletrônica.</p>
+              <div class="tabela-rola"><table class="metodos"><thead><tr><th>Modelo</th><th>Na eletrônica</th><th>Na nuvem</th></tr></thead><tbody>
+                <tr><td><strong>No seu data center</strong></td><td>Você compra os componentes, solda a placa, liga na tomada e conserta quando queima.</td><td>Servidores próprios, como os da Ingresso Candango.</td></tr>
+                <tr><td><strong>IaaS</strong><span class="termo-en">infraestrutura como serviço</span></td><td>A placa chega montada e ligada na energia. Você grava o sistema e o programa.</td><td><strong>Amazon EC2</strong>: você recebe a máquina virtual e cuida do sistema operacional.</td></tr>
+                <tr><td><strong>PaaS</strong><span class="termo-en">plataforma como serviço</span></td><td>Um kit de ESP32 pronto, com a IDE instalada. Você só escreve o código.</td><td><strong>AWS Elastic Beanstalk</strong>: você envia a aplicação e a AWS monta e mantém o ambiente.</td></tr>
+                <tr><td><strong>SaaS</strong><span class="termo-en">software como serviço</span></td><td>O aparelho pronto, como uma lâmpada inteligente: é só usar pelo aplicativo.</td><td>Um programa pronto no navegador, como o Microsoft 365 ou o Gmail.</td></tr>
+              </tbody></table></div>
+              <div class="tabela-rola"><table class="metodos camadas"><thead><tr><th>Camada</th><th>Seu data center</th><th>IaaS</th><th>PaaS</th><th>SaaS</th></tr></thead><tbody>
+                <tr><td>Dados e contas de acesso</td><td class="voce">você</td><td class="voce">você</td><td class="voce">você</td><td class="voce">você</td></tr>
+                <tr><td>Aplicação</td><td class="voce">você</td><td class="voce">você</td><td class="voce">você</td><td class="provedor">AWS</td></tr>
+                <tr><td>Sistema operacional</td><td class="voce">você</td><td class="voce">você</td><td class="provedor">AWS</td><td class="provedor">AWS</td></tr>
+                <tr><td>Servidores, discos e rede</td><td class="voce">você</td><td class="provedor">AWS</td><td class="provedor">AWS</td><td class="provedor">AWS</td></tr>
+                <tr><td>Prédio, energia e refrigeração</td><td class="voce">você</td><td class="provedor">AWS</td><td class="provedor">AWS</td><td class="provedor">AWS</td></tr>
+              </tbody></table></div>
+              <p class="legenda-camadas">Em <span class="voce">destaque</span>, o que fica com você. Os dados e quem tem acesso a eles são sempre seus, em qualquer modelo: é a responsabilidade compartilhada, que volta na aula 4.</p>
+              <p class="dica"><strong>Na prova:</strong> "mais controle" sobre o servidor aponta para IaaS. "Sem gerenciar a infraestrutura, só o código" aponta para PaaS. "Usar o programa pronto" aponta para SaaS.</p>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="c3">
+            <div class="texto">
+              <span class="olho">C3</span>
+              <h3>Onde a aplicação roda: os modelos de implantação</h3>
+              <p>A AWS usa três nomes. Guarde estes, porque são os da prova.</p>
+              <div class="tabela-rola"><table class="metodos"><thead><tr><th>Modelo</th><th>O que quer dizer</th><th>Exemplo</th></tr></thead><tbody>
+                <tr><td><strong>Nuvem</strong><span class="termo-en">cloud</span></td><td>Todas as partes da aplicação rodam na nuvem.</td><td>A Ingresso Candango desliga a salinha e leva o site inteiro para a AWS.</td></tr>
+                <tr><td><strong>Híbrida</strong><span class="termo-en">hybrid</span></td><td>Liga o que está na nuvem ao que a empresa já tem no próprio data center.</td><td>O site vai para a AWS, mas o sistema financeiro antigo fica no escritório, conectado a ela.</td></tr>
+                <tr><td><strong>Local</strong><span class="termo-en">on-premises</span></td><td>Tudo fica no data center da empresa, com ferramentas de virtualização. Às vezes é chamada de nuvem privada.</td><td>Um órgão que, por regra, precisa manter os dados no próprio prédio.</td></tr>
+              </tbody></table></div>
+              <p class="fonte">Fonte: <a href="https://aws.amazon.com/types-of-cloud-computing/">AWS, Types of cloud computing</a>, consultado em 04/11/2026.</p>
+              <p class="dica"><strong>Como é no Azure:</strong> a Microsoft (e o AZ-900) fala em nuvem <strong>pública, privada e híbrida</strong>. A ideia é a mesma, só os nomes mudam.</p>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="c4">
+            <div class="texto">
+              <span class="olho">C4</span>
+              <h3>As seis vantagens da nuvem</h3>
+              <p>Esta lista é da própria AWS e cai muito na prova, às vezes com o nome em inglês. Leia cada uma pensando na Ingresso Candango.</p>
+              <div class="tabela-rola"><table class="metodos"><thead><tr><th>Vantagem</th><th>O que quer dizer</th><th>Na Ingresso Candango</th></tr></thead><tbody>
+                <tr><td><strong>Trocar despesa fixa por variável</strong><span class="termo-en">Trade fixed expense for variable expense</span></td><td>Em vez de comprar servidores antes, você paga quando usa, e só o que usa.</td><td>Paga pelos vinte servidores só nas horas da venda.</td></tr>
+                <tr><td><strong>Ganhar com a economia de escala</strong><span class="termo-en">Benefit from massive economies of scale</span></td><td>A AWS atende muita gente junta e compra em grande quantidade, e o preço por hora cai.</td><td>A hora de servidor na AWS sai mais barata do que montar e manter a salinha.</td></tr>
+                <tr><td><strong>Parar de adivinhar a capacidade</strong><span class="termo-en">Stop guessing capacity</span></td><td>Nada de servidor parado nem faltando: aumenta e diminui em minutos.</td><td>Muitos servidores na abertura da venda, poucos no resto do mês.</td></tr>
+                <tr><td><strong>Ganhar velocidade e agilidade</strong><span class="termo-en">Increase speed and agility</span></td><td>O recurso novo sai em minutos, não em semanas. Testar fica barato.</td><td>Testa uma fila virtual nova no mesmo dia, sem comprar nada.</td></tr>
+                <tr><td><strong>Parar de gastar com data center</strong><span class="termo-en">Stop spending money running and maintaining data centers</span></td><td>A equipe cuida do negócio, e não de instalar, ligar e consertar servidores.</td><td>A equipe melhora o site, em vez de cuidar do ar-condicionado da salinha.</td></tr>
+                <tr><td><strong>Ficar global em minutos</strong><span class="termo-en">Go global in minutes</span></td><td>A aplicação vai para várias regiões do mundo com poucos cliques, mais perto dos clientes.</td><td>Vende ingressos para um festival em Lisboa com o site rápido lá também.</td></tr>
+              </tbody></table></div>
+              <p class="fonte">Fonte: <a href="https://docs.aws.amazon.com/whitepapers/latest/aws-overview/six-advantages-of-cloud-computing.html">AWS, Overview of Amazon Web Services: six advantages of cloud computing</a>, consultado em 04/11/2026.</p>
+              <p class="dica"><strong>Como é no Azure:</strong> no AZ-900, a primeira vantagem aparece como trocar <strong>CapEx</strong> (despesa de capital, comprar antes) por <strong>OpEx</strong> (despesa operacional, pagar pelo uso).</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== DEMONSTRAÇÃO ===================== -->
+        <section class="parte" id="demonstracao">
+          <div class="cab">
+            <span class="olho">D1 · demonstração</span>
+            <h2>Tour pelo console da AWS</h2>
+            <p>No vídeo eu faço junto com você. Faça no seu Learner Lab, um passo de cada vez.</p>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr">
+            <div class="texto">
+              <div class="faca-assim">
+                <strong>Faça assim:</strong>
+                <ol>
+                  <li>Entre na <a href="https://awsacademy.instructure.com/">AWS Academy</a> e abra o <strong>Learner Lab</strong>.</li>
+                  <li>Clique em <strong>Start Lab</strong> e espere a bolinha ao lado de <strong>AWS</strong> ficar verde.</li>
+                  <li>Clique em <strong>AWS</strong>. O console abre em outra aba.</li>
+                  <li>Abra o menu de serviços, no canto de cima à esquerda, e veja as categorias: computação, armazenamento, banco de dados, redes…</li>
+                  <li>Na busca do topo, digite <strong>EC2</strong> e abra o serviço. Cada serviço tem a sua página.</li>
+                  <li>No canto de cima à direita, veja o nome da <strong>região</strong>. Deixe a que vier: o Learner Lab trabalha com poucas regiões.</li>
+                  <li>Volte à aba do laboratório e clique em <strong>End Lab</strong>.</li>
+                </ol>
+              </div>
+              <div class="faca-assim">
+                <strong>Teste:</strong>
+                <ol>
+                  <li>Ache pela busca o <strong>S3</strong>, o <strong>RDS</strong> e o <strong>Lambda</strong>. Em qual categoria fica cada um?</li>
+                  <li>Qual dos três é o do caso da Ingresso Candango, os servidores virtuais? Nenhum: é o EC2.</li>
+                </ol>
+              </div>
+              <p class="dica cuidado"><strong>Hoje é só olhar.</strong> Não crie nada no laboratório: os créditos do Learner Lab são limitados. Terminou? <strong>End Lab</strong>.</p>
+              <p class="dica"><strong>Como é no Azure:</strong> o console da AWS equivale ao <strong>portal do Azure</strong>, também com busca no topo e serviços por categoria.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== PEGADINHA ===================== -->
+        <section class="parte" id="pegadinha">
+          <div class="cab">
+            <span class="olho">P1 · pegadinha de prova</span>
+            <h2>Elasticidade não é escalabilidade</h2>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr">
+            <div class="texto">
+              <p>As quatro palavras aparecem juntas nas alternativas, e parecem a mesma coisa. Não são.</p>
+              <div class="tabela-rola"><table class="metodos"><thead><tr><th>Palavra</th><th>O que quer dizer</th><th>A pista na questão</th></tr></thead><tbody>
+                <tr><td><strong>Escalabilidade</strong><span class="termo-en">scalability</span></td><td>Aguentar mais carga, crescendo os recursos.</td><td>"O sistema precisa crescer", "suportar mais usuários".</td></tr>
+                <tr><td><strong>Elasticidade</strong><span class="termo-en">elasticity</span></td><td>Crescer <strong>e diminuir</strong> sozinho, conforme a demanda, pagando só pelo que usou.</td><td>"Picos", "demanda que vai e volta", "reduzir quando não precisa".</td></tr>
+                <tr><td><strong>Alta disponibilidade</strong><span class="termo-en">high availability</span></td><td>Continuar no ar mesmo quando uma parte falha.</td><td>"Se um data center falhar", "sem ficar fora do ar".</td></tr>
+                <tr><td><strong>Agilidade</strong><span class="termo-en">agility</span></td><td>Ter recursos em minutos para testar e lançar coisas novas.</td><td>"Experimentar rápido", "de semanas para minutos".</td></tr>
+              </tbody></table></div>
+              <p class="dica cuidado"><strong>A regra:</strong> a questão fala em <strong>diminuir também</strong>? É elasticidade. Toda nuvem elástica é escalável, mas nem todo sistema escalável é elástico.</p>
+              <div class="faca-assim">
+                <strong>Teste:</strong>
+                <ol>
+                  <li>Uma loja on-line recebe dez vezes mais acesso na Black Friday e volta ao normal na semana seguinte. Que palavra descreve o que a nuvem faz por ela? <strong>Elasticidade</strong>: cresce e depois diminui.</li>
+                  <li>E a Ingresso Candango, com o pico na abertura da venda? A mesma resposta, pelo mesmo motivo.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== TREINO ===================== -->
+        <section class="parte" id="treino">
+          <div class="cab">
+            <span class="olho">T1–T2 · treino</span>
+            <h2>Classifique!</h2>
+            <p>Cada acerto de primeira vale <strong>10 XP</strong>. Errou? A dica aparece e você tenta de novo. No fim, você ganha uma insígnia.</p>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="treino-1">
+            <div class="texto">
+              <span class="olho">T1</span>
+              <h3>IaaS, PaaS ou SaaS?</h3>
+              <div class="faca-assim desafio">
+                <strong>Agora é com você:</strong>
+                <div class="classifica" data-opcoes="iaas:IaaS,paas:PaaS,saas:SaaS" data-dica="Pense em quem cuida do sistema operacional.">
+                  <p class="classifica-placar" aria-live="polite"></p>
+                  <ol class="classifica-itens">
+                    <li data-resposta="iaas" data-explica="No Amazon EC2 você recebe a máquina virtual e cuida do sistema operacional.">Amazon EC2</li>
+                    <li data-resposta="saas" data-explica="O Microsoft 365 vem pronto: você só usa o Word, o Excel e o Teams.">Microsoft 365</li>
+                    <li data-resposta="paas" data-explica="No AWS Elastic Beanstalk você envia a aplicação e a AWS monta e mantém o ambiente.">AWS Elastic Beanstalk</li>
+                    <li data-resposta="iaas" data-explica="Nas Azure Virtual Machines a máquina é sua para configurar, do sistema para cima.">Azure Virtual Machines</li>
+                    <li data-resposta="saas" data-explica="O Gmail é o programa pronto, no navegador ou no aplicativo.">Gmail</li>
+                    <li data-resposta="paas" data-explica="No Azure App Service você envia o código do site e o Azure cuida do servidor.">Azure App Service</li>
+                  </ol>
+                  <button type="button" class="botao contorno classifica-reiniciar">Jogar de novo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="treino-2">
+            <div class="texto">
+              <span class="olho">T2</span>
+              <h3>Qual das seis vantagens?</h3>
+              <div class="faca-assim desafio">
+                <strong>Agora é com você:</strong>
+                <div class="classifica" data-opcoes="variavel:Despesa variável,escala:Escala,capacidade:Capacidade,agilidade:Agilidade,datacenter:Sem data center,global:Global" data-dica="Volte à tabela do C4 e procure a frase que mais parece com a situação.">
+                  <p class="classifica-placar" aria-live="polite"></p>
+                  <ol class="classifica-itens">
+                    <li data-resposta="variavel" data-explica="Trocar a compra antecipada pelo pagamento conforme o uso é trocar despesa fixa por variável.">Uma empresa deixa de comprar servidores no começo do ano e passa a pagar por hora de uso.</li>
+                    <li data-resposta="global" data-explica="Levar a aplicação para outra região, perto dos clientes, em poucos cliques: global em minutos.">Uma loja de Brasília começa a vender no Japão e coloca o site numa região de lá no mesmo dia.</li>
+                    <li data-resposta="capacidade" data-explica="Sem saber quantos alunos vão entrar, a escola usa só o que precisa: parar de adivinhar a capacidade.">Uma escola não sabe quantos alunos vão entrar na plataforma nova e não quer comprar servidor demais nem de menos.</li>
+                    <li data-resposta="agilidade" data-explica="Recursos em minutos para experimentar e jogar fora: velocidade e agilidade.">A equipe de um aplicativo cria um ambiente de testes em cinco minutos e apaga tudo no fim da tarde.</li>
+                    <li data-resposta="datacenter" data-explica="Tirar da equipe o trabalho de instalar e consertar servidores: parar de gastar com data center.">Um hospital fecha a sala de servidores e a equipe de TI passa a cuidar só dos sistemas dos pacientes.</li>
+                    <li data-resposta="escala" data-explica="Muitos clientes juntos fazem o preço por unidade cair: economia de escala.">O preço por hora da AWS cai porque ela atende milhões de clientes e compra hardware em quantidade enorme.</li>
+                  </ol>
+                  <button type="button" class="botao contorno classifica-reiniciar">Jogar de novo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== ATIVIDADE ===================== -->
+        <section class="parte" id="atividade">
+          <div class="cab">
+            <span class="olho">A1 · checklist</span>
+            <h2>Checklist da aula</h2>
+            <p>O que você marcar fica salvo neste navegador.</p>
+          </div>
+
+          <div class="cartao">
+            <div class="progresso-atividade" data-progresso="passos-aula-01">
+              <span class="contagem">0 de 8</span>
+              <span class="barra-progresso"><span></span></span>
+            </div>
+            <ol class="checklist" id="passos-aula-01">
+              <li><label><input type="checkbox"><span>Assisti ao vídeo 1 ou li esta página até o fim. <a href="#video">Veja a ordem do vídeo</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Sei dizer, numa frase, o que é nuvem para a AWS. <a href="#c1">Veja o C1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Separo IaaS, PaaS e SaaS pela pergunta "quem cuida de quê". <a href="#c2">Veja o C2</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Sei os três modelos de implantação da AWS. <a href="#c3">Veja o C3</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Sei as seis vantagens, também com o nome em inglês. <a href="#c4">Veja o C4</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Fiz o tour pelo console e cliquei em End Lab. <a href="#demonstracao">Veja o D1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Fiz os dois treinos Classifique! e ganhei as insígnias. <a href="#treino">Veja o treino</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Fiz o Módulo 1 na AWS Academy e marquei no <a href="../#cursos">Meu progresso</a>.</span></label></li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- ===================== CONEXÃO STEAM ===================== -->
+        <section class="parte" id="steam">
+          <div class="cab">
+            <span class="olho">S1 · conexão STEAM</span>
+            <h2>A nuvem fora da tela</h2>
+          </div>
+          <div class="steam">
+            <div class="cartao">
+              <span class="letra">M</span>
+              <h3>Matemática</h3>
+              <p>Vinte servidores ligados o mês inteiro são 20 × 24 × 30 = 14.400 horas. Só nas 6 horas da venda, são 20 × 6 = 120 horas. Quantas vezes menos?</p>
+            </div>
+            <div class="cartao">
+              <span class="letra">E</span>
+              <h3>Engenharia</h3>
+              <p>Pegue uma placa de sucata e aponte nela o que seria seu e o que seria da AWS em cada modelo: os componentes, a energia, o firmware, o programa.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== AWS ACADEMY E MATERIAIS ===================== -->
+        <section class="parte" id="academy">
+          <div class="cab">
+            <span class="olho">J1 · agora é na AWS Academy</span>
+            <h2>O revezamento: a sua vez na Academy</h2>
+            <p>Esta aula preparou o terreno. O módulo da Academy aprofunda, com o vídeo e o teste de conhecimento oficiais.</p>
+          </div>
+          <div class="repos">
+            <a class="repo luz" href="https://awsacademy.instructure.com/">
+              <span class="repo-nome"><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#ic-repo"/></svg>AWS Academy</span>
+              <h4>Cloud Foundations</h4>
+              <p>Módulo 1: Visão geral dos conceitos de nuvem, com o teste de conhecimento.</p>
+              <span class="repo-pe"><span class="ling"><span class="tec" style="--t:1.45rem"><img src="../assets/img/tec/aws.svg" alt="" width="20" height="20"></span>AWS</span><span class="etiqueta">próximo passo</span></span>
+            </a>
+            <a class="repo luz" href="https://docs.aws.amazon.com/aws-certification/latest/cloud-practitioner-02/cloud-practitioner-02-domain1.html">
+              <span class="repo-nome"><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#ic-repo"/></svg>Guia da prova</span>
+              <h4>CLF-C02, Domínio 1</h4>
+              <p>O que a AWS diz que cai sobre conceitos de nuvem, em inglês.</p>
+              <span class="repo-pe"><span class="ling" style="--cor:var(--itn)"><i></i>Conceitos</span><span class="etiqueta">fonte</span></span>
+            </a>
+            <a class="repo luz" href="https://learn.microsoft.com/pt-br/training/paths/microsoft-azure-fundamentals-describe-cloud-concepts/">
+              <span class="repo-nome"><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#ic-repo"/></svg>Microsoft Learn</span>
+              <h4>Descrever os conceitos de nuvem</h4>
+              <p>O mesmo assunto pelo lado do Azure, de graça e em português.</p>
+              <span class="repo-pe"><span class="ling"><span class="tec" style="--t:1.45rem"><img src="../assets/img/tec/azure.svg" alt="" width="20" height="20"></span>Azure</span><span class="etiqueta">como é no Azure</span></span>
+            </a>
+          </div>
+          <p class="dica cuidado"><strong>O material da AWS Academy é só para quem está no curso.</strong> Não copie nem compartilhe vídeos, slides ou questões fora da plataforma.</p>
+        </section>
+
+        <nav class="nav-aulas" aria-label="Outras aulas">
+          <!-- EDITE AQUI: use <a href="aula-NN.html"> quando a página da aula vizinha for liberada; <span> enquanto não for -->
+          <a class="anterior" href="../#videos">
+            <span class="olho">← voltar</span>
+            <strong>Vídeos e aulas do preparatório</strong>
+          </a>
+          <a class="proxima" href="aula-02.html">
+            <span class="olho">próxima aula →</span>
+            <strong>Aula 2: Economia e cobrança</strong>
+          </a>
+        </nav>
+
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="rodape">
+    <div class="envolve">
+      <div class="rodape-fim" style="margin-top:0; padding-top:0; border-top:0">
+        <span><a href="../">Preparatório AWS Cloud Foundations</a> · Feito com ♥ e sucata eletrônica.</span>
+        <span>aws ec2 describe-regions --output table</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ícone de repositório (Octicons, licença MIT) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="ic-repo" viewBox="0 0 16 16"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"/></symbol>
+  </svg>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="../js/conta.js?v=1"></script>
+  <script src="../assets/js/aulas.js?v=3"></script>
+  <script src="../assets/js/classifica.js?v=2"></script>
+  <script src="../assets/js/matrix.js?v=3"></script>
+</body>
+</html>

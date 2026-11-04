@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <!-- EDITE AQUI: número e tema da aula -->
+  <title>Aula 10: Escalabilidade e monitoramento · Preparatório AWS · Stela</title>
+  <meta name="description" content="Aula 10 do Preparatório AWS Cloud Foundations: Elastic Load Balancing, EC2 Auto Scaling e os jeitos de escalar, Amazon CloudWatch, CloudTrail, Config e AWS Health Dashboard, com o simulador do Auto Scaling e treinos.">
+
+  <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../assets/img/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <script src="../assets/js/placa.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wdth,wght@100..125,400..900&family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,700;1,400&family=Atkinson+Hyperlegible+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../assets/css/estilo.css">
+  <link rel="stylesheet" href="../assets/css/disciplina.css?v=4">
+  <link rel="stylesheet" href="../assets/css/aula.css?v=2">
+  <link rel="stylesheet" href="../assets/css/neon.css?v=5">
+  <link rel="stylesheet" href="../css/interativos.css?v=1">
+  <link rel="stylesheet" href="../css/aula-aws.css?v=6">
+</head>
+<body>
+
+  <!-- ===================== BARRA DO TOPO (igual em todos os sites) ===================== -->
+  <header class="barra">
+    <div class="envolve">
+      <div class="marcas">
+        <a class="marca-disc marca-logo" href="../" title="Página inicial do preparatório"><img src="../assets/img/tec/aws.svg" alt="Preparatório AWS: página inicial" width="32" height="32"></a>
+      </div>
+      <button type="button" class="btn-menu" id="btn-menu" aria-expanded="false" aria-controls="menu">Menu</button>
+      <nav class="nav" id="menu" aria-label="Partes da aula">
+        <a href="../#videos">← Preparatório</a>
+        <a href="#caso">Caso</a>
+        <a href="#conceitos">Conceitos</a>
+        <a href="#demonstracao">Console</a>
+        <a href="#pegadinha">Pegadinha</a>
+        <a href="#treino">Treino</a>
+        <a href="#atividade">Checklist</a>
+      </nav>
+      <div class="ajustes">
+        <button type="button" id="btn-tema" aria-label="Mudar para o tema claro">
+          <svg class="sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="lua" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"/></svg>
+        </button>
+        <button type="button" id="btn-fonte" aria-label="Aumentar o tamanho do texto">A+</button>
+        <button type="button" id="btn-movimento" aria-pressed="false">
+          <svg class="pausar" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+          <svg class="tocar" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"/></svg>
+          <span class="rotulo">Pausar animações</span>
+        </button>
+        <a class="marca" href="/" title="Portal da Stela">
+          <img src="../assets/img/estrela.webp" alt="" width="26" height="24">
+          <span class="marca-texto">Stela</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="inicio">
+
+    <!-- ===================== CABEÇALHO DA AULA ===================== -->
+    <section class="aula-cab">
+      <canvas class="chuva-matrix" aria-hidden="true"></canvas>
+      <div class="envolve">
+        <p class="trilha-migalhas">
+          <a href="/">Stela</a> <span aria-hidden="true">/</span>
+          <a href="../">Preparatório AWS</a> <span aria-hidden="true">/</span>
+          <a href="../#videos">Vídeos e aulas</a> <span aria-hidden="true">/</span>
+          <span>Aula 10</span>
+        </p>
+
+        <!-- EDITE AQUI: número, vídeo, domínio da prova e título -->
+        <div class="aula-etiquetas">
+          <span class="etiqueta senac">Fac Senac DF</span>
+          <span class="etiqueta ouro">Aula 10</span>
+          <span class="etiqueta">Vídeo 10</span>
+          <span class="etiqueta dominio" style="--cor:var(--tec)">Domínio 3 · Tecnologia e serviços</span>
+        </div>
+        <h1>Escalabilidade e <span class="neon">monitoramento</span></h1>
+        <p class="subtitulo">O site que cresce sozinho quando lota, encolhe quando acalma, e avisa você antes de dar problema.</p>
+      </div>
+    </section>
+
+    <!-- ===================== RESUMO ===================== -->
+    <section class="bloco faixa alt" aria-label="Resumo da aula">
+      <div class="envolve">
+        <div class="resumo">
+          <div class="cartao">
+            <span class="olho">Objetivo</span>
+            <p>Montar na cabeça um site que cresce e diminui sozinho, e escolher, numa questão, a ferramenta certa para vigiar a conta.</p>
+          </div>
+          <div class="cartao">
+            <span class="olho">Revezamento</span>
+            <p>Primeiro o vídeo e esta página. Depois, o <strong>Módulo 10</strong> do Cloud Foundations e o laboratório de escalabilidade, na AWS Academy.</p>
+          </div>
+          <div class="cartao">
+            <span class="olho">Na prova</span>
+            <p>Domínio 3, Tecnologia e serviços: <strong>34%</strong> das questões. O monitoramento e a auditoria também caem no Domínio 2.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="bloco">
+      <div class="envolve aula-corpo">
+
+        <!-- ===================== ORDEM DO VÍDEO ===================== -->
+        <section class="parte" id="video">
+          <div class="cab">
+            <span class="olho">V1 · vídeo</span>
+            <h2>Neste vídeo, em uns 11 minutos</h2>
+            <p>A página segue a mesma ordem. Quer rever só um pedaço? Pule direto para ele.</p>
+          </div>
+          <div class="cartao">
+            <ol class="roteiro-video">
+              <li><time>0:00</time><a href="#caso">O caso: a abertura da venda do maior show do ano</a></li>
+              <li><time>0:45</time><a href="#c1">C1 · O balanceador de carga</a></li>
+              <li><time>2:15</time><a href="#c2">C2 · O Auto Scaling e o simulador</a></li>
+              <li><time>4:15</time><a href="#c3">C3 · O CloudWatch: métricas, alarmes e logs</a></li>
+              <li><time>5:30</time><a href="#c4">C4 · Quem vigia o quê</a></li>
+              <li><time>6:30</time><a href="#demonstracao">D1 · O CloudWatch e o assistente do Auto Scaling</a></li>
+              <li><time>8:45</time><a href="#pegadinha">P1 · A pegadinha: CloudWatch não é CloudTrail</a></li>
+              <li><time>9:45</time><a href="#academy">Agora é na AWS Academy</a></li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- ===================== ESTUDO DE CASO ===================== -->
+        <section class="parte" id="caso">
+          <div class="cab">
+            <span class="olho">EC1 · estudo de caso</span>
+            <h2>A abertura da venda do maior show do ano</h2>
+          </div>
+          <div class="cartao caso">
+            <p>Lembra da aula 1? O site da <strong>Ingresso Candango</strong> caiu na abertura de uma venda. Agora, com tudo na AWS, a venda do <strong>Festival do Cerrado</strong> abre sexta, às 10h. A equipe quer:</p>
+            <ol>
+              <li>Repartir os acessos entre várias máquinas e tirar da fila a que travar.</li>
+              <li>Mais máquinas quando lotar, e menos quando acalmar, sem ninguém mexer.</li>
+              <li>Começar a sexta já com mais máquinas, antes das 10h.</li>
+              <li>Um aviso no celular se o processador passar de 80%.</li>
+              <li>Saber quem mudou uma regra do grupo de segurança na quinta à noite.</li>
+              <li>Saber se o problema é dela ou da própria AWS, se algo der errado.</li>
+            </ol>
+            <h3>Para pensar</h3>
+            <ol>
+              <li>Quem decide para qual máquina vai cada cliente?</li>
+              <li>Como o sistema sabe que precisa de mais máquinas?</li>
+            </ol>
+            <p class="fonte">Empresa, festival e pedidos fictícios, criados para as aulas.</p>
+          </div>
+        </section>
+
+        <!-- ===================== CONCEITOS ===================== -->
+        <section class="parte" id="conceitos">
+          <div class="cab">
+            <span class="olho">C1–C4 · conceitos</span>
+            <h2>Crescer sozinho e vigiar tudo</h2>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="c1">
+            <div class="texto">
+              <span class="olho">C1</span>
+              <h3>O balanceador de carga</h3>
+              <p>O <strong>Elastic Load Balancing</strong> (ELB) reparte os acessos entre várias máquinas, em uma ou várias zonas. Ele faz <strong>verificações de integridade</strong> (<em>health checks</em>) e só manda tráfego para as máquinas saudáveis. É o pedido 1.</p>
+              <div class="tabela-rola"><table class="metodos"><thead><tr><th>Tipo</th><th>Camada</th><th>Para</th></tr></thead><tbody>
+                <tr><td><strong>Application Load Balancer</strong></td><td>7 (aplicação)</td><td>Sites e APIs: decide pelo endereço, pelo caminho, pelo cabeçalho do HTTP.</td></tr>
+                <tr><td><strong>Network Load Balancer</strong></td><td>4 (transporte)</td><td>Desempenho extremo e IP fixo.</td></tr>
+                <tr><td><strong>Gateway Load Balancer</strong></td><td>3 (rede)</td><td>Colocar equipamentos de rede, como firewalls, no caminho do tráfego.</td></tr>
+              </tbody></table></div>
+              <p class="fonte">Fonte: <a href="https://aws.amazon.com/elasticloadbalancing/features/">AWS, Elastic Load Balancing features</a>, consultado em 04/11/2026.</p>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="c2">
+            <div class="texto">
+              <span class="olho">C2</span>
+              <h3>O Auto Scaling e o simulador</h3>
+              <p>O <strong>Amazon EC2 Auto Scaling</strong> liga e desliga instâncias sozinho, num <strong>grupo do Auto Scaling</strong> com três números: o <strong>mínimo</strong> (nunca menos que isso), o <strong>máximo</strong> (nunca mais que isso) e a <strong>capacidade desejada</strong> (quantas agora). É a <strong>elasticidade</strong> da aula 1 funcionando.</p>
+              <p>Mexa no simulador: cada instância aguenta 2.000 acessos por minuto, e o grupo vai de 2 a 10 (números fictícios, só para treinar).</p>
+              <div class="escala" data-minimo="2" data-maximo="10" data-por-instancia="2000">
+                <label>Acessos por minuto no site<input type="range" min="0" max="24000" step="500" value="3000"></label>
+                <div class="escala-maquinas" aria-hidden="true"></div>
+                <output class="escala-saida" aria-live="polite"></output>
+              </div>
+              <p>E os jeitos de escalar:</p>
+              <div class="tabela-rola"><table class="metodos"><thead><tr><th>Jeito</th><th>Como funciona</th><th>Na Ingresso Candango</th></tr></thead><tbody>
+                <tr><td><strong>Manual</strong></td><td>Você muda a capacidade desejada na mão.</td><td>Um teste rápido.</td></tr>
+                <tr><td><strong>Programada</strong><span class="termo-en">scheduled</span></td><td>Muda num dia e hora marcados.</td><td>Mais máquinas na sexta, antes das 10h (pedido 3).</td></tr>
+                <tr><td><strong>Dinâmica</strong><span class="termo-en">dynamic</span></td><td>Segue uma métrica, como manter o processador em 50% (<em>target tracking</em>).</td><td>Mais máquinas quando lotar, menos quando acalmar (pedido 2).</td></tr>
+                <tr><td><strong>Preditiva</strong><span class="termo-en">predictive</span></td><td>Aprende com o histórico e se prepara antes do pico que se repete.</td><td>Os picos de toda segunda à noite.</td></tr>
+              </tbody></table></div>
+              <p class="fonte">Fonte: <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/scale-your-group.html">AWS, Amazon EC2 Auto Scaling: scaling</a>, consultado em 04/11/2026.</p>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="c3">
+            <div class="texto">
+              <span class="olho">C3</span>
+              <h3>O CloudWatch: métricas, alarmes e logs</h3>
+              <p>O <strong>Amazon CloudWatch</strong> é o serviço de monitoramento da AWS. Ele junta e mostra as <strong>métricas</strong> (como o uso do processador), os <strong>logs</strong> e os <strong>painéis</strong>, e dispara <strong>alarmes</strong>.</p>
+              <ul>
+                <li>Um <strong>alarme</strong> fica de olho numa métrica e age quando ela passa do limite.</li>
+                <li>Ele pode mandar um aviso pelo <strong>Amazon SNS</strong> (e-mail ou SMS) ou mandar o Auto Scaling ligar mais máquinas.</li>
+              </ul>
+              <p class="fonte">Fonte: <a href="https://aws.amazon.com/cloudwatch/">Amazon CloudWatch</a>, consultado em 04/11/2026.</p>
+              <p class="dica"><strong>Na Ingresso Candango:</strong> o aviso no celular com o processador acima de 80% (pedido 4) é um alarme do CloudWatch avisando pelo SNS.</p>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="c4">
+            <div class="texto">
+              <span class="olho">C4</span>
+              <h3>Quem vigia o quê</h3>
+              <div class="tabela-rola"><table class="metodos"><thead><tr><th>Serviço</th><th>Responde à pergunta</th></tr></thead><tbody>
+                <tr><td><strong>Amazon CloudWatch</strong></td><td>"Como está o <strong>desempenho</strong>?" Métricas, logs e alarmes.</td></tr>
+                <tr><td><strong>AWS CloudTrail</strong></td><td>"<strong>Quem fez o quê</strong>, e quando?" O registro das ações na conta (aula 4).</td></tr>
+                <tr><td><strong>AWS Config</strong></td><td>"Como estava a <strong>configuração</strong>, e ela segue as regras?"</td></tr>
+                <tr><td><strong>AWS Health Dashboard</strong></td><td>"A <strong>AWS</strong> está com algum problema que me afeta?"</td></tr>
+              </tbody></table></div>
+              <p class="fonte">Fontes: <a href="https://docs.aws.amazon.com/aws-certification/latest/cloud-practitioner-02/cloud-practitioner-02-domain2.html">guia da CLF-C02, Domínio 2</a> e <a href="https://docs.aws.amazon.com/aws-certification/latest/cloud-practitioner-02/cloud-practitioner-02-domain4.html">Domínio 4</a>, consultados em 04/11/2026.</p>
+              <p class="dica"><strong>Na Ingresso Candango:</strong> quem mudou a regra na quinta (pedido 5) aparece no CloudTrail; se a falha é da AWS (pedido 6), o Health Dashboard mostra.</p>
+              <p class="dica"><strong>Como é no Azure:</strong> o ELB lembra o <strong>Azure Load Balancer</strong> e o <strong>Application Gateway</strong>, o Auto Scaling lembra os <strong>Conjuntos de Dimensionamento de Máquinas Virtuais</strong> e o CloudWatch lembra o <strong>Azure Monitor</strong>.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== DEMONSTRAÇÃO ===================== -->
+        <section class="parte" id="demonstracao">
+          <div class="cab">
+            <span class="olho">D1 · demonstração</span>
+            <h2>O CloudWatch e o assistente do Auto Scaling</h2>
+            <p>No vídeo eu faço junto com você. Hoje é para conhecer as telas; o laboratório do Módulo 10 monta o balanceador e o grupo de verdade.</p>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr">
+            <div class="texto">
+              <div class="faca-assim">
+                <strong>Faça assim:</strong>
+                <ol>
+                  <li>Abra o <strong>Learner Lab</strong>, clique em <strong>Start Lab</strong> e, com a bolinha verde, clique em <strong>AWS</strong>.</li>
+                  <li>Abra o <strong>CloudWatch</strong> pela busca. No menu, abra <strong>Metrics</strong> e veja os serviços que já mandam métricas.</li>
+                  <li>Abra <strong>Alarms</strong> e clique em <strong>Create alarm</strong>. Veja os passos: escolher a métrica, o limite e a ação. Clique em <strong>Cancel</strong>.</li>
+                  <li>Abra o <strong>EC2</strong>. No menu da esquerda, lá embaixo, abra <strong>Auto Scaling Groups</strong> e clique em <strong>Create Auto Scaling group</strong>.</li>
+                  <li>Passe pelos passos sem criar nada e ache onde ficam o <strong>mínimo</strong>, o <strong>desejado</strong> e o <strong>máximo</strong>. Clique em <strong>Cancel</strong> e depois em <strong>End Lab</strong>.</li>
+                </ol>
+              </div>
+              <div class="faca-assim">
+                <strong>Teste:</strong>
+                <ol>
+                  <li>No simulador do C2, ponha 300 acessos por minuto. Por que o grupo não desliga tudo? Dica: alta disponibilidade, aula 3.</li>
+                  <li>Agora ponha 24.000. O que a equipe deveria mudar no grupo?</li>
+                </ol>
+              </div>
+              <p class="dica cuidado"><strong>Hoje é só olhar.</strong> Não crie balanceador nem grupo fora do laboratório guiado: as máquinas gastam crédito. As telas do console mudam de vez em quando: achou um nome diferente, procure a mesma ideia.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== PEGADINHA ===================== -->
+        <section class="parte" id="pegadinha">
+          <div class="cab">
+            <span class="olho">P1 · pegadinha de prova</span>
+            <h2>CloudWatch não é CloudTrail</h2>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr">
+            <div class="texto">
+              <p>Os nomes se parecem de propósito. Guarde a pergunta de cada um:</p>
+              <div class="faca-assim">
+                <strong>A pista decide:</strong>
+                <ol>
+                  <li>"Uso do processador", "alarme", "métrica", "logs da aplicação": <strong>CloudWatch</strong>.</li>
+                  <li>"Quem apagou", "quem criou", "auditoria das chamadas de API": <strong>CloudTrail</strong>.</li>
+                  <li>"A configuração mudou?", "o recurso segue a regra?": <strong>Config</strong>.</li>
+                </ol>
+              </div>
+              <p class="dica cuidado"><strong>E as outras trocas da aula:</strong> o balanceador reparte o tráfego, mas não liga máquinas novas (quem liga é o Auto Scaling). Ligar <strong>mais</strong> máquinas é escalar na horizontal; trocar por uma máquina <strong>maior</strong> é escalar na vertical.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== TREINO ===================== -->
+        <section class="parte" id="treino">
+          <div class="cab">
+            <span class="olho">T1–T3 · treino</span>
+            <h2>Classifique!</h2>
+            <p>Cada acerto de primeira vale <strong>10 XP</strong>. Errou? A dica aparece e você tenta de novo. No fim, você ganha uma insígnia.</p>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="treino-1">
+            <div class="texto">
+              <span class="olho">T1</span>
+              <h3>Quem vigia o quê?</h3>
+              <div class="faca-assim desafio">
+                <strong>Agora é com você:</strong>
+                <div class="classifica" data-opcoes="watch:CloudWatch,trail:CloudTrail,config:Config,health:Health Dashboard" data-dica="Desempenho, quem fez, configuração ou problema da própria AWS?">
+                  <p class="classifica-placar" aria-live="polite"></p>
+                  <ol class="classifica-itens">
+                    <li data-resposta="watch" data-explica="Alarme sobre uma métrica de desempenho é CloudWatch.">Receber um alarme quando o processador passar de 80%.</li>
+                    <li data-resposta="trail" data-explica="Descobrir quem fez uma ação na conta é CloudTrail.">Descobrir quem apagou um bucket ontem à noite.</li>
+                    <li data-resposta="config" data-explica="Histórico de configuração e conformidade com regras é Config.">Ver como estava a configuração de um grupo de segurança na semana passada.</li>
+                    <li data-resposta="health" data-explica="Saber se a própria AWS tem um problema que te afeta é o Health Dashboard.">Saber se um serviço da AWS está com problema na sua região.</li>
+                    <li data-resposta="watch" data-explica="Painel com as métricas e os logs da aplicação é CloudWatch.">Montar um painel com as métricas e os logs do site.</li>
+                  </ol>
+                  <button type="button" class="botao contorno classifica-reiniciar">Jogar de novo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="treino-2">
+            <div class="texto">
+              <span class="olho">T2</span>
+              <h3>Qual jeito de escalar?</h3>
+              <div class="faca-assim desafio">
+                <strong>Agora é com você:</strong>
+                <div class="classifica" data-opcoes="manual:Manual,programada:Programada,dinamica:Dinâmica,preditiva:Preditiva" data-dica="Na mão, num horário marcado, seguindo uma métrica ou aprendendo com o histórico?">
+                  <p class="classifica-placar" aria-live="polite"></p>
+                  <ol class="classifica-itens">
+                    <li data-resposta="programada" data-explica="Dia e hora marcados: escala programada.">A loja sabe que a promoção começa no sábado às 9h e quer mais máquinas antes.</li>
+                    <li data-resposta="dinamica" data-explica="Seguir uma métrica, como manter o processador em 50%: escala dinâmica.">Manter o processador do grupo sempre por volta de 50%.</li>
+                    <li data-resposta="preditiva" data-explica="Aprender com o histórico e se preparar antes: escala preditiva.">O sistema aprende que toda segunda às 19h o acesso sobe e se prepara antes.</li>
+                    <li data-resposta="manual" data-explica="Mudar a capacidade desejada na mão: escala manual.">O administrador muda na mão a capacidade desejada de 2 para 4.</li>
+                  </ol>
+                  <button type="button" class="botao contorno classifica-reiniciar">Jogar de novo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="treino-3">
+            <div class="texto">
+              <span class="olho">T3</span>
+              <h3>Qual balanceador?</h3>
+              <div class="faca-assim desafio">
+                <strong>Agora é com você:</strong>
+                <div class="classifica" data-opcoes="alb:Application,nlb:Network,gwlb:Gateway" data-dica="Decide pelo HTTP, precisa de desempenho extremo e IP fixo, ou leva o tráfego por um firewall?">
+                  <p class="classifica-placar" aria-live="polite"></p>
+                  <ol class="classifica-itens">
+                    <li data-resposta="alb" data-explica="Separar pelo caminho do endereço é decisão da camada 7: Application Load Balancer.">Mandar /ingressos para um grupo de máquinas e /shows para outro.</li>
+                    <li data-resposta="nlb" data-explica="Milhões de conexões e IP fixo: Network Load Balancer.">Um jogo on-line com milhões de conexões e que precisa de um IP fixo.</li>
+                    <li data-resposta="gwlb" data-explica="Colocar firewalls de terceiros no caminho do tráfego: Gateway Load Balancer.">Passar todo o tráfego por um conjunto de firewalls de outro fabricante.</li>
+                    <li data-resposta="alb" data-explica="Site e API com HTTPS, decidindo pelo cabeçalho: Application Load Balancer.">O site da Ingresso Candango, em HTTPS, com várias máquinas atrás.</li>
+                  </ol>
+                  <button type="button" class="botao contorno classifica-reiniciar">Jogar de novo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== ATIVIDADE ===================== -->
+        <section class="parte" id="atividade">
+          <div class="cab">
+            <span class="olho">A1 · checklist</span>
+            <h2>Checklist da aula</h2>
+            <p>O que você marcar fica salvo neste navegador.</p>
+          </div>
+
+          <div class="cartao">
+            <div class="progresso-atividade" data-progresso="passos-aula-10">
+              <span class="contagem">0 de 8</span>
+              <span class="barra-progresso"><span></span></span>
+            </div>
+            <ol class="checklist" id="passos-aula-10">
+              <li><label><input type="checkbox"><span>Assisti ao vídeo 10 ou li esta página até o fim. <a href="#video">Veja a ordem do vídeo</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Sei o que o balanceador de carga faz e os três tipos. <a href="#c1">Veja o C1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Sei o mínimo, o desejado e o máximo de um grupo, e usei o simulador. <a href="#c2">Veja o C2</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Sei os quatro jeitos de escalar. <a href="#c2">Veja o C2</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Sei o que o CloudWatch faz e separo CloudWatch, CloudTrail, Config e Health Dashboard. <a href="#c3">Veja o C3</a> e o <a href="#c4">C4</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Vi as telas do CloudWatch e do Auto Scaling no console. <a href="#demonstracao">Veja o D1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Fiz os três treinos Classifique!. <a href="#treino">Veja o treino</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Fiz o Módulo 10 e o laboratório na AWS Academy e marquei no <a href="../#cursos">Meu progresso</a>.</span></label></li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- ===================== CONEXÃO STEAM ===================== -->
+        <section class="parte" id="steam">
+          <div class="cab">
+            <span class="olho">S1 · conexão STEAM</span>
+            <h2>A escala fora da tela</h2>
+          </div>
+          <div class="steam">
+            <div class="cartao">
+              <span class="letra">E</span>
+              <h3>Engenharia</h3>
+              <p>O Auto Scaling dinâmico é um termostato: mantém a métrica perto do alvo. Monte um com ESP32 e um sensor de temperatura: acima de 26 °C, liga um LED (o "ar"); abaixo de 23 °C, desliga. Por que não usar um número só para ligar e desligar?</p>
+            </div>
+            <div class="cartao">
+              <span class="letra">M</span>
+              <h3>Matemática</h3>
+              <p>O simulador faz uma conta só: acessos ÷ 2.000, arredondado para cima, e depois o mínimo e o máximo do grupo. Com 9.100 acessos por minuto, quantas instâncias? E com 500?</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== AWS ACADEMY E MATERIAIS ===================== -->
+        <section class="parte" id="academy">
+          <div class="cab">
+            <span class="olho">J1 · agora é na AWS Academy</span>
+            <h2>O revezamento: a sua vez na Academy</h2>
+            <p>Esta aula preparou o terreno. O módulo da Academy aprofunda, e o laboratório monta o balanceador e o Auto Scaling de verdade.</p>
+          </div>
+          <div class="repos">
+            <a class="repo luz" href="https://awsacademy.instructure.com/">
+              <span class="repo-nome"><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#ic-repo"/></svg>AWS Academy</span>
+              <h4>Cloud Foundations</h4>
+              <p>Módulo 10: Escalabilidade automática e monitoramento, com o laboratório e o teste de conhecimento.</p>
+              <span class="repo-pe"><span class="ling"><span class="tec" style="--t:1.45rem"><img src="../assets/img/tec/aws.svg" alt="" width="20" height="20"></span>AWS</span><span class="etiqueta">próximo passo</span></span>
+            </a>
+            <a class="repo luz" href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/what-is-amazon-ec2-auto-scaling.html">
+              <span class="repo-nome"><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#ic-repo"/></svg>AWS</span>
+              <h4>What is Amazon EC2 Auto Scaling?</h4>
+              <p>A documentação oficial do Auto Scaling, em inglês.</p>
+              <span class="repo-pe"><span class="ling" style="--cor:var(--tec)"><i></i>Tecnologia</span><span class="etiqueta">fonte</span></span>
+            </a>
+            <a class="repo luz" href="https://learn.microsoft.com/pt-br/training/paths/describe-azure-management-governance/">
+              <span class="repo-nome"><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#ic-repo"/></svg>Microsoft Learn</span>
+              <h4>Descrever o gerenciamento e a governança do Azure</h4>
+              <p>O Azure Monitor e as ferramentas de gerenciamento, de graça e em português.</p>
+              <span class="repo-pe"><span class="ling"><span class="tec" style="--t:1.45rem"><img src="../assets/img/tec/azure.svg" alt="" width="20" height="20"></span>Azure</span><span class="etiqueta">como é no Azure</span></span>
+            </a>
+          </div>
+          <p class="dica cuidado"><strong>O material da AWS Academy é só para quem está no curso.</strong> Não copie nem compartilhe vídeos, slides ou questões fora da plataforma.</p>
+        </section>
+
+        <nav class="nav-aulas" aria-label="Outras aulas">
+          <!-- EDITE AQUI: use <a href="aula-NN.html"> quando a página da aula vizinha for liberada; <span> enquanto não for -->
+          <a class="anterior" href="aula-09.html">
+            <span class="olho">← aula anterior</span>
+            <strong>Aula 9: Arquitetura, o Well-Architected</strong>
+          </a>
+          <a class="proxima" href="aula-11.html">
+            <span class="olho">próxima aula →</span>
+            <strong>Aula 11: Serviços que caem na prova</strong>
+          </a>
+        </nav>
+
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="rodape">
+    <div class="envolve">
+      <div class="rodape-fim" style="margin-top:0; padding-top:0; border-top:0">
+        <span><a href="../">Preparatório AWS Cloud Foundations</a> · Feito com ♥ e sucata eletrônica.</span>
+        <span>aws autoscaling describe-auto-scaling-groups</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ícone de repositório (Octicons, licença MIT) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="ic-repo" viewBox="0 0 16 16"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"/></symbol>
+  </svg>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="../js/conta.js?v=1"></script>
+  <script src="../assets/js/aulas.js?v=3"></script>
+  <script src="../assets/js/classifica.js?v=2"></script>
+  <script src="../js/escala.js?v=1"></script>
+  <script src="../assets/js/matrix.js?v=3"></script>
+</body>
+</html>

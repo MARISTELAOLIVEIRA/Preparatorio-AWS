@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <!-- EDITE AQUI: número e tema da aula -->
+  <title>Aula 8: Bancos de dados · Preparatório AWS · Stela</title>
+  <meta name="description" content="Aula 8 do Preparatório AWS Cloud Foundations: banco no EC2 ou gerenciado, RDS e Aurora, Multi-AZ e réplicas de leitura, DynamoDB, ElastiCache, Redshift, DMS e SCT, com uma tabela no DynamoDB e treinos.">
+
+  <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../assets/img/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <script src="../assets/js/placa.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wdth,wght@100..125,400..900&family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,700;1,400&family=Atkinson+Hyperlegible+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../assets/css/estilo.css">
+  <link rel="stylesheet" href="../assets/css/disciplina.css?v=4">
+  <link rel="stylesheet" href="../assets/css/aula.css?v=2">
+  <link rel="stylesheet" href="../assets/css/neon.css?v=5">
+  <link rel="stylesheet" href="../css/interativos.css?v=1">
+  <link rel="stylesheet" href="../css/aula-aws.css?v=6">
+</head>
+<body>
+
+  <!-- ===================== BARRA DO TOPO (igual em todos os sites) ===================== -->
+  <header class="barra">
+    <div class="envolve">
+      <div class="marcas">
+        <a class="marca-disc marca-logo" href="../" title="Página inicial do preparatório"><img src="../assets/img/tec/aws.svg" alt="Preparatório AWS: página inicial" width="32" height="32"></a>
+      </div>
+      <button type="button" class="btn-menu" id="btn-menu" aria-expanded="false" aria-controls="menu">Menu</button>
+      <nav class="nav" id="menu" aria-label="Partes da aula">
+        <a href="../#videos">← Preparatório</a>
+        <a href="#caso">Caso</a>
+        <a href="#conceitos">Conceitos</a>
+        <a href="#demonstracao">Console</a>
+        <a href="#pegadinha">Pegadinha</a>
+        <a href="#treino">Treino</a>
+        <a href="#atividade">Checklist</a>
+      </nav>
+      <div class="ajustes">
+        <button type="button" id="btn-tema" aria-label="Mudar para o tema claro">
+          <svg class="sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="lua" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"/></svg>
+        </button>
+        <button type="button" id="btn-fonte" aria-label="Aumentar o tamanho do texto">A+</button>
+        <button type="button" id="btn-movimento" aria-pressed="false">
+          <svg class="pausar" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+          <svg class="tocar" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"/></svg>
+          <span class="rotulo">Pausar animações</span>
+        </button>
+        <a class="marca" href="/" title="Portal da Stela">
+          <img src="../assets/img/estrela.webp" alt="" width="26" height="24">
+          <span class="marca-texto">Stela</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="inicio">
+
+    <!-- ===================== CABEÇALHO DA AULA ===================== -->
+    <section class="aula-cab">
+      <canvas class="chuva-matrix" aria-hidden="true"></canvas>
+      <div class="envolve">
+        <p class="trilha-migalhas">
+          <a href="/">Stela</a> <span aria-hidden="true">/</span>
+          <a href="../">Preparatório AWS</a> <span aria-hidden="true">/</span>
+          <a href="../#videos">Vídeos e aulas</a> <span aria-hidden="true">/</span>
+          <span>Aula 8</span>
+        </p>
+
+        <!-- EDITE AQUI: número, vídeo, domínio da prova e título -->
+        <div class="aula-etiquetas">
+          <span class="etiqueta senac">Fac Senac DF</span>
+          <span class="etiqueta ouro">Aula 8</span>
+          <span class="etiqueta">Vídeo 8</span>
+          <span class="etiqueta dominio" style="--cor:var(--tec)">Domínio 3 · Tecnologia e serviços</span>
+        </div>
+        <h1>Bancos de <span class="neon">dados</span> na AWS</h1>
+        <p class="subtitulo">Relacional, NoSQL, em memória ou para análise: um banco para cada tipo de dado, e a AWS cuidando do trabalho pesado.</p>
+      </div>
+    </section>
+
+    <!-- ===================== RESUMO ===================== -->
+    <section class="bloco faixa alt" aria-label="Resumo da aula">
+      <div class="envolve">
+        <div class="resumo">
+          <div class="cartao">
+            <span class="olho">Objetivo</span>
+            <p>Escolher, numa questão, o banco de dados certo: relacional, NoSQL, em memória ou para análise, e quem cuida dele.</p>
+          </div>
+          <div class="cartao">
+            <span class="olho">Revezamento</span>
+            <p>Primeiro o vídeo e esta página. Depois, o <strong>Módulo 8</strong> do Cloud Foundations e o laboratório do RDS, na AWS Academy.</p>
+          </div>
+          <div class="cartao">
+            <span class="olho">Na prova</span>
+            <p>Domínio 3, Tecnologia e serviços: <strong>34%</strong> das questões. Quem atualiza o banco também cai no Domínio 2 (aula 4).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="bloco">
+      <div class="envolve aula-corpo">
+
+        <!-- ===================== ORDEM DO VÍDEO ===================== -->
+        <section class="parte" id="video">
+          <div class="cab">
+            <span class="olho">V1 · vídeo</span>
+            <h2>Neste vídeo, em uns 11 minutos</h2>
+            <p>A página segue a mesma ordem. Quer rever só um pedaço? Pule direto para ele.</p>
+          </div>
+          <div class="cartao">
+            <ol class="roteiro-video">
+              <li><time>0:00</time><a href="#caso">O caso: um banco para cada dado</a></li>
+              <li><time>0:45</time><a href="#c1">C1 · Banco no EC2 ou banco gerenciado?</a></li>
+              <li><time>2:00</time><a href="#c2">C2 · Relacional: RDS e Aurora</a></li>
+              <li><time>3:45</time><a href="#c3">C3 · NoSQL: o DynamoDB</a></li>
+              <li><time>5:00</time><a href="#c4">C4 · Em memória, para análise e para migrar</a></li>
+              <li><time>6:15</time><a href="#demonstracao">D1 · Uma tabela no DynamoDB e as opções do RDS</a></li>
+              <li><time>8:30</time><a href="#pegadinha">P1 · A pegadinha: Multi-AZ não é réplica de leitura</a></li>
+              <li><time>9:45</time><a href="#academy">Agora é na AWS Academy</a></li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- ===================== ESTUDO DE CASO ===================== -->
+        <section class="parte" id="caso">
+          <div class="cab">
+            <span class="olho">EC1 · estudo de caso</span>
+            <h2>Um banco para cada dado</h2>
+          </div>
+          <div class="cartao caso">
+            <p>Os arquivos da <strong>Ingresso Candango</strong> já estão no lugar (aula 7). Agora vêm os dados que mudam a toda hora:</p>
+            <ol>
+              <li><strong>Clientes, pedidos e pagamentos</strong>, ligados entre si: um pedido não pode existir sem o cliente nem ficar pela metade.</li>
+              <li><strong>O carrinho e a fila da abertura da venda</strong>: milhões de leituras e gravações por segundo, sempre pelo código do cliente.</li>
+              <li><strong>A página do show mais procurado</strong>, que todo mundo abre ao mesmo tempo e não muda a cada segundo.</li>
+              <li><strong>Três anos de vendas</strong>, para descobrir que gênero de show vende mais em cada cidade.</li>
+              <li><strong>O banco antigo da salinha</strong>, que precisa ir para a AWS sem parar as vendas.</li>
+            </ol>
+            <h3>Para pensar</h3>
+            <ol>
+              <li>Uma planilha com colunas fixas serve para tudo isso?</li>
+              <li>Quem vai fazer o backup e atualizar o banco às três da manhã?</li>
+              <li>A análise de três anos deve rodar no mesmo banco que atende as compras?</li>
+            </ol>
+            <p class="fonte">Empresa e pedidos fictícios, criados para as aulas.</p>
+          </div>
+        </section>
+
+        <!-- ===================== CONCEITOS ===================== -->
+        <section class="parte" id="conceitos">
+          <div class="cab">
+            <span class="olho">C1–C4 · conceitos</span>
+            <h2>Os bancos de dados da AWS</h2>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="c1">
+            <div class="texto">
+              <span class="olho">C1</span>
+              <h3>Banco no EC2 ou banco gerenciado?</h3>
+              <p>Dá para instalar um banco numa máquina do EC2. Mas aí, como você viu na aula 4, é você quem cuida de tudo. Um banco <strong>gerenciado</strong> tira esse trabalho das suas mãos.</p>
+              <div class="tabela-rola"><table class="metodos camadas"><thead><tr><th>Quem cuida de…</th><th>Banco no EC2</th><th>Banco gerenciado (RDS)</th></tr></thead><tbody>
+                <tr><td>Os dados, as tabelas e quem acessa</td><td class="voce">você</td><td class="voce">você</td></tr>
+                <tr><td>Instalar e atualizar o banco</td><td class="voce">você</td><td class="provedor">AWS</td></tr>
+                <tr><td>Backups automáticos</td><td class="voce">você</td><td class="provedor">AWS</td></tr>
+                <tr><td>O sistema operacional</td><td class="voce">você</td><td class="provedor">AWS</td></tr>
+              </tbody></table></div>
+              <p class="legenda-camadas">Em <span class="voce">destaque</span>, o que fica com você. No EC2, você tem controle total, e todo o trabalho.</p>
+              <p class="dica cuidado"><strong>A regra da prova:</strong> "menor esforço operacional" ou "sem gerenciar o banco" aponta para o gerenciado. "Controle total do sistema operacional" ou "um motor que o RDS não tem" aponta para o EC2.</p>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="c2">
+            <div class="texto">
+              <span class="olho">C2</span>
+              <h3>Relacional: RDS e Aurora</h3>
+              <p>Um banco <strong>relacional</strong> guarda os dados em tabelas com colunas fixas, ligadas umas às outras, e fala <strong>SQL</strong>. É o caso dos clientes, pedidos e pagamentos (pedido 1).</p>
+              <ul>
+                <li><strong>Amazon RDS</strong> (<em>Relational Database Service</em>): o banco relacional gerenciado. A AWS cuida da criação, da configuração, dos backups e das atualizações. Motores: PostgreSQL, MySQL, MariaDB, SQL Server, Oracle e Db2.</li>
+                <li><strong>Amazon Aurora</strong>: o banco relacional feito pela AWS para a nuvem, compatível com MySQL e PostgreSQL, mais rápido e com armazenamento distribuído e tolerante a falhas.</li>
+              </ul>
+              <p>Dois recursos que caem muito:</p>
+              <div class="tabela-rola"><table class="metodos"><thead><tr><th>Recurso</th><th>O que faz</th><th>Para quê</th></tr></thead><tbody>
+                <tr><td><strong>Multi-AZ</strong></td><td>Mantém uma cópia de reserva do banco em outra zona. Se a principal falhar, a reserva assume.</td><td><strong>Alta disponibilidade</strong>.</td></tr>
+                <tr><td><strong>Réplica de leitura</strong><span class="termo-en">read replica</span></td><td>Uma cópia que só responde a leituras.</td><td><strong>Desempenho</strong>: tira as consultas do banco principal.</td></tr>
+              </tbody></table></div>
+              <p class="fonte">Fontes: <a href="https://aws.amazon.com/rds/">Amazon RDS</a> e <a href="https://aws.amazon.com/rds/aurora/">Amazon Aurora</a>, consultados em 04/11/2026.</p>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="c3">
+            <div class="texto">
+              <span class="olho">C3</span>
+              <h3>NoSQL: o DynamoDB</h3>
+              <p>O <strong>Amazon DynamoDB</strong> é um banco <strong>NoSQL</strong>, sem servidor e totalmente gerenciado, com respostas em <strong>poucos milissegundos em qualquer escala</strong>. Você não escolhe máquina nem tamanho: ele cresce sozinho, e dá para pagar por requisição.</p>
+              <p>Pense num gaveteiro de componentes de eletrônica: cada gaveta tem uma <strong>etiqueta</strong> (a chave), e você abre direto a gaveta que quer, sem procurar nas outras. Dentro, cada gaveta pode ter coisas diferentes: não precisa de colunas fixas.</p>
+              <p class="fonte">Fonte: <a href="https://aws.amazon.com/dynamodb/">Amazon DynamoDB</a>, consultado em 04/11/2026.</p>
+              <p class="dica"><strong>Na Ingresso Candango:</strong> o carrinho e a fila da abertura da venda (pedido 2) vão para o DynamoDB: milhões de acessos por segundo, sempre pela chave do cliente.</p>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="c4">
+            <div class="texto">
+              <span class="olho">C4</span>
+              <h3>Em memória, para análise e para migrar</h3>
+              <div class="tabela-rola"><table class="metodos"><thead><tr><th>Serviço</th><th>O que faz</th><th>A pista na questão</th></tr></thead><tbody>
+                <tr><td><strong>Amazon ElastiCache</strong></td><td>Guarda dados na <strong>memória</strong>, para responder muito mais rápido que o disco. Compatível com Valkey, Memcached e Redis OSS.</td><td>"Cache", "diminuir as consultas ao banco", "sessões".</td></tr>
+                <tr><td><strong>Amazon Redshift</strong></td><td>O <strong>data warehouse</strong>: analisa muitos dados históricos com SQL.</td><td>"Relatórios de anos de vendas", "análise", "BI".</td></tr>
+                <tr><td><strong>AWS DMS</strong><span class="termo-en">Database Migration Service</span></td><td>Migra um banco para a AWS com o banco de origem funcionando.</td><td>"Migrar sem parar", "replicação contínua".</td></tr>
+                <tr><td><strong>AWS SCT</strong><span class="termo-en">Schema Conversion Tool</span></td><td>Converte a estrutura do banco de um motor para outro.</td><td>"Do Oracle para o PostgreSQL", "trocar de motor".</td></tr>
+              </tbody></table></div>
+              <p class="fonte">Fontes: <a href="https://aws.amazon.com/elasticache/">Amazon ElastiCache</a> e <a href="https://docs.aws.amazon.com/aws-certification/latest/cloud-practitioner-02/cloud-practitioner-02-domain3.html">guia da CLF-C02, Domínio 3</a>, consultados em 04/11/2026.</p>
+              <p class="dica"><strong>Na Ingresso Candango:</strong> a página do show mais procurado (pedido 3) fica no ElastiCache; os três anos de vendas (pedido 4), no Redshift; e o banco da salinha (pedido 5) vai pelo DMS.</p>
+              <p class="dica"><strong>Como é no Azure:</strong> o RDS lembra o <strong>Banco de Dados SQL do Azure</strong> e o <strong>Banco de Dados do Azure para MySQL e PostgreSQL</strong>, e o DynamoDB lembra o <strong>Azure Cosmos DB</strong>.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== DEMONSTRAÇÃO ===================== -->
+        <section class="parte" id="demonstracao">
+          <div class="cab">
+            <span class="olho">D1 · demonstração</span>
+            <h2>Uma tabela no DynamoDB e as opções do RDS</h2>
+            <p>No vídeo eu faço junto com você. O DynamoDB cria a tabela em segundos; o RDS a gente só olha, porque o laboratório do Módulo 8 cria um banco de verdade.</p>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr">
+            <div class="texto">
+              <div class="faca-assim">
+                <strong>Faça assim:</strong>
+                <ol>
+                  <li>Abra o <strong>Learner Lab</strong>, clique em <strong>Start Lab</strong> e, com a bolinha verde, clique em <strong>AWS</strong>.</li>
+                  <li>Abra o <strong>DynamoDB</strong> pela busca e clique em <strong>Create table</strong>.</li>
+                  <li>Em <strong>Table name</strong>, escreva <code>carrinho</code>; em <strong>Partition key</strong> (a etiqueta da gaveta), <code>cliente_id</code>. Clique em <strong>Create table</strong>.</li>
+                  <li>Com a tabela pronta, abra <strong>Explore table items</strong> e crie um item com <code>cliente_id</code> = <code>123</code> e um atributo novo, <code>show</code> = <code>Festival do Cerrado</code>.</li>
+                  <li>Agora abra o <strong>RDS</strong> e clique em <strong>Create database</strong>. Só olhe: os motores, os modelos e a opção de implantação <strong>Multi-AZ</strong>. Clique em <strong>Cancel</strong>.</li>
+                </ol>
+              </div>
+              <div class="faca-assim">
+                <strong>Teste:</strong>
+                <ol>
+                  <li>Crie outro item com <code>cliente_id</code> = <code>456</code> e um atributo diferente. Deu certo sem mudar nada na tabela? É o NoSQL: cada item pode ter atributos diferentes.</li>
+                  <li>Para apagar: selecione a tabela <code>carrinho</code>, clique em <strong>Delete</strong> e confirme. Depois, <strong>End Lab</strong>.</li>
+                </ol>
+              </div>
+              <p class="dica cuidado"><strong>Apague a tabela no fim</strong> e não crie o banco do RDS fora do laboratório guiado. As telas do console mudam de vez em quando: achou um nome diferente, procure a mesma ideia.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== PEGADINHA ===================== -->
+        <section class="parte" id="pegadinha">
+          <div class="cab">
+            <span class="olho">P1 · pegadinha de prova</span>
+            <h2>Multi-AZ não é réplica de leitura</h2>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr">
+            <div class="texto">
+              <p>As duas criam cópias do banco, e por isso a questão troca uma pela outra. Olhe o <strong>motivo</strong>:</p>
+              <div class="faca-assim">
+                <strong>A pista decide:</strong>
+                <ol>
+                  <li>"Continuar no ar se a zona falhar", "failover automático": <strong>Multi-AZ</strong>, para disponibilidade.</li>
+                  <li>"O banco está lento com tantas consultas", "relatórios pesando": <strong>réplica de leitura</strong>, para desempenho.</li>
+                  <li>"Consultas repetidas, resposta mais rápida sem mexer no banco": <strong>ElastiCache</strong> na frente dele.</li>
+                </ol>
+              </div>
+              <p class="dica cuidado"><strong>E as outras trocas que mais aparecem:</strong> o DynamoDB é NoSQL, não relacional; o Redshift é para análise, não para atender as compras; e no RDS quem atualiza o sistema e o banco é a AWS, mas os dados e quem acessa continuam com você.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== TREINO ===================== -->
+        <section class="parte" id="treino">
+          <div class="cab">
+            <span class="olho">T1–T3 · treino</span>
+            <h2>Classifique!</h2>
+            <p>Cada acerto de primeira vale <strong>10 XP</strong>. Errou? A dica aparece e você tenta de novo. No fim, você ganha uma insígnia.</p>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="treino-1">
+            <div class="texto">
+              <span class="olho">T1</span>
+              <h3>Relacional ou NoSQL?</h3>
+              <div class="faca-assim desafio">
+                <strong>Agora é com você:</strong>
+                <div class="classifica" data-opcoes="relacional:Relacional,nosql:NoSQL" data-dica="Tabelas com colunas fixas e ligadas, em SQL? Ou acesso direto pela chave, com itens que mudam de formato?">
+                  <p class="classifica-placar" aria-live="polite"></p>
+                  <ol class="classifica-itens">
+                    <li data-resposta="relacional" data-explica="Dados ligados entre si e transações completas: relacional.">Pedidos ligados a clientes e pagamentos, que não podem ficar pela metade.</li>
+                    <li data-resposta="nosql" data-explica="Acesso pela chave, em escala enorme e com milissegundos: NoSQL, como o DynamoDB.">O placar de um jogo on-line, com milhões de jogadores consultados pelo código.</li>
+                    <li data-resposta="relacional" data-explica="Consultas com JOIN entre tabelas são coisa de banco relacional.">Relatórios que juntam as tabelas de alunos, turmas e notas com SQL.</li>
+                    <li data-resposta="nosql" data-explica="Itens com atributos diferentes, sem colunas fixas: NoSQL.">Um catálogo de produtos em que cada item tem atributos diferentes.</li>
+                    <li data-resposta="nosql" data-explica="Carrinho acessado sempre pela chave do cliente, em grande escala: NoSQL.">O carrinho de compras, sempre lido e gravado pelo código do cliente.</li>
+                  </ol>
+                  <button type="button" class="botao contorno classifica-reiniciar">Jogar de novo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="treino-2">
+            <div class="texto">
+              <span class="olho">T2</span>
+              <h3>Qual serviço de banco?</h3>
+              <div class="faca-assim desafio">
+                <strong>Agora é com você:</strong>
+                <div class="classifica" data-opcoes="rds:RDS ou Aurora,dynamo:DynamoDB,cache:ElastiCache,redshift:Redshift,dms:DMS" data-dica="Volte às tabelas do C2 ao C4: relacional, NoSQL, memória, análise ou migração?">
+                  <p class="classifica-placar" aria-live="polite"></p>
+                  <ol class="classifica-itens">
+                    <li data-resposta="redshift" data-explica="Analisar muitos dados históricos com SQL é o data warehouse: Redshift.">Analisar dez anos de vendas para planejar o próximo semestre.</li>
+                    <li data-resposta="cache" data-explica="Guardar na memória o que todo mundo consulta: ElastiCache.">Guardar na memória a página mais acessada, para não consultar o banco toda hora.</li>
+                    <li data-resposta="dms" data-explica="Levar o banco para a AWS com a origem funcionando: DMS.">Levar o banco do escritório para a AWS sem parar o sistema.</li>
+                    <li data-resposta="rds" data-explica="Banco relacional gerenciado com MySQL: RDS ou Aurora.">Um MySQL gerenciado, com backups automáticos, para o sistema de matrículas.</li>
+                    <li data-resposta="dynamo" data-explica="NoSQL sem servidor, em milissegundos em qualquer escala: DynamoDB.">Um banco sem servidor que responde em milissegundos com milhões de acessos.</li>
+                  </ol>
+                  <button type="button" class="botao contorno classifica-reiniciar">Jogar de novo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="treino-3">
+            <div class="texto">
+              <span class="olho">T3</span>
+              <h3>Multi-AZ ou réplica de leitura?</h3>
+              <div class="faca-assim desafio">
+                <strong>Agora é com você:</strong>
+                <div class="classifica" data-opcoes="multiaz:Multi-AZ,replica:Réplica de leitura" data-dica="O motivo é sobreviver a uma falha ou aguentar mais consultas?">
+                  <p class="classifica-placar" aria-live="polite"></p>
+                  <ol class="classifica-itens">
+                    <li data-resposta="multiaz" data-explica="Sobreviver à falha da zona, com troca automática: Multi-AZ.">O banco tem que continuar funcionando se a zona de disponibilidade falhar.</li>
+                    <li data-resposta="replica" data-explica="Tirar as consultas pesadas do banco principal: réplica de leitura.">Os relatórios estão deixando o banco principal lento.</li>
+                    <li data-resposta="multiaz" data-explica="Reserva pronta que assume sozinha é Multi-AZ.">Ter uma reserva pronta que assume sozinha, sem ninguém fazer nada.</li>
+                    <li data-resposta="replica" data-explica="Mais leituras, com cópias que só leem: réplica de leitura.">O site vai ter dez vezes mais consultas de leitura na abertura da venda.</li>
+                  </ol>
+                  <button type="button" class="botao contorno classifica-reiniciar">Jogar de novo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== ATIVIDADE ===================== -->
+        <section class="parte" id="atividade">
+          <div class="cab">
+            <span class="olho">A1 · checklist</span>
+            <h2>Checklist da aula</h2>
+            <p>O que você marcar fica salvo neste navegador.</p>
+          </div>
+
+          <div class="cartao">
+            <div class="progresso-atividade" data-progresso="passos-aula-08">
+              <span class="contagem">0 de 8</span>
+              <span class="barra-progresso"><span></span></span>
+            </div>
+            <ol class="checklist" id="passos-aula-08">
+              <li><label><input type="checkbox"><span>Assisti ao vídeo 8 ou li esta página até o fim. <a href="#video">Veja a ordem do vídeo</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Sei quando usar um banco no EC2 e quando usar um gerenciado. <a href="#c1">Veja o C1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Sei o que são o RDS e o Aurora, e para que servem o Multi-AZ e a réplica de leitura. <a href="#c2">Veja o C2</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Sei quando usar o DynamoDB. <a href="#c3">Veja o C3</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Sei para que servem o ElastiCache, o Redshift, o DMS e o SCT. <a href="#c4">Veja o C4</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Criei e apaguei uma tabela no DynamoDB e vi as opções do RDS. <a href="#demonstracao">Veja o D1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Fiz os três treinos Classifique!. <a href="#treino">Veja o treino</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Fiz o Módulo 8 e o laboratório do RDS na AWS Academy e marquei no <a href="../#cursos">Meu progresso</a>.</span></label></li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- ===================== CONEXÃO STEAM ===================== -->
+        <section class="parte" id="steam">
+          <div class="cab">
+            <span class="olho">S1 · conexão STEAM</span>
+            <h2>Os dados fora da tela</h2>
+          </div>
+          <div class="steam">
+            <div class="cartao">
+              <span class="letra">E</span>
+              <h3>Engenharia</h3>
+              <p>Organize um gaveteiro de componentes como um DynamoDB: cada gaveta com uma etiqueta única (a chave), e dentro o que for preciso. Depois faça uma planilha relacional do mesmo estoque. Qual dos dois acha uma peça mais rápido?</p>
+            </div>
+            <div class="cartao">
+              <span class="letra">M</span>
+              <h3>Matemática</h3>
+              <p>Mil clientes compraram, cada um, três ingressos. Quantas linhas tem a tabela de pedidos? Se o nome e o e-mail do cliente ficassem repetidos em cada pedido, quantas vezes cada nome apareceria? É por isso que o relacional separa as tabelas.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== AWS ACADEMY E MATERIAIS ===================== -->
+        <section class="parte" id="academy">
+          <div class="cab">
+            <span class="olho">J1 · agora é na AWS Academy</span>
+            <h2>O revezamento: a sua vez na Academy</h2>
+            <p>Esta aula preparou o terreno. O módulo da Academy aprofunda, e o laboratório do RDS cria um banco de verdade.</p>
+          </div>
+          <div class="repos">
+            <a class="repo luz" href="https://awsacademy.instructure.com/">
+              <span class="repo-nome"><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#ic-repo"/></svg>AWS Academy</span>
+              <h4>Cloud Foundations</h4>
+              <p>Módulo 8: Bancos de dados, com o laboratório do Amazon RDS e o teste de conhecimento.</p>
+              <span class="repo-pe"><span class="ling"><span class="tec" style="--t:1.45rem"><img src="../assets/img/tec/aws.svg" alt="" width="20" height="20"></span>AWS</span><span class="etiqueta">próximo passo</span></span>
+            </a>
+            <a class="repo luz" href="https://aws.amazon.com/products/databases/">
+              <span class="repo-nome"><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#ic-repo"/></svg>AWS</span>
+              <h4>Bancos de dados na AWS</h4>
+              <p>Todos os bancos de dados da AWS, com o uso de cada um, em inglês.</p>
+              <span class="repo-pe"><span class="ling" style="--cor:var(--tec)"><i></i>Tecnologia</span><span class="etiqueta">fonte</span></span>
+            </a>
+            <a class="repo luz" href="https://learn.microsoft.com/pt-br/training/paths/azure-fundamentals-describe-azure-architecture-services/">
+              <span class="repo-nome"><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#ic-repo"/></svg>Microsoft Learn</span>
+              <h4>Descrever a arquitetura e os serviços do Azure</h4>
+              <p>A trilha do AZ-900 sobre os serviços do Azure, de graça e em português.</p>
+              <span class="repo-pe"><span class="ling"><span class="tec" style="--t:1.45rem"><img src="../assets/img/tec/azure.svg" alt="" width="20" height="20"></span>Azure</span><span class="etiqueta">como é no Azure</span></span>
+            </a>
+          </div>
+          <p class="dica cuidado"><strong>O material da AWS Academy é só para quem está no curso.</strong> Não copie nem compartilhe vídeos, slides ou questões fora da plataforma.</p>
+        </section>
+
+        <nav class="nav-aulas" aria-label="Outras aulas">
+          <!-- EDITE AQUI: use <a href="aula-NN.html"> quando a página da aula vizinha for liberada; <span> enquanto não for -->
+          <a class="anterior" href="aula-07.html">
+            <span class="olho">← aula anterior</span>
+            <strong>Aula 7: Armazenamento</strong>
+          </a>
+          <a class="proxima" href="aula-09.html">
+            <span class="olho">próxima aula →</span>
+            <strong>Aula 9: Arquitetura, o Well-Architected</strong>
+          </a>
+        </nav>
+
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="rodape">
+    <div class="envolve">
+      <div class="rodape-fim" style="margin-top:0; padding-top:0; border-top:0">
+        <span><a href="../">Preparatório AWS Cloud Foundations</a> · Feito com ♥ e sucata eletrônica.</span>
+        <span>aws dynamodb describe-table --table-name carrinho</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ícone de repositório (Octicons, licença MIT) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="ic-repo" viewBox="0 0 16 16"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"/></symbol>
+  </svg>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="../js/conta.js?v=1"></script>
+  <script src="../assets/js/aulas.js?v=3"></script>
+  <script src="../assets/js/classifica.js?v=2"></script>
+  <script src="../assets/js/matrix.js?v=3"></script>
+</body>
+</html>

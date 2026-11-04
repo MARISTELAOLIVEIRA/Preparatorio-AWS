@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <!-- EDITE AQUI: número e tema da aula -->
+  <title>Aula 5: Redes, a VPC · Preparatório AWS · Stela</title>
+  <meta name="description" content="Aula 5 do Preparatório AWS Cloud Foundations: VPC, sub-redes públicas e privadas, gateways, tabelas de rotas, grupos de segurança e ACLs de rede, VPN, Direct Connect, Route 53 e CloudFront, com o mapa animado da VPC, a criação de uma VPC no console e treinos.">
+
+  <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../assets/img/favicon-32.png">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <script src="../assets/js/placa.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wdth,wght@100..125,400..900&family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,700;1,400&family=Atkinson+Hyperlegible+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../assets/css/estilo.css">
+  <link rel="stylesheet" href="../assets/css/disciplina.css?v=4">
+  <link rel="stylesheet" href="../assets/css/aula.css?v=2">
+  <link rel="stylesheet" href="../assets/css/neon.css?v=5">
+  <link rel="stylesheet" href="../css/interativos.css?v=1">
+  <link rel="stylesheet" href="../css/aula-aws.css?v=6">
+</head>
+<body>
+
+  <!-- ===================== BARRA DO TOPO (igual em todos os sites) ===================== -->
+  <header class="barra">
+    <div class="envolve">
+      <div class="marcas">
+        <a class="marca-disc marca-logo" href="../" title="Página inicial do preparatório"><img src="../assets/img/tec/aws.svg" alt="Preparatório AWS: página inicial" width="32" height="32"></a>
+      </div>
+      <button type="button" class="btn-menu" id="btn-menu" aria-expanded="false" aria-controls="menu">Menu</button>
+      <nav class="nav" id="menu" aria-label="Partes da aula">
+        <a href="../#videos">← Preparatório</a>
+        <a href="#caso">Caso</a>
+        <a href="#conceitos">Conceitos</a>
+        <a href="#demonstracao">Console</a>
+        <a href="#pegadinha">Pegadinha</a>
+        <a href="#treino">Treino</a>
+        <a href="#atividade">Checklist</a>
+      </nav>
+      <div class="ajustes">
+        <button type="button" id="btn-tema" aria-label="Mudar para o tema claro">
+          <svg class="sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="lua" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"/></svg>
+        </button>
+        <button type="button" id="btn-fonte" aria-label="Aumentar o tamanho do texto">A+</button>
+        <button type="button" id="btn-movimento" aria-pressed="false">
+          <svg class="pausar" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+          <svg class="tocar" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"/></svg>
+          <span class="rotulo">Pausar animações</span>
+        </button>
+        <a class="marca" href="/" title="Portal da Stela">
+          <img src="../assets/img/estrela.webp" alt="" width="26" height="24">
+          <span class="marca-texto">Stela</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="inicio">
+
+    <!-- ===================== CABEÇALHO DA AULA ===================== -->
+    <section class="aula-cab">
+      <canvas class="chuva-matrix" aria-hidden="true"></canvas>
+      <div class="envolve">
+        <p class="trilha-migalhas">
+          <a href="/">Stela</a> <span aria-hidden="true">/</span>
+          <a href="../">Preparatório AWS</a> <span aria-hidden="true">/</span>
+          <a href="../#videos">Vídeos e aulas</a> <span aria-hidden="true">/</span>
+          <span>Aula 5</span>
+        </p>
+
+        <!-- EDITE AQUI: número, vídeo, domínio da prova e título -->
+        <div class="aula-etiquetas">
+          <span class="etiqueta senac">Fac Senac DF</span>
+          <span class="etiqueta ouro">Aula 5</span>
+          <span class="etiqueta">Vídeo 5</span>
+          <span class="etiqueta dominio" style="--cor:var(--tec)">Domínio 3 · Tecnologia e serviços</span>
+        </div>
+        <h1>Redes na AWS: a <span class="neon">VPC</span></h1>
+        <p class="subtitulo">Uma rede só sua dentro da nuvem: o que fica à vista da internet, o que fica escondido e quem confere quem entra.</p>
+      </div>
+    </section>
+
+    <!-- ===================== RESUMO ===================== -->
+    <section class="bloco faixa alt" aria-label="Resumo da aula">
+      <div class="envolve">
+        <div class="resumo">
+          <div class="cartao">
+            <span class="olho">Objetivo</span>
+            <p>Montar na cabeça uma VPC com sub-redes públicas e privadas, e escolher, numa questão, o filtro e a conexão certos.</p>
+          </div>
+          <div class="cartao">
+            <span class="olho">Revezamento</span>
+            <p>Primeiro o vídeo e esta página. Depois, o <strong>Módulo 5</strong> do Cloud Foundations, na AWS Academy.</p>
+          </div>
+          <div class="cartao">
+            <span class="olho">Na prova</span>
+            <p>Domínio 3, Tecnologia e serviços: <strong>34%</strong> das questões. Os filtros de rede também caem no Domínio 2.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="bloco">
+      <div class="envolve aula-corpo">
+
+        <!-- ===================== ORDEM DO VÍDEO ===================== -->
+        <section class="parte" id="video">
+          <div class="cab">
+            <span class="olho">V1 · vídeo</span>
+            <h2>Neste vídeo, em uns 11 minutos</h2>
+            <p>A página segue a mesma ordem. Quer rever só um pedaço? Pule direto para ele.</p>
+          </div>
+          <div class="cartao">
+            <ol class="roteiro-video">
+              <li><time>0:00</time><a href="#caso">O caso: o banco de dados que não pode aparecer</a></li>
+              <li><time>0:45</time><a href="#c1">C1 · A VPC é uma superquadra</a></li>
+              <li><time>2:15</time><a href="#c2">C2 · Gateways e tabelas de rotas</a></li>
+              <li><time>3:45</time><a href="#c3">C3 · Os dois porteiros: grupo de segurança e ACL de rede</a></li>
+              <li><time>5:00</time><a href="#c4">C4 · Ligando a VPC ao mundo</a></li>
+              <li><time>6:15</time><a href="#demonstracao">D1 · Criando uma VPC no console</a></li>
+              <li><time>8:45</time><a href="#pegadinha">P1 · A pegadinha: com memória e sem memória</a></li>
+              <li><time>9:45</time><a href="#academy">Agora é na AWS Academy</a></li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- ===================== ESTUDO DE CASO ===================== -->
+        <section class="parte" id="caso">
+          <div class="cab">
+            <span class="olho">EC1 · estudo de caso</span>
+            <h2>O banco de dados que não pode aparecer</h2>
+          </div>
+          <div class="cartao caso">
+            <p>Depois do vazamento da aula 4, a <strong>Ingresso Candango</strong> quer refazer a rede do zero. A lista de pedidos:</p>
+            <ol>
+              <li><strong>O site</strong> tem que abrir para qualquer pessoa na internet.</li>
+              <li><strong>O banco de dados dos clientes</strong> nunca pode ser acessado direto da internet.</li>
+              <li><strong>Os servidores do banco</strong> precisam baixar atualizações da internet de vez em quando.</li>
+              <li><strong>O sistema financeiro</strong>, que ficou na salinha do escritório (a nuvem híbrida da aula 1), precisa conversar com a AWS sem passar aberto pela internet.</li>
+              <li><strong>O endereço</strong> <code>ingressocandango.com.br</code> tem que levar ao site.</li>
+            </ol>
+            <h3>Para pensar</h3>
+            <ol>
+              <li>Como deixar o site à vista e esconder o banco, se os dois estão na mesma rede?</li>
+              <li>Como o banco baixa atualizações sem que ninguém de fora consiga entrar nele?</li>
+              <li>Quem transforma o nome do site num endereço IP?</li>
+            </ol>
+            <p class="fonte">Empresa e pedidos fictícios, criados para as aulas.</p>
+          </div>
+        </section>
+
+        <!-- ===================== CONCEITOS ===================== -->
+        <section class="parte" id="conceitos">
+          <div class="cab">
+            <span class="olho">C1–C4 · conceitos</span>
+            <h2>Uma rede só sua, dentro da nuvem</h2>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="mapa">
+            <div class="texto">
+              <svg class="mapa-infra" viewBox="0 0 640 360" role="img" aria-labelledby="vpc-titulo vpc-desc">
+                <title id="vpc-titulo">A VPC da Ingresso Candango</title>
+                <desc id="vpc-desc">Uma VPC com o bloco de endereços 10.0.0.0/16 em duas zonas de disponibilidade, a e b. Cada zona tem uma sub-rede pública, com o site, e uma sub-rede privada, com o banco de dados. O gateway de internet, no alto, liga a internet só às sub-redes públicas. As sub-redes privadas não têm caminho direto para a internet.</desc>
+                <text class="titulo-mapa" x="320" y="20" text-anchor="middle">internet</text>
+                <rect class="gw" x="226" y="34" width="188" height="32" rx="8"/>
+                <text class="no-chip" x="320" y="55" text-anchor="middle">gateway de internet</text>
+                <rect class="regiao" x="10" y="92" width="620" height="262" rx="18"/>
+                <text class="titulo-mapa" x="24" y="116">VPC · 10.0.0.0/16</text>
+
+                <rect class="zona" x="26" y="128" width="284" height="214" rx="12"/>
+                <text x="40" y="150">AZ a</text>
+                <rect class="sub-publica" x="40" y="160" width="256" height="76" rx="8"/>
+                <text x="54" y="186">sub-rede pública</text>
+                <text x="54" y="210">o site</text>
+                <rect class="sub-privada" x="40" y="250" width="256" height="76" rx="8"/>
+                <text x="54" y="276">sub-rede privada</text>
+                <text x="54" y="300">o banco de dados</text>
+
+                <rect class="zona" x="330" y="128" width="284" height="214" rx="12"/>
+                <text x="344" y="150">AZ b</text>
+                <rect class="sub-publica" x="344" y="160" width="256" height="76" rx="8"/>
+                <text x="358" y="186">sub-rede pública</text>
+                <text x="358" y="210">o site</text>
+                <rect class="sub-privada" x="344" y="250" width="256" height="76" rx="8"/>
+                <text x="358" y="276">sub-rede privada</text>
+                <text x="358" y="300">o banco de dados</text>
+
+                <path class="trilha" d="M320 24 V34"/>
+                <path class="trilha" d="M320 66 V80 H168 V160"/>
+                <path class="trilha" d="M320 66 V80 H472 V160"/>
+                <path class="pulso borda" d="M320 66 V80 H168 V160"/>
+                <path class="pulso borda" d="M320 66 V80 H472 V160" style="animation-delay:-1.7s"/>
+              </svg>
+              <p class="legenda-camadas">O gateway de internet só tem trilha até as sub-redes públicas. As sub-redes privadas, com o tracejado, não têm caminho direto da internet até elas: é assim que o banco fica escondido.</p>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="c1">
+            <div class="texto">
+              <span class="olho">C1</span>
+              <h3>A VPC é uma superquadra</h3>
+              <p>A <strong>Amazon VPC</strong> (<em>Virtual Private Cloud</em>) é uma rede virtual só da sua conta, isolada das redes dos outros clientes. Você escolhe a faixa de endereços IP (como <code>10.0.0.0/16</code>), cria as sub-redes e decide o que se liga à internet.</p>
+              <p>Pense numa superquadra de Brasília: uma área com os seus limites, os seus blocos e as suas entradas.</p>
+              <div class="tabela-rola"><table class="metodos"><thead><tr><th>Na VPC</th><th>O que é</th><th>Na superquadra</th></tr></thead><tbody>
+                <tr><td><strong>VPC</strong></td><td>A rede inteira, isolada, dentro de uma região.</td><td>A superquadra.</td></tr>
+                <tr><td><strong>Sub-rede</strong><span class="termo-en">subnet</span></td><td>Uma faixa de endereços da VPC. Cada sub-rede fica numa zona de disponibilidade só.</td><td>Um bloco da quadra.</td></tr>
+                <tr><td><strong>Sub-rede pública</strong></td><td>Tem rota para o gateway de internet.</td><td>O bloco comercial, de frente para a rua.</td></tr>
+                <tr><td><strong>Sub-rede privada</strong></td><td>Não tem rota direta da internet.</td><td>O bloco residencial, lá dentro.</td></tr>
+              </tbody></table></div>
+              <p class="fonte">Fonte: <a href="https://docs.aws.amazon.com/vpc/latest/userguide/how-it-works.html">AWS, How Amazon VPC works</a>, consultado em 04/11/2026.</p>
+              <p class="dica"><strong>Toda conta já vem com uma VPC padrão</strong> em cada região, com sub-redes públicas prontas. Para um sistema de verdade, como o da Ingresso Candango, você cria a sua.</p>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="c2">
+            <div class="texto">
+              <span class="olho">C2</span>
+              <h3>Gateways e tabelas de rotas</h3>
+              <div class="tabela-rola"><table class="metodos"><thead><tr><th>Peça</th><th>O que faz</th><th>Na Ingresso Candango</th></tr></thead><tbody>
+                <tr><td><strong>Gateway de internet</strong><span class="termo-en">internet gateway</span></td><td>Liga a VPC à internet, nos dois sentidos.</td><td>Leva os clientes até o site, na sub-rede pública.</td></tr>
+                <tr><td><strong>NAT gateway</strong></td><td>Deixa as máquinas da sub-rede privada <strong>saírem</strong> para a internet, mas não deixa ninguém de fora <strong>entrar</strong>. Fica numa sub-rede pública.</td><td>O banco baixa as atualizações sem ficar exposto. É o pedido 3.</td></tr>
+                <tr><td><strong>Tabela de rotas</strong><span class="termo-en">route table</span></td><td>As regras que dizem para onde vai o tráfego de cada sub-rede.</td><td>A rota para o gateway de internet é o que faz uma sub-rede ser pública.</td></tr>
+              </tbody></table></div>
+              <p class="dica cuidado"><strong>O NAT gateway é cobrado por hora</strong>, e mais por gigabyte que passa por ele, mesmo parado. No exemplo da AWS, em Ohio, são US$ 0,045 por hora. No Learner Lab, só crie se a atividade pedir, e apague no fim.</p>
+              <p class="fonte">Fonte: <a href="https://aws.amazon.com/vpc/pricing/">AWS, Amazon VPC pricing</a>, consultado em 04/11/2026.</p>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="c3">
+            <div class="texto">
+              <span class="olho">C3</span>
+              <h3>Os dois porteiros: grupo de segurança e ACL de rede</h3>
+              <p>A VPC tem dois filtros de tráfego. Na superquadra, o <strong>grupo de segurança</strong> é o porteiro de cada prédio, e a <strong>ACL de rede</strong> é a cancela na entrada do bloco.</p>
+              <div class="tabela-rola"><table class="metodos"><thead><tr><th></th><th>Grupo de segurança<span class="termo-en">security group</span></th><th>ACL de rede<span class="termo-en">network ACL</span></th></tr></thead><tbody>
+                <tr><td><strong>Onde atua</strong></td><td>Na instância (cada máquina).</td><td>Na sub-rede inteira.</td></tr>
+                <tr><td><strong>Tipo de regra</strong></td><td>Só <strong>permite</strong>.</td><td><strong>Permite e nega</strong>.</td></tr>
+                <tr><td><strong>Como avalia</strong></td><td>Olha todas as regras antes de decidir.</td><td>Segue a ordem dos números, do menor para o maior, e para na primeira que serve.</td></tr>
+                <tr><td><strong>A resposta volta?</strong></td><td>Sim, sozinha. Tem memória (<strong>stateful</strong>).</td><td>Só se houver regra para ela. Não tem memória (<strong>stateless</strong>).</td></tr>
+                <tr><td><strong>Na superquadra</strong></td><td>O porteiro que lembra quem saiu e deixa voltar.</td><td>A cancela que confere todo carro, na entrada e na saída, com uma lista do que pode e do que não pode.</td></tr>
+              </tbody></table></div>
+              <p class="fonte">Fonte: <a href="https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html">AWS, Compare security groups and network ACLs</a>, consultado em 04/11/2026.</p>
+              <p class="dica"><strong>Na Ingresso Candango:</strong> o grupo de segurança do banco só aceita conexões que venham do grupo de segurança do site. Ninguém mais chega nele, nem de dentro da VPC.</p>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="c4">
+            <div class="texto">
+              <span class="olho">C4</span>
+              <h3>Ligando a VPC ao mundo</h3>
+              <div class="tabela-rola"><table class="metodos"><thead><tr><th>Serviço</th><th>O que faz</th><th>A pista na questão</th></tr></thead><tbody>
+                <tr><td><strong>AWS Site-to-Site VPN</strong></td><td>Um túnel criptografado entre o escritório e a VPC, <strong>pela internet</strong>.</td><td>"Rápido de montar", "usa a internet que a empresa já tem".</td></tr>
+                <tr><td><strong>AWS Direct Connect</strong></td><td>Uma conexão dedicada e privada até a AWS, <strong>sem passar pela internet</strong>.</td><td>"Desempenho previsível", "muito dado", "linha dedicada".</td></tr>
+                <tr><td><strong>Emparelhamento de VPC</strong><span class="termo-en">VPC peering</span></td><td>Liga duas VPCs, como se fossem uma rede só.</td><td>"Duas VPCs conversando por IP privado".</td></tr>
+                <tr><td><strong>AWS Transit Gateway</strong></td><td>Um roteador central para ligar muitas VPCs e redes locais.</td><td>"Dezenas de VPCs", "ponto central".</td></tr>
+                <tr><td><strong>Amazon Route 53</strong></td><td>O DNS: transforma o nome do site em endereço IP, registra domínios e confere se o destino está saudável.</td><td>"Domínio", "DNS", "verificação de integridade".</td></tr>
+                <tr><td><strong>Amazon CloudFront</strong></td><td>Entrega o conteúdo pelos pontos de presença, perto de quem acessa (aula 3).</td><td>"Baixa latência para o mundo todo", "cache".</td></tr>
+              </tbody></table></div>
+              <p class="fonte">Fontes: <a href="https://docs.aws.amazon.com/whitepapers/latest/aws-vpc-connectivity-options/network-to-amazon-vpc-connectivity-options.html">AWS, Network-to-Amazon VPC connectivity options</a>, <a href="https://docs.aws.amazon.com/vpc/latest/userguide/how-it-works.html">AWS, How Amazon VPC works</a> e <a href="https://aws.amazon.com/route53/">Amazon Route 53</a>, consultados em 04/11/2026.</p>
+              <p class="dica"><strong>Na Ingresso Candango:</strong> a salinha do escritório se liga pela VPN (pedido 4), e o Route 53 leva o <code>ingressocandango.com.br</code> até o site (pedido 5).</p>
+              <p class="dica"><strong>Como é no Azure:</strong> a VPC é a <strong>rede virtual</strong> (VNet), o grupo de segurança é o <strong>NSG</strong>, a VPN é o <strong>Gateway de VPN</strong>, o Direct Connect é o <strong>ExpressRoute</strong> e o Route 53 é o <strong>DNS do Azure</strong>.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== DEMONSTRAÇÃO ===================== -->
+        <section class="parte" id="demonstracao">
+          <div class="cab">
+            <span class="olho">D1 · demonstração</span>
+            <h2>Criando uma VPC no console</h2>
+            <p>No vídeo eu faço junto com você. Faça no seu Learner Lab, um passo de cada vez, e apague tudo no fim.</p>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr">
+            <div class="texto">
+              <div class="faca-assim">
+                <strong>Faça assim:</strong>
+                <ol>
+                  <li>Abra o <strong>Learner Lab</strong>, clique em <strong>Start Lab</strong> e, com a bolinha verde, clique em <strong>AWS</strong>.</li>
+                  <li>Na busca do topo, abra a <strong>VPC</strong> e clique em <strong>Create VPC</strong>.</li>
+                  <li>Escolha <strong>VPC and more</strong> (VPC e mais). O console monta a VPC com as sub-redes e as rotas de uma vez.</li>
+                  <li>Em <strong>Name tag</strong>, escreva <code>candango</code>. Deixe o bloco IPv4 <code>10.0.0.0/16</code>.</li>
+                  <li>Peça <strong>2</strong> zonas de disponibilidade, <strong>2</strong> sub-redes públicas e <strong>2</strong> privadas.</li>
+                  <li>Em <strong>NAT gateways</strong>, escolha <strong>None</strong> (nenhum): ele é cobrado por hora.</li>
+                  <li>Olhe o <strong>Preview</strong> (a prévia) à direita: é o mapa desta aula. Clique em <strong>Create VPC</strong>.</li>
+                  <li>Abra a VPC criada e veja a aba <strong>Resource map</strong> (mapa de recursos).</li>
+                </ol>
+              </div>
+              <div class="faca-assim">
+                <strong>Teste:</strong>
+                <ol>
+                  <li>No mapa de recursos, qual tabela de rotas leva ao gateway de internet? As sub-redes ligadas a ela são as públicas.</li>
+                  <li>Para apagar: em <strong>Your VPCs</strong>, selecione a <code>candango</code>, abra <strong>Actions</strong> e escolha <strong>Delete VPC</strong>. Depois, <strong>End Lab</strong>.</li>
+                </ol>
+              </div>
+              <p class="dica cuidado"><strong>Nada de NAT gateway hoje</strong>, e apague a VPC no fim. As telas do console mudam de vez em quando: achou um nome diferente, procure a mesma ideia.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== PEGADINHA ===================== -->
+        <section class="parte" id="pegadinha">
+          <div class="cab">
+            <span class="olho">P1 · pegadinha de prova</span>
+            <h2>Com memória e sem memória</h2>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr">
+            <div class="texto">
+              <p>A questão troca as características dos dois filtros. Guarde três pares:</p>
+              <div class="faca-assim">
+                <strong>As três diferenças que mais caem:</strong>
+                <ol>
+                  <li><strong>Stateful</strong> (com memória) é o <strong>grupo de segurança</strong>: a resposta volta sozinha. <strong>Stateless</strong> (sem memória) é a <strong>ACL de rede</strong>: a resposta precisa de regra.</li>
+                  <li><strong>Regra de negar</strong> só existe na <strong>ACL de rede</strong>. O grupo de segurança só permite.</li>
+                  <li><strong>Instância</strong> é com o grupo de segurança; <strong>sub-rede</strong> é com a ACL de rede.</li>
+                </ol>
+              </div>
+              <p class="dica cuidado"><strong>A pergunta clássica:</strong> "bloquear um endereço IP que está atacando a sub-rede". Precisa negar, e na sub-rede: <strong>ACL de rede</strong>. O grupo de segurança não consegue, porque não tem regra de negar.</p>
+              <div class="faca-assim">
+                <strong>Teste:</strong>
+                <ol>
+                  <li>Uma sub-rede tem uma máquina na rua e a outra sem saída nenhuma. O que faz uma delas ser pública? <strong>A rota para o gateway de internet</strong>, na tabela de rotas.</li>
+                  <li>O banco na sub-rede privada precisa baixar atualizações. O que resolve? <strong>Um NAT gateway</strong>, na sub-rede pública.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== TREINO ===================== -->
+        <section class="parte" id="treino">
+          <div class="cab">
+            <span class="olho">T1–T3 · treino</span>
+            <h2>Classifique!</h2>
+            <p>Cada acerto de primeira vale <strong>10 XP</strong>. Errou? A dica aparece e você tenta de novo. No fim, você ganha uma insígnia.</p>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="treino-1">
+            <div class="texto">
+              <span class="olho">T1</span>
+              <h3>Sub-rede pública ou privada?</h3>
+              <div class="faca-assim desafio">
+                <strong>Agora é com você:</strong>
+                <div class="classifica" data-opcoes="publica:Pública,privada:Privada" data-dica="Pergunte: alguém da internet precisa chegar direto nisso?">
+                  <p class="classifica-placar" aria-live="polite"></p>
+                  <ol class="classifica-itens">
+                    <li data-resposta="publica" data-explica="O site é acessado por qualquer pessoa: sub-rede pública.">O servidor do site da Ingresso Candango.</li>
+                    <li data-resposta="privada" data-explica="O banco de dados nunca fica exposto: sub-rede privada.">O banco de dados com os dados dos clientes.</li>
+                    <li data-resposta="publica" data-explica="O NAT gateway precisa da rota para a internet: fica numa sub-rede pública.">O NAT gateway que deixa o banco baixar atualizações.</li>
+                    <li data-resposta="privada" data-explica="Sistema só da equipe, sem acesso de fora: sub-rede privada.">Um sistema de relatórios usado só pela equipe, de dentro da VPC.</li>
+                    <li data-resposta="privada" data-explica="Servidor que processa os pagamentos sem receber acesso direto de fora: sub-rede privada.">O servidor que processa os pagamentos, chamado só pelo site.</li>
+                  </ol>
+                  <button type="button" class="botao contorno classifica-reiniciar">Jogar de novo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="treino-2">
+            <div class="texto">
+              <span class="olho">T2</span>
+              <h3>Grupo de segurança ou ACL de rede?</h3>
+              <div class="faca-assim desafio">
+                <strong>Agora é com você:</strong>
+                <div class="classifica" data-opcoes="sg:Grupo de segurança,acl:ACL de rede" data-dica="Porteiro do prédio, com memória e só permitindo? Ou cancela do bloco, sem memória e com regra de negar?">
+                  <p class="classifica-placar" aria-live="polite"></p>
+                  <ol class="classifica-itens">
+                    <li data-resposta="sg" data-explica="A resposta volta sozinha: stateful, o grupo de segurança.">É stateful: a resposta de uma conexão permitida volta sozinha.</li>
+                    <li data-resposta="acl" data-explica="Regra de negar só existe na ACL de rede.">Tem regras para negar um endereço IP específico.</li>
+                    <li data-resposta="sg" data-explica="Atua em cada instância: grupo de segurança.">Atua em cada instância do EC2.</li>
+                    <li data-resposta="acl" data-explica="Segue a ordem dos números e para na primeira regra que serve: ACL de rede.">Avalia as regras pela ordem dos números e para na primeira que serve.</li>
+                    <li data-resposta="acl" data-explica="Atua na sub-rede inteira: ACL de rede.">Vale para todas as máquinas de uma sub-rede.</li>
+                    <li data-resposta="sg" data-explica="Só aceitar o que vem de outro grupo é uma regra de grupo de segurança.">O banco só aceita conexões que venham do grupo do site.</li>
+                  </ol>
+                  <button type="button" class="botao contorno classifica-reiniciar">Jogar de novo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="conceito" style="grid-template-columns:1fr" id="treino-3">
+            <div class="texto">
+              <span class="olho">T3</span>
+              <h3>Qual serviço de rede?</h3>
+              <div class="faca-assim desafio">
+                <strong>Agora é com você:</strong>
+                <div class="classifica" data-opcoes="vpn:Site-to-Site VPN,dx:Direct Connect,r53:Route 53,cf:CloudFront,nat:NAT gateway" data-dica="Volte às tabelas do C2 e do C4: túnel pela internet, linha dedicada, DNS, entrega perto do cliente ou saída da sub-rede privada?">
+                  <p class="classifica-placar" aria-live="polite"></p>
+                  <ol class="classifica-itens">
+                    <li data-resposta="dx" data-explica="Conexão dedicada, sem passar pela internet, com desempenho previsível: Direct Connect.">Um banco quer uma linha dedicada até a AWS, sem passar pela internet.</li>
+                    <li data-resposta="vpn" data-explica="Túnel criptografado pela internet que a empresa já tem: Site-to-Site VPN.">Ligar o escritório à VPC ainda hoje, com a internet que a empresa já tem.</li>
+                    <li data-resposta="r53" data-explica="Transformar o nome do site em endereço IP é DNS: Route 53.">Fazer o ingressocandango.com.br levar ao site.</li>
+                    <li data-resposta="cf" data-explica="Entregar imagens e vídeos rápido no mundo todo, com cache: CloudFront.">Entregar os vídeos dos shows rápido para quem acessa da Europa e da Ásia.</li>
+                    <li data-resposta="nat" data-explica="Saída para a internet sem entrada de fora: NAT gateway.">Deixar uma máquina da sub-rede privada baixar atualizações sem ficar exposta.</li>
+                  </ol>
+                  <button type="button" class="botao contorno classifica-reiniciar">Jogar de novo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== ATIVIDADE ===================== -->
+        <section class="parte" id="atividade">
+          <div class="cab">
+            <span class="olho">A1 · checklist</span>
+            <h2>Checklist da aula</h2>
+            <p>O que você marcar fica salvo neste navegador.</p>
+          </div>
+
+          <div class="cartao">
+            <div class="progresso-atividade" data-progresso="passos-aula-05">
+              <span class="contagem">0 de 8</span>
+              <span class="barra-progresso"><span></span></span>
+            </div>
+            <ol class="checklist" id="passos-aula-05">
+              <li><label><input type="checkbox"><span>Assisti ao vídeo 5 ou li esta página até o fim. <a href="#video">Veja a ordem do vídeo</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Sei o que é uma VPC e a diferença entre sub-rede pública e privada. <a href="#c1">Veja o C1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Sei para que servem o gateway de internet, o NAT gateway e a tabela de rotas. <a href="#c2">Veja o C2</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Diferencio grupo de segurança e ACL de rede. <a href="#c3">Veja o C3</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Sei quando usar VPN, Direct Connect, Route 53 e CloudFront. <a href="#c4">Veja o C4</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Criei a VPC no console, vi o mapa de recursos e apaguei tudo. <a href="#demonstracao">Veja o D1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Fiz os três treinos Classifique!. <a href="#treino">Veja o treino</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Fiz o Módulo 5 na AWS Academy e marquei no <a href="../#cursos">Meu progresso</a>.</span></label></li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- ===================== CONEXÃO STEAM ===================== -->
+        <section class="parte" id="steam">
+          <div class="cab">
+            <span class="olho">S1 · conexão STEAM</span>
+            <h2>A rede fora da tela</h2>
+          </div>
+          <div class="steam">
+            <div class="cartao">
+              <span class="letra">M</span>
+              <h3>Matemática</h3>
+              <p>No <code>10.0.0.0/16</code>, sobram 32 − 16 = 16 bits para as máquinas: 2¹⁶ = 65.536 endereços. Uma sub-rede <code>/24</code> tem 2⁸ = 256, e a AWS reserva 5 deles em cada sub-rede. Quantas máquinas cabem numa <code>/24</code>?</p>
+            </div>
+            <div class="cartao">
+              <span class="letra">A</span>
+              <h3>Arte</h3>
+              <p>Desenhe a VPC da Ingresso Candango como a planta de uma superquadra: os blocos (sub-redes), a portaria (gateway de internet), os porteiros (grupos de segurança) e as cancelas (ACLs de rede).</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== AWS ACADEMY E MATERIAIS ===================== -->
+        <section class="parte" id="academy">
+          <div class="cab">
+            <span class="olho">J1 · agora é na AWS Academy</span>
+            <h2>O revezamento: a sua vez na Academy</h2>
+            <p>Esta aula preparou o terreno. O módulo da Academy aprofunda, com o vídeo e o teste de conhecimento oficiais.</p>
+          </div>
+          <div class="repos">
+            <a class="repo luz" href="https://awsacademy.instructure.com/">
+              <span class="repo-nome"><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#ic-repo"/></svg>AWS Academy</span>
+              <h4>Cloud Foundations</h4>
+              <p>Módulo 5: Redes e entrega de conteúdo, com o teste de conhecimento.</p>
+              <span class="repo-pe"><span class="ling"><span class="tec" style="--t:1.45rem"><img src="../assets/img/tec/aws.svg" alt="" width="20" height="20"></span>AWS</span><span class="etiqueta">próximo passo</span></span>
+            </a>
+            <a class="repo luz" href="https://docs.aws.amazon.com/vpc/latest/userguide/how-it-works.html">
+              <span class="repo-nome"><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#ic-repo"/></svg>AWS</span>
+              <h4>How Amazon VPC works</h4>
+              <p>A documentação oficial da VPC, com o mapa de recursos, em inglês.</p>
+              <span class="repo-pe"><span class="ling" style="--cor:var(--tec)"><i></i>Tecnologia</span><span class="etiqueta">fonte</span></span>
+            </a>
+            <a class="repo luz" href="https://learn.microsoft.com/pt-br/training/modules/describe-azure-networking-services/">
+              <span class="repo-nome"><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#ic-repo"/></svg>Microsoft Learn</span>
+              <h4>Descrever os serviços de rede do Azure</h4>
+              <p>A rede virtual, a VPN, o ExpressRoute e o DNS do Azure, de graça e em português.</p>
+              <span class="repo-pe"><span class="ling"><span class="tec" style="--t:1.45rem"><img src="../assets/img/tec/azure.svg" alt="" width="20" height="20"></span>Azure</span><span class="etiqueta">como é no Azure</span></span>
+            </a>
+          </div>
+          <p class="dica cuidado"><strong>O material da AWS Academy é só para quem está no curso.</strong> Não copie nem compartilhe vídeos, slides ou questões fora da plataforma.</p>
+        </section>
+
+        <nav class="nav-aulas" aria-label="Outras aulas">
+          <!-- EDITE AQUI: use <a href="aula-NN.html"> quando a página da aula vizinha for liberada; <span> enquanto não for -->
+          <a class="anterior" href="aula-04.html">
+            <span class="olho">← aula anterior</span>
+            <strong>Aula 4: Responsabilidade compartilhada e IAM</strong>
+          </a>
+          <a class="proxima" href="aula-06.html">
+            <span class="olho">próxima aula →</span>
+            <strong>Aula 6: Computação, o EC2 e além</strong>
+          </a>
+        </nav>
+
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="rodape">
+    <div class="envolve">
+      <div class="rodape-fim" style="margin-top:0; padding-top:0; border-top:0">
+        <span><a href="../">Preparatório AWS Cloud Foundations</a> · Feito com ♥ e sucata eletrônica.</span>
+        <span>aws ec2 create-vpc --cidr-block 10.0.0.0/16</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ícone de repositório (Octicons, licença MIT) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="ic-repo" viewBox="0 0 16 16"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"/></symbol>
+  </svg>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="../js/conta.js?v=1"></script>
+  <script src="../assets/js/aulas.js?v=3"></script>
+  <script src="../assets/js/classifica.js?v=2"></script>
+  <script src="../assets/js/matrix.js?v=3"></script>
+</body>
+</html>

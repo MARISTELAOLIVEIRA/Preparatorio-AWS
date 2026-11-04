@@ -109,6 +109,7 @@ section{padding:3rem 0;border-top:1px solid var(--linha)}
 .videos li{background:var(--painel);padding:.75rem .9rem;border-left:3px solid var(--c);display:flex;flex-direction:column;gap:.3rem;box-shadow:inset 0 0 0 1px var(--linha)}
 .videos .n{font:400 .85rem var(--f-mono);color:var(--c)}
 .videos .em{font-size:.85rem;color:var(--suave)}
+.videos .video-acoes{display:flex;flex-wrap:wrap;gap:.4rem 1rem;align-items:center;margin-top:auto}   /* "Abrir a aula" e o vídeo, lado a lado */
 
 /* treinos */
 .treinos{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.2rem}
