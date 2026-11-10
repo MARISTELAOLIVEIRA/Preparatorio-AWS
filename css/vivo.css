@@ -1,8 +1,9 @@
 /*
   vivo.css: as peças das aulas "vivas" do Preparatório AWS (gancho, simulador, pausa aqui, casa ou hotel, placa).
-  versão 4 · 2026-11-10 · só deste site. Aula 1, aula 2 (conta do susto, taxímetro, transporte, iceberg, pit stop, conta de luz)
+  versão 5 · 2026-11-10 · só deste site. Aula 1, aula 2 (conta do susto, taxímetro, transporte, iceberg, pit stop, conta de luz)
   aula 3 (plantão, derrube um data center, do globo ao prédio, funil da região)
-  e aula 4 (o vazamento, tranque a conta, a porta abre?, a fechadura com ESP32). Versão 4.
+  aula 4 (o vazamento, tranque a conta, a porta abre?, a fechadura com ESP32)
+  e aula 5 (a planta errada, a viagem do pacote, com e sem memória, a régua de bits).
   Todas as animações param com o botão de pausa (html.pausado) e com o "reduzir movimento" do sistema.
 */
 
@@ -1136,6 +1137,117 @@
   .porta-fechadura { width: auto; grid-template-columns: auto 1fr; justify-items: start; align-items: center; }
 }
 
+/* ===================== aula 5 · G1 a planta errada ===================== */
+.planta {
+  width: min(100%, 26rem);
+  margin: 1.2rem auto;
+  padding: .8rem;
+  border-radius: 14px;
+  background: #f6f5f1;
+  color: #121714;
+  display: grid;
+  gap: .5rem;
+  font: 700 .85rem var(--f-texto);
+}
+.planta .rua { padding: .5rem; border-radius: 8px; background: #3b3b3b; color: #f2efe6; text-align: center; letter-spacing: .05em; border-block: 3px dashed #d6b25e; }
+.planta .blocos { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+.planta .bloco { padding: .7rem .4rem; border-radius: 8px; border: 2px solid #4a5650; text-align: center; background: #fff; }
+.planta .bloco.perigo { border-color: #c22450; background: #fde8ec; animation: pisca 1.4s infinite; }
+.planta .bloco.vazio { grid-column: 1 / -1; border-style: dashed; color: #6d7a73; font-weight: 500; }
+
+/* ===================== aula 5 · SIM1 a viagem do pacote ===================== */
+.viagem-chaves { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: .4rem; margin: .4rem 0 1rem; }
+.viagem-trilha {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: .5rem;
+  margin: 0 0 .8rem;
+  padding: 1rem;
+  list-style: none;
+  border-radius: 16px;
+  background: var(--chip);
+  position: relative;
+}
+.viagem-trilha::before {
+  content: "";
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: 2.6rem;
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0 45%, #ffe8a8 45% 55%, transparent 55%) 0 0 / 25% 100% no-repeat, rgba(214, 178, 94, .5);
+  animation: trilha-quando 2s linear infinite;
+}
+.viagem-trilha li {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: .2rem;
+  padding: .6rem .3rem .8rem;
+  border-radius: 12px;
+  background: #121a16;
+  border: 2px solid #2b3530;
+  color: #e8e4d8;
+  text-align: center;
+  transition: border-color .3s, background .3s, box-shadow .3s;
+}
+.viagem-trilha .ico { font-size: 1.6rem; }
+.viagem-trilha strong { font: 700 .76rem/1.15 var(--f-titulo); }
+.viagem-trilha small { font: 500 .68rem/1.2 var(--f-mono); color: #a3b0a8; }
+.viagem-trilha .pacote { position: absolute; top: -.9rem; right: -.4rem; font-size: 1.3rem; opacity: 0; transition: opacity .2s; }
+.viagem-trilha li.atual .pacote { opacity: 1; animation: nasce .35s ease-out; }
+.viagem-trilha li.passou { border-color: #39ff9e; background: #12301f; }
+.viagem-trilha li.barrou { border-color: #ff5c7a; background: #3a1820; box-shadow: 0 0 20px -4px #ff5c7a; animation: treme .35s 2; }
+
+/* ===================== aula 5 · C3 com memória × sem memória ===================== */
+.mem-pistas { display: grid; gap: .6rem; margin: .4rem 0 .8rem; }
+.mem-pista {
+  position: relative;
+  height: 4rem;
+  border-radius: 12px;
+  background: repeating-linear-gradient(90deg, #2b2b2b 0 26px, #333 26px 52px);
+  overflow: hidden;
+}
+.mem-pista > span.rotulo { position: absolute; left: .6rem; top: .25rem; font: 700 .72rem var(--f-mono); color: #ffe8a8; }
+.mem-portao { position: absolute; left: 50%; top: 0; bottom: 0; width: 2.4rem; display: grid; place-items: center; font-size: 1.5rem; border-inline: 3px dashed #6f7b86; transform: translateX(-50%); transition: border-color .3s, background .3s; }
+.mem-portao.ok { border-color: #39ff9e; background: rgba(57, 255, 158, .12); }
+.mem-portao.nao { border-color: #ff5c7a; background: rgba(255, 92, 122, .2); }
+.mem-carro { position: absolute; top: 62%; left: 4%; font-size: 1.7rem; transform: translateY(-50%) scaleX(-1); transition: left 1.1s ease-in-out; }
+.mem-carro.volta { transform: translateY(-50%); }
+.mem-carro.barrado { animation: treme .35s 3; }
+
+/* ===================== aula 5 · X1 a régua de bits ===================== */
+.bits-leds {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  padding: 1rem;
+  border-radius: 16px;
+  background: #0c3a26;
+  box-shadow: inset 0 0 0 3px #0a2b1c;
+}
+.bits-leds b { color: #ffe8a8; font: 900 1.3rem var(--f-mono); margin: 0 2px; }
+.bit { width: clamp(.8rem, 2.4vw, 1.25rem); aspect-ratio: 1; border-radius: 50%; background: #1c2621; box-shadow: inset 0 0 0 2px #0a2b1c; transition: background .25s, box-shadow .25s; }
+.bit.rede { background: #6b5520; }
+.bit.host { background: #1f4a3a; }
+.bit.rede.um { background: #ffd36b; box-shadow: 0 0 10px #ffd36b; }
+.bit.host.um { background: #39ff9e; box-shadow: 0 0 10px #39ff9e; }
+.bits-painel { display: grid; grid-template-columns: auto 1fr; gap: .4rem 1rem; align-items: center; margin-top: 1rem; }
+.bits-painel output { font: 800 1.5rem var(--f-mono); color: var(--neon); }
+.bits-painel input[type="range"] { width: 100%; accent-color: var(--neon); }
+.bits-conta { margin: .6rem 0 0; font-size: 1rem; }
+.bits-legenda { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; margin: .6rem 0 0; padding: 0; list-style: none; font-size: .88rem; color: var(--texto-2); }
+.bits-legenda i { display: inline-block; width: .9rem; height: .9rem; border-radius: 50%; margin-right: .35rem; vertical-align: -2px; background: var(--c); }
+
+@media (max-width: 760px) {
+  .viagem-trilha { grid-template-columns: repeat(2, 1fr); }
+  .viagem-trilha::before { display: none; }
+  .bits-painel { grid-template-columns: 1fr; }
+}
+
 /* ===================== pausa: tudo parado ===================== */
 .pausado .gancho.zero::before,
 .pausado .gancho.zero .gancho-relogio,
@@ -1157,7 +1269,13 @@
 .pausado .plantao .letreiro span,
 .pausado .dz-fogo,
 .pausado .dz-missoes li.feita,
-.pausado .tr-cofre.alarme { animation: none !important; }
+.pausado .tr-cofre.alarme,
+.pausado .planta .bloco.perigo,
+.pausado .viagem-trilha::before,
+.pausado .viagem-trilha li,
+.pausado .viagem-trilha .pacote,
+.pausado .mem-carro { animation: none !important; }
+.pausado .mem-carro, .pausado .bit { transition: none; }
 .pausado .porta-passos li, .pausado .porta-led, .pausado .tr-risco i { transition: none; }
 .pausado .funil-regioes li { transition: none; }
 .pausado .iceberg .fundo li, .pausado .pit-carro, .pausado .tx-barra i { transition: none; }

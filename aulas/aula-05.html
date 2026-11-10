@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="../assets/css/neon.css?v=5">
   <link rel="stylesheet" href="../css/interativos.css?v=1">
   <link rel="stylesheet" href="../css/aula-aws.css?v=7">
+  <link rel="stylesheet" href="../css/vivo.css?v=5">
 </head>
 <body>
 
@@ -33,7 +34,7 @@
       <button type="button" class="btn-menu" id="btn-menu" aria-expanded="false" aria-controls="menu">Menu</button>
       <nav class="nav" id="menu" aria-label="Partes da aula">
         <a href="../#videos">← Preparatório</a>
-        <a href="#caso">Caso</a>
+        <a href="#simulador">Simulador</a>
         <a href="#conceitos">Conceitos</a>
         <a href="#demonstracao">Console</a>
         <a href="#pegadinha">Pegadinha</a>
@@ -116,16 +117,50 @@
           </div>
           <div class="cartao">
             <ol class="roteiro-video sem-tempo">
+              <li><a href="#gancho">G1 · A planta errada</a></li>
               <li><a href="#caso">O caso: o banco de dados que não pode aparecer</a></li>
+              <li><a href="#simulador">SIM1 · A viagem do pacote</a></li>
               <li><a href="#c1">C1 · A VPC é uma superquadra</a></li>
               <li><a href="#c2">C2 · Gateways e tabelas de rotas</a></li>
               <li><a href="#c3">C3 · Os dois porteiros: grupo de segurança e ACL de rede</a></li>
               <li><a href="#c4">C4 · Ligando a VPC ao mundo</a></li>
-              <li><a href="#demonstracao">D1 · Criando uma VPC no console</a></li>
+              <li><a href="#bits">X1 · A régua de bits</a></li>
+              <li><a href="#demonstracao">D1 · Faça junto: criando uma VPC no console</a></li>
               <li><a href="#pegadinha">P1 · A pegadinha: com memória e sem memória</a></li>
               <li><a href="#academy">Agora é na AWS Academy</a></li>
             </ol>
           </div>
+        </section>
+
+        <!-- ===================== GANCHO (vivo.js, parte 10) ===================== -->
+        <section class="parte" id="gancho">
+          <div class="cab">
+            <span class="olho">G1 · gancho</span>
+            <h2>A planta errada</h2>
+          </div>
+          <div class="gancho" data-plantao data-link="#simulador" data-link-texto="Mande pacotes no simulador logo abaixo">
+            <p class="gancho-evento">📐 Ingresso Candango · a rede nova</p>
+            <p class="gancho-titulo">O arquiteto entregou a planta da superquadra.</p>
+            <div class="planta" role="img" aria-label="Planta: a rua em cima; de frente para ela, o site e o banco de dados; atrás, o bloco residencial vazio">
+              <div class="rua">🚗 a rua (a internet) 🚶</div>
+              <div class="blocos">
+                <div class="bloco">🏪 o site</div>
+                <div class="bloco perigo">🗄️ o banco de dados</div>
+                <div class="bloco vazio">bloco residencial, lá dentro: vazio</div>
+              </div>
+            </div>
+            <button type="button" class="botao" data-abrir>🧐 Tem algo errado?</button>
+            <div class="gancho-voto" data-revela hidden>
+              <p class="gancho-pergunta" tabindex="-1">O banco de dados ficou de frente para a rua. O que você muda?</p>
+              <div class="gancho-botoes">
+                <button type="button" aria-pressed="false" data-explica="Ajuda, mas o banco continua de frente para a rua: qualquer um pode bater na porta e tentar a senha. O certo é tirar o banco da rua.">🔒 Um cadeado na porta</button>
+                <button type="button" aria-pressed="false" data-explica="Isso! O banco vai para o bloco residencial (a sub-rede privada), sem caminho direto da rua, e com um porteiro que só deixa o site entrar.">🏘️ Levar o banco para dentro</button>
+                <button type="button" aria-pressed="false" data-explica="Esconder a placa não esconde o prédio: na internet, robôs testam endereço por endereço. O banco precisa sair da rua.">🪧 Esconder a placa</button>
+              </div>
+              <p class="gancho-resposta" aria-live="polite"></p>
+            </div>
+          </div>
+          <p class="fonte">Planta fictícia, criada para a aula.</p>
         </section>
 
         <!-- ===================== ESTUDO DE CASO ===================== -->
@@ -151,6 +186,43 @@
             </ol>
             <p class="fonte">Empresa e pedidos fictícios, criados para as aulas.</p>
           </div>
+        </section>
+
+        <!-- ===================== SIMULADOR (vivo.js, parte 16) ===================== -->
+        <section class="parte" id="simulador">
+          <div class="cab">
+            <span class="olho">SIM1 · simulador</span>
+            <h2>A viagem do pacote</h2>
+            <p>Na superquadra, todo pacote passa por postos: o portão da quadra, as placas, a cancela do bloco e o porteiro do prédio. Escolha uma viagem, ligue ou desligue as chaves e mande o pacote.</p>
+          </div>
+          <div class="sim" data-viagem>
+            <div class="porta-grupo"><span>A viagem</span>
+              <div class="dz-botoes">
+                <button type="button" data-ida="cliente" aria-pressed="true">🙂 Cliente → site</button>
+                <button type="button" data-ida="hacker" aria-pressed="false">🦹 Hacker → banco</button>
+                <button type="button" data-ida="interno" aria-pressed="false">🖥️ Site → banco</button>
+                <button type="button" data-ida="atualizacao" aria-pressed="false">🗄️ Banco → atualização</button>
+                <button type="button" data-ida="atacante" aria-pressed="false">🤖 IP atacante → site</button>
+              </div>
+            </div>
+            <div class="porta-grupo"><span>As chaves da rede</span>
+              <div class="pagar-perguntas viagem-chaves">
+                <button type="button" data-chave="rota" aria-pressed="false"><span>🛣️ Rota do bloco do banco para a rua</span><span class="sn">desligada</span></button>
+                <button type="button" data-chave="nat" aria-pressed="false"><span>🔁 NAT gateway</span><span class="sn">desligada</span></button>
+                <button type="button" data-chave="cancela" aria-pressed="false"><span>🚧 Cancela nega o IP atacante</span><span class="sn">desligada</span></button>
+                <button type="button" data-chave="porteiro" aria-pressed="true"><span>🧍 Porteiro do banco só aceita o site</span><span class="sn">ligada</span></button>
+              </div>
+            </div>
+            <ol class="viagem-trilha" aria-live="polite"></ol>
+            <div class="sim-acoes"><button type="button" class="vai">📦 Mandar o pacote</button></div>
+            <p class="casa-fala" aria-live="polite"></p>
+          </div>
+          <p class="fonte">Simulação para a aula, com as peças do C2 e do C3. Desafio: descubra a combinação de chaves que deixa o hacker chegar no banco, e por que ela nunca deve existir.</p>
+
+          <details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>Como o banco baixa atualizações pelo NAT, se ninguém de fora consegue entrar por ele?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p>O NAT só deixa <strong>sair</strong>. Ele lembra quem pediu e devolve a resposta, mas não aceita conversa que começa lá fora. É a saída da garagem: só sai, e quem saiu volta.</p></div>
+              </details>
         </section>
 
         <!-- ===================== CONCEITOS ===================== -->
@@ -244,6 +316,20 @@
               </tbody></table></div>
               <p class="fonte">Fonte: <a href="https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html">AWS, Compare security groups and network ACLs</a>, consultado em 04/11/2026.</p>
               <p class="dica"><strong>Na Ingresso Candango:</strong> o grupo de segurança do banco só aceita conexões que venham do grupo de segurança do site. Ninguém mais chega nele, nem de dentro da VPC.</p>
+              <p>Agora veja a diferença entre ter e não ter memória. Os dois carros saem do bloco e voltam: um passa pelo porteiro, o outro pela cancela.</p>
+              <div class="casa" data-memoria>
+                <div class="mem-pistas" aria-hidden="true">
+                  <div class="mem-pista"><span class="rotulo">🧍 porteiro · grupo de segurança</span><span class="mem-portao">🧍</span><span class="mem-carro">🚗</span></div>
+                  <div class="mem-pista"><span class="rotulo">🚧 cancela · ACL de rede</span><span class="mem-portao">🚧</span><span class="mem-carro">🚙</span></div>
+                </div>
+                <div class="pagar-perguntas"><button type="button" data-regra-volta aria-pressed="false"><span>↩️ Regra de volta na cancela</span><span class="sn">desligada</span></button></div>
+                <div class="sim-acoes"><button type="button" class="vai">🚗 Sair e voltar</button></div>
+                <p class="casa-fala" aria-live="polite">Aperte <strong>Sair e voltar</strong>.</p>
+              </div>
+              <details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>Na cancela, por que o carro que saiu foi barrado na volta?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p>Porque a ACL de rede <strong>não tem memória</strong> (stateless): ela confere a volta como se fosse um carro novo. Sem regra para a volta, barra. O porteiro (grupo de segurança) lembra quem saiu e deixa voltar sozinho.</p></div>
+              </details>
             </div>
           </div>
 
@@ -266,29 +352,59 @@
           </div>
         </section>
 
+        <!-- ===================== A RÉGUA DE BITS (vivo.js, parte 18) ===================== -->
+        <section class="parte" id="bits">
+          <div class="cab">
+            <span class="olho">X1 · a régua de bits</span>
+            <h2>Quantos endereços cabem na quadra?</h2>
+            <p>Um endereço IP tem 32 bits, como 32 LEDs numa placa. O número depois da barra (o <code>/16</code> de <code>10.0.0.0/16</code>) diz quantos bits são da rede. Arraste e veja a conta acontecer.</p>
+          </div>
+          <div class="casa" data-bits>
+            <div class="bits-leds" aria-hidden="true"></div>
+            <ul class="bits-legenda">
+              <li><i style="--c:#ffd36b"></i>bits da rede (a quadra)</li>
+              <li><i style="--c:#39ff9e"></i>bits dos aparelhos (os apartamentos)</li>
+              <li>LED aceso = 1, apagado = 0</li>
+            </ul>
+            <div class="bits-painel">
+              <output data-cidr>10.0.0.0/16</output>
+              <label><span class="visualmente-oculto">Tamanho da máscara</span><input type="range" min="16" max="28" step="1" value="16"></label>
+            </div>
+            <div class="dz-botoes" style="margin-top:.6rem">
+              <button type="button" data-mascara="16">/16 · a VPC da aula</button>
+              <button type="button" data-mascara="24">/24 · uma sub-rede</button>
+              <button type="button" data-mascara="28">/28 · a menor</button>
+            </div>
+            <p class="bits-conta" data-conta aria-live="polite"></p>
+            <p class="casa-fala"></p>
+          </div>
+          <p class="fonte">Fonte: <a href="https://docs.aws.amazon.com/vpc/latest/userguide/subnet-sizing.html">AWS, Subnet CIDR blocks</a>, consultado em 10/11/2026: as sub-redes vão de /16 a /28, e os 4 primeiros e o último endereço de cada sub-rede ficam com a AWS.</p>
+        </section>
+
         <!-- ===================== DEMONSTRAÇÃO ===================== -->
         <section class="parte" id="demonstracao">
           <div class="cab">
             <span class="olho">D1 · demonstração</span>
-            <h2>Criando uma VPC no console</h2>
-            <p>Faça no seu Learner Lab, um passo de cada vez, e apague tudo no fim.</p>
+            <h2>Faça junto: criando uma VPC no console</h2>
+            <p>Abra o Learner Lab noutra aba, siga um passo de cada vez, marque cada um aqui e apague tudo no fim.</p>
           </div>
 
           <div class="conceito" style="grid-template-columns:1fr">
             <div class="texto">
-              <div class="faca-assim">
-                <strong>Faça assim:</strong>
-                <ol>
-                  <li>Abra o <strong>Learner Lab</strong>, clique em <strong>Start Lab</strong> e, com a bolinha verde, clique em <strong>AWS</strong>.</li>
-                  <li>Na busca do topo, abra a <strong>VPC</strong> e clique em <strong>Create VPC</strong>.</li>
-                  <li>Escolha <strong>VPC and more</strong> (VPC e mais). O console monta a VPC com as sub-redes e as rotas de uma vez.</li>
-                  <li>Em <strong>Name tag</strong>, escreva <code>candango</code>. Deixe o bloco IPv4 <code>10.0.0.0/16</code>.</li>
-                  <li>Peça <strong>2</strong> zonas de disponibilidade, <strong>2</strong> sub-redes públicas e <strong>2</strong> privadas.</li>
-                  <li>Em <strong>NAT gateways</strong>, escolha <strong>None</strong> (nenhum): ele é cobrado por hora.</li>
-                  <li>Olhe o <strong>Preview</strong> (a prévia) à direita: é o mapa desta aula. Clique em <strong>Create VPC</strong>.</li>
-                  <li>Abra a VPC criada e veja a aba <strong>Resource map</strong> (mapa de recursos).</li>
-                </ol>
+              <div class="progresso-atividade" data-progresso="console-aula-05">
+                <span class="contagem">0 de 8</span>
+                <span class="barra-progresso"><span></span></span>
               </div>
+              <ol class="checklist" id="console-aula-05">
+                <li><label><input type="checkbox"><span>Abri o <strong>Learner Lab</strong>, cliquei em <strong>Start Lab</strong> e, com a bolinha verde, cliquei em <strong>AWS</strong>.</span></label></li>
+                <li><label><input type="checkbox"><span>Na busca do topo, abri a <strong>VPC</strong> e cliquei em <strong>Create VPC</strong>.</span></label></li>
+                <li><label><input type="checkbox"><span>Escolhi <strong>VPC and more</strong> (VPC e mais). O console monta a VPC com as sub-redes e as rotas de uma vez.</span></label></li>
+                <li><label><input type="checkbox"><span>Em <strong>Name tag</strong>, escrevi <code>candango</code> e deixei o bloco IPv4 <code>10.0.0.0/16</code>.</span></label></li>
+                <li><label><input type="checkbox"><span>Pedi <strong>2</strong> zonas de disponibilidade, <strong>2</strong> sub-redes públicas e <strong>2</strong> privadas.</span></label></li>
+                <li><label><input type="checkbox"><span>Em <strong>NAT gateways</strong>, escolhi <strong>None</strong> (nenhum): ele é cobrado por hora.</span></label></li>
+                <li><label><input type="checkbox"><span>Olhei o <strong>Preview</strong> (a prévia) à direita, o mapa desta aula, e cliquei em <strong>Create VPC</strong>.</span></label></li>
+                <li><label><input type="checkbox"><span>Abri a VPC criada e vi a aba <strong>Resource map</strong> (mapa de recursos).</span></label></li>
+              </ol>
               <div class="faca-assim">
                 <strong>Teste:</strong>
                 <ol>
@@ -319,6 +435,10 @@
                   <li><strong>Instância</strong> é com o grupo de segurança; <strong>sub-rede</strong> é com a ACL de rede.</li>
                 </ol>
               </div>
+<details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>Um IP está atacando a sub-rede. Porteiro ou cancela?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p>A <strong>cancela</strong>: a ACL de rede, porque precisa <strong>negar</strong> e atuar na sub-rede inteira. O porteiro (grupo de segurança) só sabe permitir. Teste no simulador: viagem do IP atacante, com e sem a cancela.</p></div>
+              </details>
               <p class="dica cuidado"><strong>A pergunta clássica:</strong> "bloquear um endereço IP que está atacando a sub-rede". Precisa negar, e na sub-rede: <strong>ACL de rede</strong>. O grupo de segurança não consegue, porque não tem regra de negar.</p>
               <div class="faca-assim">
                 <strong>Teste:</strong>
@@ -414,7 +534,7 @@
 
           <div class="cartao">
             <div class="progresso-atividade" data-progresso="passos-aula-05">
-              <span class="contagem">0 de 8</span>
+              <span class="contagem">0 de 10</span>
               <span class="barra-progresso"><span></span></span>
             </div>
             <ol class="checklist" id="passos-aula-05">
@@ -426,6 +546,8 @@
               <li><label><input type="checkbox"><span>Criei a VPC no console, vi o mapa de recursos e apaguei tudo. <a href="#demonstracao">Veja o D1</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Fiz os três treinos Classifique!. <a href="#treino">Veja o treino</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Fiz o Módulo 5 na AWS Academy e marquei no <a href="../#cursos">Meu progresso</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Mandei pacotes nas cinco viagens e descobri a combinação perigosa das chaves. <a href="#simulador">Veja o SIM1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Testei o porteiro e a cancela na volta, e fiz a conta dos endereços na régua de bits. <a href="#c3">Veja o C3</a> e o <a href="#bits">X1</a>.</span></label></li>
             </ol>
           </div>
         </section>
@@ -516,5 +638,6 @@
   <script src="../assets/js/aulas.js?v=3"></script>
   <script src="../assets/js/classifica.js?v=2"></script>
   <script src="../assets/js/matrix.js?v=3"></script>
+  <script src="../js/vivo.js?v=5"></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 /*
   vivo.js: as peças interativas das aulas "vivas" do Preparatório AWS. Só deste site.
-  versão 4 · 2026-11-10 · aulas 1 (conceitos), 2 (cobrança), 3 (infraestrutura global) e 4 (segurança e IAM)
+  versão 5 · 2026-11-10 · aulas 1 (conceitos), 2 (cobrança), 3 (infraestrutura global), 4 (segurança e IAM) e 5 (redes)
 
   1. [data-gancho]  a contagem para a abertura das vendas e a votação "o site aguenta?"
   2. [data-sim]     simulador "A noite da abertura das vendas": salinha com 2, salinha com 20 ou nuvem
@@ -18,6 +18,9 @@
   14. [data-tranca] tranque a conta: segurança DA nuvem (AWS) e NA nuvem (você), cinco brechas e um invasor (aula 4)
   15. [data-porta]  a porta abre? a avaliação das políticas do IAM numa fechadura com ESP32 (aula 4)
   (a aula 4 também usa o gancho [data-plantao] e a placa [data-placa="fechadura"])
+  16. [data-viagem] a viagem do pacote: portão, placas, cancela e porteiro da superquadra, com quatro chaves (aula 5)
+  17. [data-memoria] com memória × sem memória: o carro que sai e volta pelo porteiro e pela cancela (aula 5)
+  18. [data-bits]   a régua de bits: 32 LEDs, a máscara de /16 a /28 e os 5 endereços reservados (aula 5)
 
   Com as animações pausadas (botão do topo ou "reduzir movimento"), tudo mostra o resultado direto.
 */
@@ -1220,5 +1223,179 @@
       });
     });
     avalia();
+  });
+
+  // ===================== 16. a viagem do pacote =====================
+  const POSTOS = {
+    net: { ico: "🌐", nome: "Internet", dia: "a rua" },
+    hacker: { ico: "🦹", nome: "Hacker", dia: "um estranho na rua" },
+    atacante: { ico: "🤖", nome: "IP atacante", dia: "um carro suspeito" },
+    igw: { ico: "🚪", nome: "Gateway de internet", dia: "o portão da quadra" },
+    rotaPub: { ico: "🪧", nome: "Rotas da sub-rede pública", dia: "placas do bloco comercial" },
+    rotaPriv: { ico: "🪧", nome: "Rotas da sub-rede privada", dia: "placas do bloco residencial" },
+    local: { ico: "🛣️", nome: "Rota local", dia: "a rua interna da quadra" },
+    acl: { ico: "🚧", nome: "ACL de rede", dia: "a cancela do bloco" },
+    sgSite: { ico: "🧍", nome: "Grupo de segurança do site", dia: "o porteiro do site" },
+    sgBanco: { ico: "🧍", nome: "Grupo de segurança do banco", dia: "o porteiro do banco" },
+    nat: { ico: "🔁", nome: "NAT gateway", dia: "a saída da garagem" },
+    site: { ico: "🖥️", nome: "Servidor do site", dia: "a loja" },
+    banco: { ico: "🗄️", nome: "Banco de dados", dia: "o cofre" }
+  };
+  // cada viagem: os postos e a regra de cada um (devolve null se passa, ou o motivo se barra)
+  const VIAGENS = {
+    cliente: { titulo: "Um cliente abre o site", postos: ["net", "igw", "rotaPub", "acl", "sgSite", "site"], regra: () => null,
+      ok: "✅ <strong>O cliente chegou ao site.</strong> Sub-rede pública, rota para o portão, porteiro aceitando a porta do site (HTTPS)." },
+    hacker: { titulo: "O hacker tenta o banco", alerta: true, postos: ["hacker", "igw", "rotaPriv", "acl", "sgBanco", "banco"],
+      regra: (p, c) => (p === "rotaPriv" && !c.rota ? "Não há placa para a rua: o bloco residencial (sub-rede privada) não tem caminho vindo do portão." :
+        p === "sgBanco" && c.porteiro ? "O porteiro do banco só deixa entrar quem vem do site." : null),
+      ok: "💥 <strong>O hacker chegou no banco!</strong> Com rota para a internet e porteiro aceitando qualquer um, o cofre ficou de frente para a rua." },
+    interno: { titulo: "O site consulta o banco", postos: ["site", "sgSite", "local", "acl", "sgBanco", "banco"], regra: () => null,
+      ok: "✅ <strong>O site falou com o banco</strong> pela rua interna da quadra. O porteiro do banco conhece o porteiro do site." },
+    atualizacao: { titulo: "O banco baixa atualizações", postos: ["banco", "sgBanco", "rotaPriv", "nat", "igw", "net"],
+      regra: (p, c) => (p === "rotaPriv" && !c.nat ? "Nenhuma placa aponta para fora: sem NAT gateway, o banco da sub-rede privada não sai." : null),
+      ok: "✅ <strong>O banco baixou as atualizações</strong> pelo NAT gateway, e a resposta voltou. Mas ninguém de fora consegue começar uma conversa com ele por ali." },
+    atacante: { titulo: "Um IP ataca o site", alerta: true, postos: ["atacante", "igw", "rotaPub", "acl", "sgSite", "site"],
+      regra: (p, c) => (p === "acl" && c.cancela ? "A cancela tem uma regra que nega esse IP: barrado na entrada do bloco." : null),
+      ok: "😬 <strong>O atacante chegou ao site.</strong> O site é público, e o porteiro (grupo de segurança) só sabe permitir. Para barrar um IP, só a cancela: a ACL de rede, que sabe negar." }
+  };
+  document.querySelectorAll("[data-viagem]").forEach(function (box) {
+    const trilha = box.querySelector(".viagem-trilha");
+    const fala = box.querySelector(".casa-fala");
+    const vai = box.querySelector(".vai");
+    let viagem = "cliente";
+    let espera = [];
+    const chave = k => box.querySelector(`[data-chave="${k}"]`).getAttribute("aria-pressed") === "true";
+    function monta() {
+      espera.forEach(clearTimeout);
+      espera = [];
+      const v = VIAGENS[viagem];
+      trilha.innerHTML = v.postos.map(function (k) {
+        const p = POSTOS[k];
+        return `<li data-posto="${k}"><span class="ico" aria-hidden="true">${p.ico}</span><strong>${p.nome}</strong><small>${p.dia}</small><span class="pacote" aria-hidden="true">📦</span></li>`;
+      }).join("");
+      fala.innerHTML = `<strong>${v.titulo}.</strong> Aperte <strong>Mandar o pacote</strong> e acompanhe os postos.`;
+    }
+    function manda() {
+      monta();
+      const v = VIAGENS[viagem];
+      const c = { rota: chave("rota"), nat: chave("nat"), cancela: chave("cancela"), porteiro: chave("porteiro") };
+      const itens = trilha.querySelectorAll("li");
+      let barrou = -1, motivo = "";
+      v.postos.some(function (k, i) {
+        const m = v.regra(k, c);
+        if (m) { barrou = i; motivo = m; return true; }
+        return false;
+      });
+      const fim = barrou < 0 ? itens.length - 1 : barrou;
+      const final = function () {
+        fala.innerHTML = barrou < 0 ? v.ok : `⛔ <strong>Barrado no posto ${POSTOS[v.postos[barrou]].nome}</strong> (${POSTOS[v.postos[barrou]].dia}). ${motivo}`;
+        vai.disabled = false;
+      };
+      const passo = function (i) {
+        itens.forEach(li => li.classList.remove("atual"));
+        // o invasor que chega ao destino deixa o destino em vermelho
+        const invadiu = barrou < 0 && v.alerta && i === itens.length - 1;
+        itens[i].classList.add(i === barrou || invadiu ? "barrou" : "passou", "atual");
+        if (i === fim) final();
+      };
+      if (pausado()) { for (let i = 0; i <= fim; i++) passo(i); return; }
+      vai.disabled = true;
+      for (let i = 0; i <= fim; i++) espera.push(setTimeout(() => passo(i), 200 + i * 520));
+    }
+    box.querySelectorAll("[data-ida]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        viagem = b.dataset.ida;
+        box.querySelectorAll("[data-ida]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+        vai.disabled = false;
+        monta();
+      });
+    });
+    box.querySelectorAll("[data-chave]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        b.setAttribute("aria-pressed", String(b.getAttribute("aria-pressed") !== "true"));
+        b.querySelector(".sn").textContent = b.getAttribute("aria-pressed") === "true" ? "ligada" : "desligada";
+        vai.disabled = false;
+        monta();
+      });
+    });
+    vai.addEventListener("click", manda);
+    monta();
+  });
+
+  // ===================== 17. com memória × sem memória =====================
+  document.querySelectorAll("[data-memoria]").forEach(function (box) {
+    const carros = box.querySelectorAll(".mem-carro");
+    const portoes = box.querySelectorAll(".mem-portao");
+    const regra = box.querySelector("[data-regra-volta]");
+    const fala = box.querySelector(".casa-fala");
+    const vai = box.querySelector(".vai");
+    let espera = [];
+    function anda() {
+      espera.forEach(clearTimeout);
+      espera = [];
+      const temRegra = regra.getAttribute("aria-pressed") === "true";
+      const lento = !pausado();
+      carros.forEach(c => { c.className = "mem-carro"; c.style.left = "4%"; });
+      portoes.forEach(p => (p.className = "mem-portao"));
+      const fim = function () {
+        // porteiro: lembra e deixa voltar; cancela: só com a regra de volta
+        carros[0].style.left = "4%";
+        carros[0].classList.add("volta");
+        portoes[0].classList.add("ok");
+        if (temRegra) {
+          carros[1].style.left = "4%";
+          carros[1].classList.add("volta");
+          portoes[1].classList.add("ok");
+          fala.innerHTML = "✅ Os dois carros voltaram. Na cancela, só porque <strong>você criou a regra de volta</strong>: a ACL não lembra de ninguém.";
+        } else {
+          carros[1].style.left = "56%";
+          carros[1].classList.add("barrado");
+          portoes[1].classList.add("nao");
+          fala.innerHTML = "🚧 O porteiro lembrou do carro e deixou voltar (<strong>com memória, stateful</strong>). A cancela barrou na volta: ela confere a volta como se fosse um carro novo (<strong>sem memória, stateless</strong>). Ligue a regra de volta e teste de novo.";
+        }
+        vai.disabled = false;
+      };
+      if (!lento) return fim();
+      vai.disabled = true;
+      fala.textContent = "Os dois carros saem do bloco…";
+      espera.push(setTimeout(() => { carros.forEach(c => (c.style.left = "86%")); portoes.forEach(p => p.classList.add("ok")); }, 80));
+      espera.push(setTimeout(() => { fala.textContent = "…e agora voltam."; portoes.forEach(p => (p.className = "mem-portao")); }, 1300));
+      espera.push(setTimeout(fim, 1500));
+    }
+    regra.addEventListener("click", function () {
+      regra.setAttribute("aria-pressed", String(regra.getAttribute("aria-pressed") !== "true"));
+      regra.querySelector(".sn").textContent = regra.getAttribute("aria-pressed") === "true" ? "ligada" : "desligada";
+    });
+    vai.addEventListener("click", anda);
+  });
+
+  // ===================== 18. a régua de bits =====================
+  document.querySelectorAll("[data-bits]").forEach(function (box) {
+    const leds = box.querySelector(".bits-leds");
+    const barra = box.querySelector("input[type=range]");
+    const cidr = box.querySelector("[data-cidr]");
+    const conta = box.querySelector("[data-conta]");
+    const fala = box.querySelector(".casa-fala");
+    // 10.0.0.0 em binário: o primeiro byte é 00001010
+    const ip = "00001010" + "0".repeat(24);
+    for (let i = 0; i < 32; i++) {
+      if (i && i % 8 === 0) { const p = document.createElement("b"); p.textContent = "."; leds.appendChild(p); }
+      const l = document.createElement("span");
+      l.className = "bit" + (ip[i] === "1" ? " um" : "");
+      leds.appendChild(l);
+    }
+    const bits = leds.querySelectorAll(".bit");
+    function mostra() {
+      const n = Number(barra.value);
+      const total = 2 ** (32 - n);
+      bits.forEach((b, i) => { b.classList.toggle("rede", i < n); b.classList.toggle("host", i >= n); });
+      cidr.textContent = "10.0.0.0/" + n;
+      conta.innerHTML = `2<sup>${32 - n}</sup> = <strong>${num(total)}</strong> endereços · menos os 5 que a AWS reserva = <strong>${num(total - 5)}</strong> para usar`;
+      fala.innerHTML = `Os <strong>${n}</strong> primeiros bits (dourados) dizem <strong>qual é a quadra</strong>, a rede. Sobram <strong>${32 - n}</strong> bits (menta) para numerar <strong>os apartamentos</strong>, os aparelhos.` +
+        (n === 16 ? " É o tamanho da VPC da aula: o maior que a AWS deixa." : n === 28 ? " É o menor bloco que a AWS deixa criar." : n === 24 ? " É o tamanho típico de uma sub-rede." : "");
+    }
+    barra.addEventListener("input", mostra);
+    box.querySelectorAll("[data-mascara]").forEach(b => b.addEventListener("click", () => { barra.value = b.dataset.mascara; mostra(); }));
+    mostra();
   });
 })();
