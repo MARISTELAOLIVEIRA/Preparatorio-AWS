@@ -1,6 +1,6 @@
 /*
   vivo.js: as peças interativas das aulas "vivas" do Preparatório AWS. Só deste site.
-  versão 3 · 2026-11-10 · aula 1 (conceitos de nuvem), aula 2 (economia e cobrança) e aula 3 (infraestrutura global)
+  versão 4 · 2026-11-10 · aulas 1 (conceitos), 2 (cobrança), 3 (infraestrutura global) e 4 (segurança e IAM)
 
   1. [data-gancho]  a contagem para a abertura das vendas e a votação "o site aguenta?"
   2. [data-sim]     simulador "A noite da abertura das vendas": salinha com 2, salinha com 20 ou nuvem
@@ -15,6 +15,9 @@
   11. [data-desastre] derrube um data center: o site em zonas e regiões, três desastres e duas missões (aula 3)
   12. [data-zoom]   do globo ao prédio: região, zona, data center e ponto de presença, com analogia (aula 3)
   13. [data-funil]  o funil da região: os quatro critérios, na ordem, com e sem o contrato do órgão público (aula 3)
+  14. [data-tranca] tranque a conta: segurança DA nuvem (AWS) e NA nuvem (você), cinco brechas e um invasor (aula 4)
+  15. [data-porta]  a porta abre? a avaliação das políticas do IAM numa fechadura com ESP32 (aula 4)
+  (a aula 4 também usa o gancho [data-plantao] e a placa [data-placa="fechadura"])
 
   Com as animações pausadas (botão do topo ou "reduzir movimento"), tudo mostra o resultado direto.
 */
@@ -466,6 +469,15 @@
     rede: { nome: "Placa de rede", aws: "Rede da AWS (VPC)", texto: "Liga a máquina à internet. Entrar dado na AWS é de graça; sair da AWS para a internet é cobrado por GB." },
     energia: { nome: "Fonte e cooler", aws: "Com a AWS", texto: "Energia, refrigeração, prédio e segurança física: na nuvem você nunca vê. Já estão no preço da hora. É a vantagem \"parar de gastar com data center\"." },
     _fim: "<strong>🔧 Placa desmontada!</strong> Agora você sabe o que está alugando quando liga uma máquina na nuvem.",
+    _unidade: "peças"
+  };
+  PECAS.fechadura = {
+    leitor: { nome: "Leitor de cartão", aws: "Autenticação", texto: "O leitor pergunta: quem é você? No IAM, é o login: senha, MFA ou uma credencial temporária." },
+    cartoes: { nome: "Cartões cadastrados", aws: "Usuários e grupos", texto: "A lista de cartões que a fechadura conhece, separados em turmas. No IAM, cada pessoa é um usuário, e as turmas são os grupos." },
+    esp: { nome: "ESP32 com as regras", aws: "Políticas (autorização)", texto: "O código gravado decide: este cartão abre esta porta, neste horário? No IAM, quem decide são as políticas em JSON." },
+    sd: { nome: "Cartão SD com o registro", aws: "AWS CloudTrail", texto: "Cada tentativa fica gravada: quem, quando, qual porta. O CloudTrail grava quem fez o quê, e quando, na conta." },
+    mestra: { nome: "Chave mestra de emergência", aws: "Conta raiz", texto: "Abre tudo, sem perguntar nada. Fica no cofre e só sai em emergência. Igual à conta raiz: protegida com MFA e quase nunca usada." },
+    _fim: "<strong>🔐 Fechadura desmontada!</strong> Autenticação, usuários, políticas, registro e a chave mestra: o IAM inteiro cabe num ESP32.",
     _unidade: "peças"
   };
   PECAS.fatura = {
@@ -1016,5 +1028,197 @@
       });
     });
     zera();
+  });
+
+  // ===================== 14. tranque a conta =====================
+  const BRECHAS = {
+    bucket: { ico: "🪣", nome: "Bucket público", fix: "<strong>🪣 Bucket público → fechado.</strong> Ligue o bloqueio de acesso público do S3 e deixe ler só quem precisa. O que fica público é configuração: coluna do cliente." },
+    raiz: { ico: "📝", nome: "Senha da raiz no papel", fix: "<strong>📝 Senha da raiz → no cofre.</strong> A conta raiz fica guardada, com MFA, só para as tarefas que exigem ela. Cada pessoa entra com o próprio acesso, pelo IAM Identity Center." },
+    mfa: { ico: "📱", nome: "Sem MFA", fix: "<strong>📱 MFA ligado.</strong> Senha mais um código do celular ou uma chave de segurança. Quem roubar só a senha fica do lado de fora." },
+    admin: { ico: "🎓", nome: "Estagiário administrador", fix: "<strong>🎓 Menor privilégio.</strong> O estagiário recebe só o que a tarefa pede. Sem poder de administrador, ele não consegue abrir um bucket para o mundo." },
+    chave: { ico: "🔑", nome: "Chave de acesso no código", fix: "<strong>🔑 Chave fora do código.</strong> Apague a chave que vazou, crie outra e guarde no AWS Secrets Manager; para programas, prefira uma função (role)." }
+  };
+  const DA_NUVEM = "<strong>Isso é segurança DA nuvem:</strong> a AWS já cuida, em todos os serviços. O cliente nem tem como mexer aqui. As brechas estão do outro lado.";
+  document.querySelectorAll("[data-tranca]").forEach(function (sim) {
+    const palco = sim.querySelector(".sim-palco");
+    const fala = sim.querySelector(".casa-fala");
+    const risco = sim.querySelector(".tr-risco i");
+    const riscoTxt = sim.querySelector("[data-risco]");
+    const entrouTxt = sim.querySelector("[data-entrou]");
+    const ids = Object.keys(BRECHAS);
+    const aberta = {};
+    ids.forEach(k => (aberta[k] = true));
+    let entraram = 0;
+
+    const cena = svg("svg", { viewBox: "0 0 640 300", "aria-hidden": "true", focusable: "false" }, palco);
+    const t = (x, y, txt, cls, anc) => { const el = svg("text", { x: x, y: y, class: cls || "sim-rotulo", "text-anchor": anc || "middle" }, cena); el.textContent = txt; return el; };
+    t(48, 160, "🦹", "tr-icone");
+    t(48, 192, "invasor");
+    const cofre = svg("rect", { x: 540, y: 105, width: 86, height: 90, rx: 12, class: "tr-cofre" }, cena);
+    t(583, 160, "📋", "tr-icone");
+    t(583, 214, "lista de clientes");
+    const lanes = {}, portas = {}, cadeados = {};
+    ids.forEach(function (k, i) {
+      const y = 40 + i * 55;
+      const c = svg("path", { d: `M80 150 C200 150 250 ${y} 350 ${y} L420 ${y} C480 ${y} 500 150 540 150`, class: "sim-trilha tr-trilha" }, cena);
+      portas[k] = svg("rect", { x: 362, y: y - 20, width: 46, height: 40, rx: 8, class: "tr-porta" }, cena);
+      t(385, y + 7, BRECHAS[k].ico, "tr-icone-p");
+      cadeados[k] = t(420, y - 12, "🔓", "tr-cadeado", "start");
+      // até onde o pulso anda antes de bater na porta
+      const tam = c.getTotalLength();
+      let a = 0, b = tam;
+      for (let n = 0; n < 20; n++) { const m = (a + b) / 2; if (c.getPointAtLength(m).x < 360) a = m; else b = m; }
+      lanes[k] = { c: c, tam: tam, porta: a / tam };
+    });
+    const pulsos = svg("g", {}, cena);
+    let lista = [], acum = 0, antes = performance.now();
+
+    function desenha() {
+      const abertas = ids.filter(k => aberta[k]).length;
+      ids.forEach(function (k) {
+        portas[k].setAttribute("class", "tr-porta " + (aberta[k] ? "aberta" : "fechada"));
+        cadeados[k].textContent = aberta[k] ? "🔓" : "🔒";
+        const b = sim.querySelector(`[data-brecha="${k}"]`);
+        b.setAttribute("aria-pressed", String(!aberta[k]));
+        b.querySelector(".estado").textContent = aberta[k] ? "aberta" : "fechada";
+      });
+      const pct = Math.round((abertas / ids.length) * 100);
+      risco.style.width = pct + "%";
+      riscoTxt.textContent = pct + "%";
+      sim.classList.toggle("trancada", abertas === 0);
+      if (abertas === 0) fala.innerHTML = "🔒 <strong>Conta trancada!</strong> As cinco brechas eram da coluna do cliente: segurança NA nuvem. A AWS não tinha como fechar nenhuma delas por você.";
+    }
+    function anima(agora) {
+      const dt = Math.min(0.05, (agora - antes) / 1000);
+      antes = agora;
+      if (!pausado()) {
+        acum += dt * 4;
+        while (acum >= 1 && lista.length < 30) {
+          const k = ids[Math.floor(Math.random() * ids.length)];
+          lista.push({ k: k, el: svg("circle", { r: 4, class: "fa desistiu" }, pulsos), t: 0 });
+          acum--;
+        }
+        lista = lista.filter(function (f) {
+          const L = lanes[f.k];
+          f.t += dt * 0.55;
+          if (!aberta[f.k] && f.t >= L.porta) {
+            // bateu na porta fechada: vira escudo e some
+            f.el.setAttribute("class", "fa servido");
+            f.vida = (f.vida || 0.4) - dt;
+            f.el.setAttribute("opacity", Math.max(0, f.vida * 2.5));
+            if (f.vida <= 0) { f.el.remove(); return false; }
+            return true;
+          }
+          if (f.t >= 1) {
+            f.el.remove();
+            entraram++;
+            entrouTxt.textContent = entraram;
+            cofre.classList.remove("alarme");
+            void cofre.getBBox();
+            cofre.classList.add("alarme");
+            return false;
+          }
+          const pt = L.c.getPointAtLength(f.t * L.tam);
+          f.el.setAttribute("cx", pt.x);
+          f.el.setAttribute("cy", pt.y);
+          return true;
+        });
+      } else if (lista.length) {
+        lista.forEach(f => f.el.remove());
+        lista = [];
+      }
+      requestAnimationFrame(anima);
+    }
+    sim.querySelectorAll("[data-brecha]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        const k = b.dataset.brecha;
+        aberta[k] = !aberta[k];
+        fala.innerHTML = aberta[k] ? `<strong>${BRECHAS[k].ico} ${BRECHAS[k].nome}:</strong> aberta de novo. O invasor agradece.` : BRECHAS[k].fix;
+        desenha();
+      });
+    });
+    sim.querySelectorAll("[data-da-nuvem]").forEach(b => b.addEventListener("click", () => (fala.innerHTML = DA_NUVEM)));
+    sim.querySelector(".de-novo").addEventListener("click", function () {
+      ids.forEach(k => (aberta[k] = true));
+      entraram = 0;
+      entrouTxt.textContent = 0;
+      fala.innerHTML = "Tudo aberto de novo. Feche as brechas da coluna da direita, uma por uma.";
+      desenha();
+    });
+    fala.innerHTML = "O invasor está tentando. Clique nas brechas da coluna <strong>NA nuvem</strong> para fechar cada uma.";
+    desenha();
+    requestAnimationFrame(anima);
+  });
+
+  // ===================== 15. a porta abre? =====================
+  const PEDIDOS = {
+    ler: { txt: "ler uma foto do show", acao: "s3:GetObject", rec: "fotos/show.jpg" },
+    apagar: { txt: "apagar uma foto do show", acao: "s3:DeleteObject", rec: "fotos/show.jpg" },
+    lista: { txt: "ler a lista de clientes", acao: "s3:GetObject", rec: "lista-clientes/2026.csv" }
+  };
+  const POLITICAS = {
+    lerfotos: { nome: "LerFotos", efeito: "Allow", serve: (p) => p.acao === "s3:GetObject" && p.rec.startsWith("fotos/"), quem: ["ana", "visitante"] },
+    tudo: { nome: "TudoNoS3", efeito: "Allow", serve: () => true, quem: ["ana"] },
+    protege: { nome: "ProtegeClientes", efeito: "Deny", serve: (p) => p.rec.startsWith("lista-clientes/"), quem: ["ana", "visitante", "bia"] }
+  };
+  const QUEM = { ana: "Ana (usuária, grupo Monitores)", visitante: "o visitante (função temporária)", bia: "Bia (usuária, sem grupo)" };
+  document.querySelectorAll("[data-porta]").forEach(function (box) {
+    const passos = box.querySelectorAll(".porta-passos li");
+    const led = box.querySelector(".porta-led");
+    const resultado = box.querySelector(".porta-resultado");
+    const pedidoTxt = box.querySelector("[data-pedido-txt]");
+    let quem = "ana", pedido = "ler", espera = [];
+    const ligada = k => box.querySelector(`[data-politica="${k}"]`).getAttribute("aria-pressed") === "true";
+    function avalia() {
+      espera.forEach(clearTimeout);
+      espera = [];
+      const p = PEDIDOS[pedido];
+      pedidoTxt.innerHTML = `<strong>${QUEM[quem]}</strong> quer <strong>${p.txt}</strong> · <code>${p.acao}</code> em <code>${p.rec}</code>`;
+      const valem = Object.keys(POLITICAS).filter(k => ligada(k) && POLITICAS[k].quem.includes(quem) && POLITICAS[k].serve(p));
+      const allows = valem.filter(k => POLITICAS[k].efeito === "Allow").map(k => POLITICAS[k].nome);
+      const denies = valem.filter(k => POLITICAS[k].efeito === "Deny").map(k => POLITICAS[k].nome);
+      const textos = [
+        "🔒 Começa negado: ninguém entra sem uma regra que libere.",
+        allows.length ? `✅ Tem Allow: ${allows.join(" e ")}.` : "➖ Nenhum Allow serve para este pedido.",
+        denies.length ? `⛔ Tem Deny explícito: ${denies.join(", ")}. Ele vence qualquer Allow.` : "➖ Nenhum Deny explícito."
+      ];
+      const abre = allows.length > 0 && denies.length === 0;
+      const fim = abre ? "🟢 A porta abre: permitido." : denies.length ? "🔴 Porta trancada: o Deny explícito venceu." : "🔴 Porta trancada: ninguém liberou (negação implícita).";
+      passos.forEach(li => li.classList.remove("feito"));
+      led.className = "porta-led";
+      resultado.textContent = "";
+      const mostra = function (k) {
+        if (k < 3) {
+          passos[k].querySelector("span").textContent = textos[k];
+          passos[k].classList.add("feito");
+        } else {
+          led.className = "porta-led " + (abre ? "verde" : "vermelho");
+          resultado.textContent = fim;
+        }
+      };
+      if (pausado()) { for (let k = 0; k <= 3; k++) mostra(k); return; }
+      for (let k = 0; k <= 3; k++) espera.push(setTimeout(() => mostra(k), 350 + k * 550));
+    }
+    box.querySelectorAll("[data-quem]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        quem = b.dataset.quem;
+        box.querySelectorAll("[data-quem]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+        avalia();
+      });
+    });
+    box.querySelectorAll("[data-pedido]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        pedido = b.dataset.pedido;
+        box.querySelectorAll("[data-pedido]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+        avalia();
+      });
+    });
+    box.querySelectorAll("[data-politica]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        b.setAttribute("aria-pressed", String(b.getAttribute("aria-pressed") !== "true"));
+        avalia();
+      });
+    });
+    avalia();
   });
 })();

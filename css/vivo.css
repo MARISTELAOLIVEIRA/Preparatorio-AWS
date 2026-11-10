@@ -1,7 +1,8 @@
 /*
   vivo.css: as peças das aulas "vivas" do Preparatório AWS (gancho, simulador, pausa aqui, casa ou hotel, placa).
-  versão 3 · 2026-11-10 · só deste site. Aula 1, aula 2 (conta do susto, taxímetro, transporte, iceberg, pit stop, conta de luz)
-  e aula 3 (plantão, derrube um data center, do globo ao prédio, funil da região).
+  versão 4 · 2026-11-10 · só deste site. Aula 1, aula 2 (conta do susto, taxímetro, transporte, iceberg, pit stop, conta de luz)
+  aula 3 (plantão, derrube um data center, do globo ao prédio, funil da região)
+  e aula 4 (o vazamento, tranque a conta, a porta abre?, a fechadura com ESP32). Versão 4.
   Todas as animações param com o botão de pausa (html.pausado) e com o "reduzir movimento" do sistema.
 */
 
@@ -558,7 +559,7 @@
   animation: surge .4s ease-out;
 }
 .susto-fatura .linha { display: flex; justify-content: space-between; gap: 1rem; padding: .2rem 0; border-bottom: 1px dashed #cfcac0; }
-.susto-fatura .linha span:last-child { white-space: nowrap; }
+.susto-fatura .linha span:nth-child(2) { white-space: nowrap; }
 .susto-fatura .total { font: 900 1.6rem var(--f-titulo); color: #c22450; text-align: right; margin: .5rem 0 0; }
 .susto-fatura .normal { font-size: .8rem; color: #4a5650; text-align: right; margin: 0; }
 .susto .gancho-botoes button { font-size: .95rem; }
@@ -1035,6 +1036,106 @@
   .funil-regioes { grid-template-columns: 1fr; clip-path: none; }
 }
 
+/* ===================== aula 4 · SIM1 tranque a conta ===================== */
+.tr-icone { font-size: 30px; }
+.tr-icone-p { font-size: 20px; }
+.tr-cadeado { font-size: 15px; }
+.tr-trilha { opacity: .25; }
+.tr-porta { stroke-width: 2.5; transition: fill .3s, stroke .3s; }
+.tr-porta.aberta { fill: #3a1820; stroke: #ff5c7a; }
+.tr-porta.fechada { fill: #12301f; stroke: #39ff9e; }
+.tr-cofre { fill: #121a16; stroke: #d6b25e; stroke-width: 2.5; }
+.tr-cofre.alarme { animation: alarme .5s; }
+@keyframes alarme { 30% { fill: #5a1a28; stroke: #ff5c7a; } }
+.trancada .tr-cofre { stroke: #39ff9e; }
+.tr-colunas { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+.tr-coluna { padding: .9rem; border-radius: 16px; background: var(--superficie-2); border: 1px solid var(--borda); }
+.tr-coluna h4 { margin: 0 0 .2rem; font: 800 1rem var(--f-titulo); }
+.tr-coluna > small { display: block; margin-bottom: .6rem; color: var(--texto-2); font-size: .82rem; }
+.tr-coluna.aws { border-color: color-mix(in srgb, var(--vivo-ok) 50%, transparent); }
+.tr-coluna.voce { border-color: color-mix(in srgb, var(--vivo-ruim) 50%, transparent); }
+.tr-itens { display: grid; gap: .4rem; }
+.tr-itens button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .6rem;
+  width: 100%;
+  padding: .55rem .8rem;
+  border-radius: 12px;
+  border: 1px solid var(--borda-forte);
+  background: var(--superficie);
+  color: var(--texto);
+  font: 600 .92rem var(--f-texto);
+  text-align: left;
+  cursor: pointer;
+  transition: transform .15s, border-color .2s, background .2s;
+}
+.tr-itens button:hover { transform: translateX(3px); }
+.tr-itens .estado { flex: none; font: 800 .74rem var(--f-mono); text-transform: uppercase; padding: .15rem .55rem; border-radius: 999px; }
+.aws .tr-itens .estado { color: var(--vivo-ok); box-shadow: inset 0 0 0 2px var(--vivo-ok); }
+.voce .tr-itens button[aria-pressed="false"] .estado { color: var(--vivo-ruim); box-shadow: inset 0 0 0 2px var(--vivo-ruim); }
+.voce .tr-itens button[aria-pressed="true"] { border-color: var(--vivo-ok); background: color-mix(in srgb, var(--vivo-ok) 12%, var(--superficie)); }
+.voce .tr-itens button[aria-pressed="true"] .estado { color: #111; background: var(--vivo-ok); }
+.tr-medidor { display: grid; grid-template-columns: auto 1fr auto; gap: .8rem; align-items: center; margin-top: 1rem; font-size: .9rem; color: var(--texto-2); }
+.tr-risco { height: 12px; border-radius: 6px; background: var(--superficie-2); overflow: hidden; border: 1px solid var(--borda); }
+.tr-risco i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, var(--srwe), var(--vivo-ruim)); transition: width .4s; }
+.tr-medidor strong { font: 800 1rem var(--f-mono); color: var(--texto); }
+
+/* ===================== aula 4 · C3 a porta abre? ===================== */
+.porta-grupo { display: grid; gap: .35rem; margin-bottom: .8rem; }
+.porta-grupo > span { font: 500 .78rem var(--f-mono); color: var(--texto-2); text-transform: uppercase; letter-spacing: .05em; }
+.porta-politicas button { display: grid; gap: .1rem; text-align: left; border-radius: 12px !important; }
+.porta-politicas button small { font: 500 .74rem var(--f-mono); color: var(--texto-2); }
+.porta-politicas button[data-efeito="Deny"][aria-pressed="true"] { border-color: var(--vivo-ruim); background: color-mix(in srgb, var(--vivo-ruim) 18%, var(--superficie-2)); }
+.porta-cena { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1rem; align-items: center; margin-top: .6rem; }
+.porta-pedido { margin: 0 0 .6rem; font-size: .95rem; }
+.porta-passos { margin: 0; padding: 0; list-style: none; display: grid; gap: .4rem; }
+.porta-passos li {
+  padding: .55rem .8rem;
+  border-radius: 12px;
+  background: var(--superficie-2);
+  border: 1px solid var(--borda);
+  opacity: .35;
+  transform: translateX(-6px);
+  transition: opacity .3s, transform .3s;
+}
+.porta-passos li b { font: 700 .75rem var(--f-mono); color: var(--texto-2); margin-right: .4rem; }
+.porta-passos li.feito { opacity: 1; transform: none; }
+.porta-fechadura {
+  display: grid;
+  justify-items: center;
+  gap: .5rem;
+  padding: 1rem;
+  width: 9rem;
+  border-radius: 16px;
+  background: #0c3a26;
+  box-shadow: inset 0 0 0 3px #0a2b1c;
+  color: #e8e4d8;
+  font: 700 .75rem var(--f-mono);
+  text-align: center;
+}
+.porta-led { width: 2.4rem; height: 2.4rem; border-radius: 50%; background: #2b3530; box-shadow: inset 0 0 0 3px #111; transition: background .3s, box-shadow .3s; }
+.porta-led.verde { background: #39ff9e; box-shadow: 0 0 22px #39ff9e, inset 0 0 0 3px #0a2b1c; }
+.porta-led.vermelho { background: #ff5c7a; box-shadow: 0 0 22px #ff5c7a, inset 0 0 0 3px #3a1820; }
+.porta-resultado { min-height: 1.4em; margin: .8rem 0 0; font: 800 1.05rem var(--f-titulo); }
+
+/* ===================== aula 4 · X1 a fechadura com ESP32 ===================== */
+.peca.leitor { left: 6%; top: 10%; width: 24%; height: 34%; background: #1d4d8a; }
+.peca.cartoes { left: 6%; top: 56%; width: 24%; height: 34%; background: repeating-linear-gradient(0deg, #f6f5f1 0 22%, #c9cdd2 22% 26%); color: #111; }
+.peca.esp { left: 38%; top: 28%; width: 26%; height: 40%; background: #050807; box-shadow: inset 0 0 0 4px #2a2f2c; }
+.peca.sd { left: 72%; top: 10%; width: 20%; height: 30%; background: #2b2b2b; }
+.peca.mestra { left: 70%; top: 58%; width: 24%; height: 32%; background: #c9a24a; color: #111; }
+
+@media (max-width: 760px) {
+  .tr-colunas { grid-template-columns: 1fr; }
+  .tr-coluna.voce { order: -1; }
+  .tr-medidor { grid-template-columns: auto 1fr; }
+  .tr-medidor > span:last-child { grid-column: 1 / -1; }
+  .porta-cena { grid-template-columns: 1fr; }
+  .porta-fechadura { width: auto; grid-template-columns: auto 1fr; justify-items: start; align-items: center; }
+}
+
 /* ===================== pausa: tudo parado ===================== */
 .pausado .gancho.zero::before,
 .pausado .gancho.zero .gancho-relogio,
@@ -1055,7 +1156,9 @@
 .pausado .plantao .tarja,
 .pausado .plantao .letreiro span,
 .pausado .dz-fogo,
-.pausado .dz-missoes li.feita { animation: none !important; }
+.pausado .dz-missoes li.feita,
+.pausado .tr-cofre.alarme { animation: none !important; }
+.pausado .porta-passos li, .pausado .porta-led, .pausado .tr-risco i { transition: none; }
 .pausado .funil-regioes li { transition: none; }
 .pausado .iceberg .fundo li, .pausado .pit-carro, .pausado .tx-barra i { transition: none; }
 .pausado .camada, .pausado .camada .quem { transition: none; }
@@ -1090,7 +1193,8 @@
 [data-tema="claro"] .placa-ficha .na-aws,
 [data-tema="claro"] .pagar-perguntas button[aria-pressed="true"] .sn,
 [data-tema="claro"] .iceberg-acoes .vai,
-[data-tema="claro"] .funil-acoes .vai { color: #fff; }
+[data-tema="claro"] .funil-acoes .vai,
+[data-tema="claro"] .voce .tr-itens button[aria-pressed="true"] .estado { color: #fff; }
 
 /* no celular, a linha da responsabilidade com rótulo curto */
 @media (max-width: 760px) {

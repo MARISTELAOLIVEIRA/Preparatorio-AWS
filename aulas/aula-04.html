@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="../assets/css/neon.css?v=5">
   <link rel="stylesheet" href="../css/interativos.css?v=1">
   <link rel="stylesheet" href="../css/aula-aws.css?v=7">
+  <link rel="stylesheet" href="../css/vivo.css?v=4">
 </head>
 <body>
 
@@ -33,7 +34,7 @@
       <button type="button" class="btn-menu" id="btn-menu" aria-expanded="false" aria-controls="menu">Menu</button>
       <nav class="nav" id="menu" aria-label="Partes da aula">
         <a href="../#videos">← Preparatório</a>
-        <a href="#caso">Caso</a>
+        <a href="#simulador">Simulador</a>
         <a href="#conceitos">Conceitos</a>
         <a href="#demonstracao">Console</a>
         <a href="#pegadinha">Pegadinha</a>
@@ -116,17 +117,52 @@
           </div>
           <div class="cartao">
             <ol class="roteiro-video sem-tempo">
+              <li><a href="#gancho">G1 · O vazamento</a></li>
               <li><a href="#caso">O caso: a planilha que vazou</a></li>
+              <li><a href="#simulador">SIM1 · Tranque a conta</a></li>
               <li><a href="#c1">C1 · Segurança da nuvem e segurança na nuvem</a></li>
               <li><a href="#c2">C2 · A divisão muda conforme o serviço</a></li>
               <li><a href="#c3">C3 · IAM: usuários, grupos, funções e políticas</a></li>
               <li><a href="#c4">C4 · Protegendo a conta: raiz, MFA e menor privilégio</a></li>
               <li><a href="#c5">C5 · Os serviços de segurança que caem na prova</a></li>
-              <li><a href="#demonstracao">D1 · O console do IAM e uma política por dentro</a></li>
+              <li><a href="#fechadura">X1 · Desmonte a fechadura do laboratório</a></li>
+              <li><a href="#demonstracao">D1 · Faça junto: o console do IAM e uma política por dentro</a></li>
               <li><a href="#pegadinha">P1 · A pegadinha: serviço gerenciado não é tudo da AWS</a></li>
               <li><a href="#academy">Agora é na AWS Academy</a></li>
             </ol>
           </div>
+        </section>
+
+        <!-- ===================== GANCHO (vivo.js, parte 10) ===================== -->
+        <section class="parte" id="gancho">
+          <div class="cab">
+            <span class="olho">G1 · gancho</span>
+            <h2>O vazamento</h2>
+          </div>
+          <div class="gancho susto" data-plantao data-link="#simulador" data-link-texto="Veja as brechas no simulador logo abaixo">
+            <p class="gancho-evento">📧 Ingresso Candango · segunda-feira, 8h12</p>
+            <p class="gancho-titulo">Um e-mail que ninguém queria receber.</p>
+            <div class="susto-celular">
+              <div class="susto-notif"><span class="app" aria-hidden="true">✉️</span><span><small>de: um cliente · agora</small><strong>"Achei a lista de clientes de vocês num fórum. Meu nome e meu e-mail estão lá."</strong></span></div>
+              <div class="susto-fatura" data-revela hidden>
+                <div class="linha"><span>🪣 A planilha estava num bucket público</span></div>
+                <div class="linha"><span>📝 Todos usavam a senha da conta raiz</span></div>
+                <div class="linha"><span>📱 Ninguém tinha ligado o MFA</span></div>
+                <p class="normal" style="text-align:left;margin-top:.5rem">O sócio: "a nuvem é deles, a culpa é deles!"</p>
+              </div>
+            </div>
+            <button type="button" class="botao" data-abrir>🔎 Investigar</button>
+            <div class="gancho-voto" data-revela hidden>
+              <p class="gancho-pergunta" tabindex="-1">De quem é a culpa?</p>
+              <div class="gancho-botoes">
+                <button type="button" aria-pressed="false" data-explica="A AWS cuidou do prédio, dos servidores e da rede, e nada disso foi invadido. O bucket público, a senha e o MFA eram da empresa.">☁️ Da AWS</button>
+                <button type="button" aria-pressed="false" data-explica="Isso! As três brechas estão do lado do cliente: o que fica público, quem tem a senha e se o MFA está ligado.">🏢 Da empresa</button>
+                <button type="button" aria-pressed="false" data-explica="A segurança é dividida, mas cada brecha tem dono. E estas três eram todas da empresa.">🤝 Das duas</button>
+              </div>
+              <p class="gancho-resposta" aria-live="polite"></p>
+            </div>
+          </div>
+          <p class="fonte">Empresa e incidente fictícios, criados para as aulas.</p>
         </section>
 
         <!-- ===================== ESTUDO DE CASO ===================== -->
@@ -152,6 +188,54 @@
             </ol>
             <p class="fonte">Empresa e incidente fictícios, criados para as aulas.</p>
           </div>
+        </section>
+
+        <!-- ===================== SIMULADOR (vivo.js, parte 14) ===================== -->
+        <section class="parte" id="simulador">
+          <div class="cab">
+            <span class="olho">SIM1 · simulador</span>
+            <h2>Tranque a conta</h2>
+            <p>Pense num condomínio: a AWS cuida da portaria, dos muros e da energia; você cuida da porta do seu apartamento, de quem tem a chave e da janela que ficou aberta. O invasor está tentando entrar. Feche as brechas.</p>
+          </div>
+          <div class="sim" data-tranca>
+            <div class="sim-palco"></div>
+            <div class="tr-medidor">
+              <span>risco</span>
+              <span class="tr-risco" aria-hidden="true"><i></i></span>
+              <span><strong data-risco>100%</strong> · tentativas que chegaram à lista: <strong data-entrou>0</strong></span>
+            </div>
+            <div class="tr-colunas">
+              <div class="tr-coluna aws">
+                <h4>☁️ Segurança DA nuvem</h4>
+                <small>a AWS cuida: a portaria e os muros do condomínio</small>
+                <div class="tr-itens">
+                  <button type="button" data-da-nuvem><span>🏢 Prédios, guardas e câmeras</span><span class="estado">AWS</span></button>
+                  <button type="button" data-da-nuvem><span>🖥️ Servidores e discos físicos</span><span class="estado">AWS</span></button>
+                  <button type="button" data-da-nuvem><span>🌐 A rede da AWS</span><span class="estado">AWS</span></button>
+                  <button type="button" data-da-nuvem><span>🧱 A virtualização que separa os clientes</span><span class="estado">AWS</span></button>
+                </div>
+              </div>
+              <div class="tr-coluna voce">
+                <h4>🏠 Segurança NA nuvem</h4>
+                <small>você cuida: a porta do seu apartamento. Clique para fechar</small>
+                <div class="tr-itens">
+                  <button type="button" data-brecha="bucket" aria-pressed="false"><span>🪣 Bucket público</span><span class="estado">aberta</span></button>
+                  <button type="button" data-brecha="raiz" aria-pressed="false"><span>📝 Senha da raiz no papel</span><span class="estado">aberta</span></button>
+                  <button type="button" data-brecha="mfa" aria-pressed="false"><span>📱 Sem MFA</span><span class="estado">aberta</span></button>
+                  <button type="button" data-brecha="admin" aria-pressed="false"><span>🎓 Estagiário administrador</span><span class="estado">aberta</span></button>
+                  <button type="button" data-brecha="chave" aria-pressed="false"><span>🔑 Chave de acesso no código</span><span class="estado">aberta</span></button>
+                </div>
+              </div>
+            </div>
+            <p class="casa-fala" aria-live="polite"></p>
+            <div class="sim-acoes"><button type="button" class="de-novo">↺ Abrir tudo de novo</button></div>
+          </div>
+          <p class="fonte">Simulação para a aula. As correções vêm das boas práticas do C4, com as fontes da AWS.</p>
+
+          <details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>O bucket ficou público e a lista vazou. A AWS errou?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p>Não. Deixar um bucket público é <strong>configuração</strong>, e configurar o que é seu é segurança NA nuvem: coluna do cliente. O prédio, os servidores e a rede da AWS não foram invadidos.</p></div>
+              </details>
         </section>
 
         <!-- ===================== CONCEITOS ===================== -->
@@ -217,6 +301,46 @@
               </ul>
               <p class="dica cuidado"><strong>A regra de ouro da avaliação:</strong> tudo começa <strong>negado</strong>. Um <code>Allow</code> libera. Um <code>Deny</code> explícito, em qualquer política, <strong>vence</strong> qualquer <code>Allow</code>.</p>
               <p class="fonte">Fonte: <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html">AWS, Policy evaluation logic</a>, consultado em 04/11/2026.</p>
+              <p>Agora teste a regra na fechadura do laboratório. Escolha quem pede, o que pede e quais políticas estão ligadas.</p>
+              <div class="casa" data-porta>
+                <div class="porta-grupo"><span>Quem pede</span>
+                  <div class="dz-botoes">
+                    <button type="button" data-quem="ana" aria-pressed="true">👩 Ana · grupo Monitores</button>
+                    <button type="button" data-quem="visitante" aria-pressed="false">🎫 Visitante · função</button>
+                    <button type="button" data-quem="bia" aria-pressed="false">👧 Bia · sem grupo</button>
+                  </div>
+                </div>
+                <div class="porta-grupo"><span>O que pede</span>
+                  <div class="dz-botoes">
+                    <button type="button" data-pedido="ler" aria-pressed="true">👀 Ler uma foto</button>
+                    <button type="button" data-pedido="apagar" aria-pressed="false">🗑️ Apagar uma foto</button>
+                    <button type="button" data-pedido="lista" aria-pressed="false">📋 Ler a lista de clientes</button>
+                  </div>
+                </div>
+                <div class="porta-grupo"><span>Políticas ligadas (clique para ligar e desligar)</span>
+                  <div class="dz-botoes porta-politicas">
+                    <button type="button" data-politica="lerfotos" data-efeito="Allow" aria-pressed="true">LerFotos<small>Allow · ler fotos/* · grupo Monitores e visitante</small></button>
+                    <button type="button" data-politica="tudo" data-efeito="Allow" aria-pressed="false">TudoNoS3<small>Allow · s3:* em tudo · só a Ana</small></button>
+                    <button type="button" data-politica="protege" data-efeito="Deny" aria-pressed="false">ProtegeClientes<small>Deny · lista-clientes/* · todo mundo</small></button>
+                  </div>
+                </div>
+                <div class="porta-cena">
+                  <div>
+                    <p class="porta-pedido" data-pedido-txt></p>
+                    <ol class="porta-passos" aria-live="polite">
+                      <li><b>passo 1</b><span></span></li>
+                      <li><b>passo 2</b><span></span></li>
+                      <li><b>passo 3</b><span></span></li>
+                    </ol>
+                  </div>
+                  <div class="porta-fechadura" aria-hidden="true"><span class="porta-led"></span><span>🚪 ESP32<br>porta 3</span></div>
+                </div>
+                <p class="porta-resultado" aria-live="polite"></p>
+              </div>
+              <details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>A Ana tem a TudoNoS3, que libera tudo, e a empresa liga a ProtegeClientes. Ela consegue ler a lista de clientes?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p>Não. Um <strong>Deny explícito vence qualquer Allow</strong>, em qualquer política. Teste: ligue as duas e peça a lista.</p></div>
+              </details>
               <p class="dica"><strong>Políticas gerenciadas pela AWS</strong> (prontas, para casos comuns) são um bom começo; as <strong>políticas do cliente</strong> (feitas por você) chegam mais perto do menor privilégio.</p>
             </div>
           </div>
@@ -262,27 +386,58 @@
           </div>
         </section>
 
+        <!-- ===================== DESMONTE A FECHADURA (vivo.js, parte 4) ===================== -->
+        <section class="parte" id="fechadura">
+          <div class="cab">
+            <span class="olho">X1 · desmonte a fechadura</span>
+            <h2>O IAM cabe num ESP32</h2>
+            <p>Uma fechadura eletrônica de laboratório tem as mesmas ideias do IAM. Clique em cada peça e descubra o nome dela na AWS. Já montou uma com Arduino ou ESP32? Compare com a sua.</p>
+          </div>
+          <div class="placa-nuvem" data-placa="fechadura">
+            <div class="placa-desenho">
+              <svg viewBox="0 0 400 300" aria-hidden="true" focusable="false" preserveAspectRatio="none">
+                <path class="placa-trilha" d="M120 80 H160 V120 H152 M120 220 H160 V180 H152 M256 140 H288 V80 M256 160 H280 V220"/>
+                <path class="placa-pulso" d="M120 80 H160 V120 H152 M256 140 H288 V80 M256 160 H280 V220"/>
+                <g class="placa-enfeite"><circle cx="20" cy="20" r="6"/><circle cx="380" cy="20" r="6"/><circle cx="20" cy="280" r="6"/><circle cx="380" cy="280" r="6"/></g>
+              </svg>
+              <button type="button" class="peca leitor" data-peca="leitor" aria-pressed="false"><span>LEITOR<br>RFID</span></button>
+              <button type="button" class="peca cartoes" data-peca="cartoes" aria-pressed="false"><span>CARTÕES</span></button>
+              <button type="button" class="peca esp" data-peca="esp" aria-pressed="false"><span>ESP32<br>regras</span></button>
+              <button type="button" class="peca sd" data-peca="sd" aria-pressed="false"><span>CARTÃO<br>SD</span></button>
+              <button type="button" class="peca mestra" data-peca="mestra" aria-pressed="false"><span>🔑 CHAVE<br>MESTRA</span></button>
+            </div>
+            <div class="placa-ficha" aria-live="polite">
+              <span class="olho">fechadura de laboratório</span>
+              <h4>Clique numa peça</h4>
+              <p>Cada peça da fechadura tem uma irmã no IAM e nos serviços de segurança da AWS.</p>
+              <p class="placa-contagem">0 de 5 peças</p>
+            </div>
+          </div>
+          <p class="fonte">Fontes: <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html">AWS, What is IAM?</a> e <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html">AWS, What is AWS CloudTrail?</a>, consultados em 10/11/2026.</p>
+        </section>
+
         <!-- ===================== DEMONSTRAÇÃO ===================== -->
         <section class="parte" id="demonstracao">
           <div class="cab">
             <span class="olho">D1 · demonstração</span>
-            <h2>O console do IAM e uma política por dentro</h2>
-            <p>Hoje é para conhecer o IAM; criar usuários e grupos é no laboratório do Módulo 4, na Academy.</p>
+            <h2>Faça junto: o console do IAM e uma política por dentro</h2>
+            <p>Hoje é para conhecer o IAM; criar usuários e grupos é no laboratório do Módulo 4, na Academy. Abra o Learner Lab noutra aba e marque cada passo aqui.</p>
           </div>
 
           <div class="conceito" style="grid-template-columns:1fr">
             <div class="texto">
-              <div class="faca-assim">
-                <strong>Faça assim:</strong>
-                <ol>
-                  <li>Abra o <strong>Learner Lab</strong>, clique em <strong>Start Lab</strong> e espere a bolinha ao lado de <strong>AWS</strong> ficar verde.</li>
-                  <li>Clique em <strong>AWS</strong> e, na busca do topo, abra o <strong>IAM</strong>.</li>
-                  <li>No menu da esquerda, passe por <strong>Users</strong> (usuários), <strong>User groups</strong> (grupos), <strong>Roles</strong> (funções) e <strong>Policies</strong> (políticas).</li>
-                  <li>Em <strong>Roles</strong>, veja as funções que o próprio laboratório usa: é assim que serviços recebem permissões sem senha.</li>
-                  <li>Em <strong>Policies</strong>, procure <strong>AmazonS3ReadOnlyAccess</strong>, uma política gerenciada pela AWS, e abra a aba <strong>JSON</strong>.</li>
-                  <li>Ache no JSON o <code>Effect</code>, o <code>Action</code> e o <code>Resource</code>. Volte ao laboratório e clique em <strong>End Lab</strong>.</li>
-                </ol>
+              <div class="progresso-atividade" data-progresso="console-aula-04">
+                <span class="contagem">0 de 6</span>
+                <span class="barra-progresso"><span></span></span>
               </div>
+              <ol class="checklist" id="console-aula-04">
+                <li><label><input type="checkbox"><span>Abri o <strong>Learner Lab</strong>, cliquei em <strong>Start Lab</strong> e esperei a bolinha ao lado de <strong>AWS</strong> ficar verde.</span></label></li>
+                <li><label><input type="checkbox"><span>Cliquei em <strong>AWS</strong> e, na busca do topo, abri o <strong>IAM</strong>.</span></label></li>
+                <li><label><input type="checkbox"><span>No menu da esquerda, passei por <strong>Users</strong> (usuários), <strong>User groups</strong> (grupos), <strong>Roles</strong> (funções) e <strong>Policies</strong> (políticas).</span></label></li>
+                <li><label><input type="checkbox"><span>Em <strong>Roles</strong>, vi as funções que o próprio laboratório usa: é assim que serviços recebem permissões sem senha.</span></label></li>
+                <li><label><input type="checkbox"><span>Em <strong>Policies</strong>, procurei <strong>AmazonS3ReadOnlyAccess</strong>, uma política gerenciada pela AWS, e abri a aba <strong>JSON</strong>.</span></label></li>
+                <li><label><input type="checkbox"><span>Achei no JSON o <code>Effect</code>, o <code>Action</code> e o <code>Resource</code>. Voltei ao laboratório e cliquei em <strong>End Lab</strong>.</span></label></li>
+              </ol>
               <div class="faca-assim">
                 <strong>Teste:</strong>
                 <ol>
@@ -311,6 +466,10 @@
                 <tr><td>As regras de rede</td><td>Os grupos de segurança do banco.</td></tr>
                 <tr><td>O código</td><td>Uma falha no código da função Lambda.</td></tr>
               </tbody></table></div>
+<details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>No Amazon RDS, quem decide ligar a criptografia do banco?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p>O <strong>cliente</strong>. A AWS oferece a criptografia e faz ela funcionar, mas escolher ligar e escolher as chaves é configuração: coluna do cliente.</p></div>
+              </details>
               <p class="dica cuidado"><strong>E as frases erradas que mais aparecem:</strong> "use a conta raiz para as tarefas do dia a dia"; "dê acesso de administrador a todos, para ninguém ficar travado"; "a AWS é responsável pelos dados que o cliente guarda".</p>
               <div class="faca-assim">
                 <strong>Teste:</strong>
@@ -406,7 +565,7 @@
 
           <div class="cartao">
             <div class="progresso-atividade" data-progresso="passos-aula-04">
-              <span class="contagem">0 de 8</span>
+              <span class="contagem">0 de 10</span>
               <span class="barra-progresso"><span></span></span>
             </div>
             <ol class="checklist" id="passos-aula-04">
@@ -418,6 +577,8 @@
               <li><label><input type="checkbox"><span>Ligo cada pista ao serviço de segurança certo. <a href="#c5">Veja o C5</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Explorei o IAM no console, fiz os três treinos e cliquei em End Lab. <a href="#demonstracao">Veja o D1</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Fiz o Módulo 4 e o laboratório do IAM na AWS Academy e marquei no <a href="../#cursos">Meu progresso</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Tranquei a conta no simulador, fechando as cinco brechas. <a href="#simulador">Veja o SIM1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Testei a porta do laboratório com e sem o Deny, e desmontei a fechadura. <a href="#c3">Veja o C3</a> e o <a href="#fechadura">X1</a>.</span></label></li>
             </ol>
           </div>
         </section>
@@ -508,5 +669,6 @@
   <script src="../assets/js/aulas.js?v=3"></script>
   <script src="../assets/js/classifica.js?v=2"></script>
   <script src="../assets/js/matrix.js?v=3"></script>
+  <script src="../js/vivo.js?v=4"></script>
 </body>
 </html>
