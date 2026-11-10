@@ -6,7 +6,7 @@
 
   <!-- EDITE AQUI: número e tema da aula -->
   <title>Aula 1: O que é computação em nuvem · Preparatório AWS · Stela</title>
-  <meta name="description" content="Aula 1 do Preparatório AWS Cloud Foundations: a definição de nuvem da AWS, IaaS, PaaS e SaaS, os modelos de implantação, as seis vantagens e a pegadinha da elasticidade, com treinos e o tour pelo console.">
+  <meta name="description" content="Aula 1 do Preparatório AWS Cloud Foundations: o simulador da abertura das vendas, a definição de nuvem da AWS, IaaS, PaaS e SaaS, os modelos de implantação, as seis vantagens e a pegadinha da elasticidade, com treinos e o tour pelo console.">
 
   <link rel="icon" href="../assets/img/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" href="../assets/img/favicon-32.png">
@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="../assets/css/neon.css?v=5">
   <link rel="stylesheet" href="../css/interativos.css?v=1">
   <link rel="stylesheet" href="../css/aula-aws.css?v=6">
+  <link rel="stylesheet" href="../css/vivo.css?v=1">
 </head>
 <body>
 
@@ -33,7 +34,7 @@
       <button type="button" class="btn-menu" id="btn-menu" aria-expanded="false" aria-controls="menu">Menu</button>
       <nav class="nav" id="menu" aria-label="Partes da aula">
         <a href="../#videos">← Preparatório</a>
-        <a href="#caso">Caso</a>
+        <a href="#simulador">Simulador</a>
         <a href="#conceitos">Conceitos</a>
         <a href="#demonstracao">Console</a>
         <a href="#pegadinha">Pegadinha</a>
@@ -111,20 +112,45 @@
         <section class="parte" id="video">
           <div class="cab">
             <span class="olho">V1 · vídeo</span>
-            <h2>Neste vídeo, em uns 10 minutos</h2>
-            <p>A página segue a mesma ordem. Quer rever só um pedaço? Pule direto para ele.</p>
+            <h2>Neste vídeo, em uns 9 minutos</h2>
+            <p>A página segue a mesma ordem. Viu o <strong>⏸ Pausa aqui</strong>? Pause o vídeo e tente responder antes de mim.</p>
           </div>
           <div class="cartao">
             <ol class="roteiro-video">
-              <li><time>0:00</time><a href="#caso">O caso: a venda de ingressos que derrubou o site</a></li>
-              <li><time>0:45</time><a href="#c1">C1 · O que é nuvem, na definição da AWS</a></li>
-              <li><time>1:45</time><a href="#c2">C2 · IaaS, PaaS e SaaS: quem cuida de quê</a></li>
-              <li><time>4:00</time><a href="#c3">C3 · Onde a aplicação roda: os modelos de implantação</a></li>
+              <li><time>0:00</time><a href="#gancho">G1 · Faltam 10 segundos: o site aguenta?</a></li>
+              <li><time>0:40</time><a href="#simulador">SIM1 · A noite da abertura das vendas, no simulador</a></li>
+              <li><time>2:30</time><a href="#c1">C1 · O que é nuvem, na definição da AWS</a></li>
+              <li><time>3:15</time><a href="#c2">C2 · Quem cuida de quê: casa, apê ou hotel?</a></li>
+              <li><time>4:30</time><a href="#c3">C3 · Onde a aplicação roda: os modelos de implantação</a></li>
               <li><time>5:00</time><a href="#c4">C4 · As seis vantagens da nuvem</a></li>
-              <li><time>7:00</time><a href="#demonstracao">D1 · Tour pelo console da AWS</a></li>
-              <li><time>8:45</time><a href="#pegadinha">P1 · A pegadinha: elasticidade não é escalabilidade</a></li>
-              <li><time>9:30</time><a href="#academy">Agora é na AWS Academy</a></li>
+              <li><time>6:00</time><a href="#placa">X1 · Desmonte a nuvem: a placa de sucata</a></li>
+              <li><time>6:45</time><a href="#demonstracao">D1 · Faça junto: tour pelo console</a></li>
+              <li><time>8:15</time><a href="#pegadinha">P1 · A pegadinha: elasticidade não é escalabilidade</a></li>
+              <li><time>8:50</time><a href="#academy">Agora é na AWS Academy</a></li>
             </ol>
+          </div>
+        </section>
+
+        <!-- ===================== GANCHO (vivo.js, parte 1) ===================== -->
+        <section class="parte" id="gancho">
+          <div class="cab">
+            <span class="olho">G1 · gancho</span>
+            <h2>Faltam 10 segundos</h2>
+          </div>
+          <div class="gancho" data-gancho>
+            <p class="gancho-evento">🎤 Ingresso Candango · abertura das vendas</p>
+            <p class="gancho-titulo">O show mais esperado do ano em Brasília</p>
+            <div class="gancho-relogio" style="--falta:1"><span data-contagem>10</span><small>segundos</small></div>
+            <p class="gancho-fila"><strong data-fila>38.000</strong> pessoas na fila, com o dedo no botão Comprar</p>
+            <button type="button" class="botao" data-iniciar>▶ Começar a contagem</button>
+            <div class="gancho-voto" hidden>
+              <p class="gancho-pergunta" tabindex="-1">Zero! Todo mundo clicou ao mesmo tempo. O site aguenta?</p>
+              <div class="gancho-botoes">
+                <button type="button" data-voto="aguenta" aria-pressed="false">💪 Aguenta</button>
+                <button type="button" data-voto="cai" aria-pressed="false">💥 Cai</button>
+              </div>
+              <p class="gancho-resposta" aria-live="polite"></p>
+            </div>
           </div>
         </section>
 
@@ -146,6 +172,48 @@
             </ol>
             <p class="fonte">Empresa fictícia, criada para a aula. Volte a ela no fim de cada conceito.</p>
           </div>
+        </section>
+
+        <!-- ===================== SIMULADOR (vivo.js, parte 2) ===================== -->
+        <section class="parte" id="simulador">
+          <div class="cab">
+            <span class="olho">SIM1 · simulador</span>
+            <h2>A noite da abertura das vendas</h2>
+            <p>Escolha onde o site da Ingresso Candango roda e aperte <strong>Abrir as vendas</strong>. O dia passa depressa, e às 19h a fila explode. Teste os três.</p>
+          </div>
+          <div class="sim" data-sim>
+            <div class="sim-modos" role="group" aria-label="Onde o site roda">
+              <button type="button" data-modo="sala2" aria-pressed="true"><span class="ico" aria-hidden="true">🏢</span><span><strong>Salinha<span class="feito"></span></strong><small>2 servidores</small></span></button>
+              <button type="button" data-modo="sala20" aria-pressed="false"><span class="ico" aria-hidden="true">🏗️</span><span><strong>Salinha turbinada<span class="feito"></span></strong><small>comprou 20 servidores</small></span></button>
+              <button type="button" data-modo="nuvem" aria-pressed="false"><span class="ico" aria-hidden="true">☁️</span><span><strong>Nuvem da AWS<span class="feito"></span></strong><small>liga e desliga sozinha</small></span></button>
+            </div>
+            <div class="sim-palco"></div>
+            <div class="sim-grafico"></div>
+            <ul class="sim-legenda">
+              <li><i style="--c:var(--neon)"></i>procura (quantos servidores a fila pede)</li>
+              <li><i style="--c:var(--vivo-ok)"></i>servidores ligados</li>
+              <li><i style="--c:var(--vivo-ruim)"></i>fãs sem atendimento</li>
+              <li><i class="listrado"></i>servidor pago e parado</li>
+            </ul>
+            <div class="sim-numeros">
+              <div class="bom"><strong data-n="compraram">—</strong><span>fãs compraram</span></div>
+              <div class="ruim"><strong data-n="desistiram">—</strong><span>fãs desistiram</span></div>
+              <div><strong data-n="pago">—</strong><span>horas de servidor pagas</span></div>
+              <div><strong data-n="parado">—</strong><span>dessas horas, paradas</span></div>
+            </div>
+            <div class="sim-acoes">
+              <button type="button" class="vai">▶ Abrir as vendas</button>
+              <button type="button" class="de-novo">↺ Recomeçar</button>
+            </div>
+            <div class="sim-veredito"></div>
+            <p class="sim-aviso visualmente-oculto" aria-live="polite"></p>
+          </div>
+          <p class="fonte">Simulação com números redondos, para a aula: 1 servidor atende 2 mil pessoas por hora. Na salinha, você paga as 24 horas de cada servidor, usando ou não.</p>
+
+          <details class="pausa-aqui">
+            <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>A salinha turbinada e a nuvem não deixaram ninguém de fora. Qual é a diferença entre elas na conta do mês?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+            <div class="pausa-resposta"><p>Na salinha, você paga os 20 servidores o tempo todo, usando ou não. Na nuvem, você paga só as horas em que eles ficaram ligados. É o <strong>pagamento conforme o uso</strong>, que está bem na definição de nuvem, logo abaixo.</p></div>
+          </details>
         </section>
 
         <!-- ===================== CONCEITOS ===================== -->
@@ -174,21 +242,37 @@
             <div class="texto">
               <span class="olho">C2</span>
               <h3>IaaS, PaaS e SaaS: quem cuida de quê</h3>
-              <p>A pergunta que separa os três é uma só: <strong>até onde você cuida, e a partir de onde a AWS cuida?</strong> Pense numa placa de eletrônica.</p>
-              <div class="tabela-rola"><table class="metodos"><thead><tr><th>Modelo</th><th>Na eletrônica</th><th>Na nuvem</th></tr></thead><tbody>
-                <tr><td><strong>No seu data center</strong></td><td>Você compra os componentes, solda a placa, liga na tomada e conserta quando queima.</td><td>Servidores próprios, como os da Ingresso Candango.</td></tr>
-                <tr><td><strong>IaaS</strong><span class="termo-en">infraestrutura como serviço</span></td><td>A placa chega montada e ligada na energia. Você grava o sistema e o programa.</td><td><strong>Amazon EC2</strong>: você recebe a máquina virtual e cuida do sistema operacional.</td></tr>
-                <tr><td><strong>PaaS</strong><span class="termo-en">plataforma como serviço</span></td><td>Um kit de ESP32 pronto, com a IDE instalada. Você só escreve o código.</td><td><strong>AWS Elastic Beanstalk</strong>: você envia a aplicação e a AWS monta e mantém o ambiente.</td></tr>
-                <tr><td><strong>SaaS</strong><span class="termo-en">software como serviço</span></td><td>O aparelho pronto, como uma lâmpada inteligente: é só usar pelo aplicativo.</td><td>Um programa pronto no navegador, como o Microsoft 365 ou o Gmail.</td></tr>
-              </tbody></table></div>
-              <div class="tabela-rola"><table class="metodos camadas"><thead><tr><th>Camada</th><th>Seu data center</th><th>IaaS</th><th>PaaS</th><th>SaaS</th></tr></thead><tbody>
-                <tr><td>Dados e contas de acesso</td><td class="voce">você</td><td class="voce">você</td><td class="voce">você</td><td class="voce">você</td></tr>
-                <tr><td>Aplicação</td><td class="voce">você</td><td class="voce">você</td><td class="voce">você</td><td class="provedor">AWS</td></tr>
-                <tr><td>Sistema operacional</td><td class="voce">você</td><td class="voce">você</td><td class="provedor">AWS</td><td class="provedor">AWS</td></tr>
-                <tr><td>Servidores, discos e rede</td><td class="voce">você</td><td class="provedor">AWS</td><td class="provedor">AWS</td><td class="provedor">AWS</td></tr>
-                <tr><td>Prédio, energia e refrigeração</td><td class="voce">você</td><td class="provedor">AWS</td><td class="provedor">AWS</td><td class="provedor">AWS</td></tr>
-              </tbody></table></div>
-              <p class="legenda-camadas">Em <span class="voce">destaque</span>, o que fica com você. Os dados e quem tem acesso a eles são sempre seus, em qualquer modelo: é a responsabilidade compartilhada, que volta na aula 4.</p>
+              <p>A pergunta que separa os três é uma só: <strong>até onde você cuida, e a partir de onde o provedor cuida?</strong> Pense em onde você mora. Clique em cada jeito de morar.</p>
+              <div class="casa" data-casa>
+                <div class="casa-modos" role="group" aria-label="Escolha o jeito de morar">
+                  <button type="button" data-modo="0" aria-pressed="true"><span class="ico" aria-hidden="true">🏠</span><strong>Casa própria</strong><small>local</small></button>
+                  <button type="button" data-modo="1" aria-pressed="false"><span class="ico" aria-hidden="true">🔑</span><strong>Apê vazio alugado</strong><small>IaaS</small></button>
+                  <button type="button" data-modo="2" aria-pressed="false"><span class="ico" aria-hidden="true">🛋️</span><strong>Apê mobiliado</strong><small>PaaS</small></button>
+                  <button type="button" data-modo="3" aria-pressed="false"><span class="ico" aria-hidden="true">🛎️</span><strong>Hotel</strong><small>SaaS</small></button>
+                </div>
+                <ol class="casa-camadas">
+                  <li class="camada" style="--i:0"><span class="dia"><span aria-hidden="true">🧳</span><span>Suas coisas e a chave</span></span><span class="quem">você</span><span class="tec-nome">Dados e contas de acesso</span></li>
+                  <li class="camada" style="--i:1"><span class="dia"><span aria-hidden="true">🍳</span><span>Cozinhar e arrumar</span></span><span class="quem">você</span><span class="tec-nome">Aplicação</span></li>
+                  <li class="camada" style="--i:2"><span class="dia"><span aria-hidden="true">🛋️</span><span>Móveis e geladeira</span></span><span class="quem">você</span><span class="tec-nome">Sistema operacional</span></li>
+                  <li class="camada" style="--i:3"><span class="dia"><span aria-hidden="true">🧱</span><span>Paredes, canos e fiação</span></span><span class="quem">você</span><span class="tec-nome">Servidores, discos e rede</span></li>
+                  <li class="camada" style="--i:4"><span class="dia"><span aria-hidden="true">🏗️</span><span>Terreno, portaria e luz do prédio</span></span><span class="quem">você</span><span class="tec-nome">Prédio, energia e refrigeração</span></li>
+                </ol>
+                <p class="casa-fala" aria-live="polite"></p>
+              </div>
+              <details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>No hotel, quem troca a lâmpada queimada do quarto? E num SaaS, quem atualiza o programa?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p>O hotel. No SaaS é igual: quem fornece o programa (a AWS, a Microsoft, o Google) cuida das atualizações. Você só usa, e cuida dos seus dados e da sua senha.</p></div>
+              </details>
+              <details class="mais-analogia">
+                <summary>Prefere a analogia da eletrônica? Abra aqui.</summary>
+                <div class="tabela-rola"><table class="metodos"><thead><tr><th>Modelo</th><th>Na eletrônica</th><th>Na nuvem</th></tr></thead><tbody>
+                  <tr><td><strong>No seu data center</strong></td><td>Você compra os componentes, solda a placa, liga na tomada e conserta quando queima.</td><td>Servidores próprios, como os da Ingresso Candango.</td></tr>
+                  <tr><td><strong>IaaS</strong><span class="termo-en">infraestrutura como serviço</span></td><td>A placa chega montada e ligada na energia. Você grava o sistema e o programa.</td><td><strong>Amazon EC2</strong>: você recebe a máquina virtual e cuida do sistema operacional.</td></tr>
+                  <tr><td><strong>PaaS</strong><span class="termo-en">plataforma como serviço</span></td><td>Um kit de ESP32 pronto, com a IDE instalada. Você só escreve o código.</td><td><strong>AWS Elastic Beanstalk</strong>: você envia a aplicação e a AWS monta e mantém o ambiente.</td></tr>
+                  <tr><td><strong>SaaS</strong><span class="termo-en">software como serviço</span></td><td>O aparelho pronto, como uma lâmpada inteligente: é só usar pelo aplicativo.</td><td>Um programa pronto no navegador, como o Microsoft 365 ou o Gmail.</td></tr>
+                </tbody></table></div>
+              </details>
+              <p class="legenda-camadas">Os dados e quem tem acesso a eles são sempre seus, em qualquer modelo: é a responsabilidade compartilhada, que volta na aula 4.</p>
               <p class="dica"><strong>Na prova:</strong> "mais controle" sobre o servidor aponta para IaaS. "Sem gerenciar a infraestrutura, só o código" aponta para PaaS. "Usar o programa pronto" aponta para SaaS.</p>
             </div>
           </div>
@@ -212,7 +296,7 @@
             <div class="texto">
               <span class="olho">C4</span>
               <h3>As seis vantagens da nuvem</h3>
-              <p>Esta lista é da própria AWS e cai muito na prova, às vezes com o nome em inglês. Leia cada uma pensando na Ingresso Candango.</p>
+              <p>Esta lista é da própria AWS e cai muito na prova, às vezes com o nome em inglês. Leia cada uma pensando na Ingresso Candango. Três delas você já viu acender no <a href="#simulador">simulador</a>, no modo Nuvem.</p>
               <div class="tabela-rola"><table class="metodos"><thead><tr><th>Vantagem</th><th>O que quer dizer</th><th>Na Ingresso Candango</th></tr></thead><tbody>
                 <tr><td><strong>Trocar despesa fixa por variável</strong><span class="termo-en">Trade fixed expense for variable expense</span></td><td>Em vez de comprar servidores antes, você paga quando usa, e só o que usa.</td><td>Paga pelos vinte servidores só nas horas da venda.</td></tr>
                 <tr><td><strong>Ganhar com a economia de escala</strong><span class="termo-en">Benefit from massive economies of scale</span></td><td>A AWS atende muita gente junta e compra em grande quantidade, e o preço por hora cai.</td><td>A hora de servidor na AWS sai mais barata do que montar e manter a salinha.</td></tr>
@@ -227,28 +311,63 @@
           </div>
         </section>
 
+        <!-- ===================== DESMONTE A NUVEM (vivo.js, parte 4) ===================== -->
+        <section class="parte" id="placa">
+          <div class="cab">
+            <span class="olho">X1 · desmonte a nuvem</span>
+            <h2>A nuvem é o computador de outra pessoa</h2>
+            <p>Num prédio enorme, com milhares deles. No vídeo eu mostro uma placa-mãe de sucata. Aqui, clique nas peças e descubra o nome de cada uma na AWS.</p>
+          </div>
+          <div class="placa-nuvem" data-placa>
+            <div class="placa-desenho">
+              <svg viewBox="0 0 400 300" aria-hidden="true" focusable="false" preserveAspectRatio="none">
+                <path class="placa-trilha" d="M70 102 V150 H150 M268 60 H280 V150 H248 M200 186 V216 M130 236 H168 M60 192 V150 H150"/>
+                <path class="placa-pulso" d="M70 102 V150 H150 M268 60 H280 V150 H248 M60 192 V150 H150"/>
+                <g class="placa-enfeite">
+                  <circle cx="20" cy="20" r="6"/><circle cx="380" cy="20" r="6"/><circle cx="20" cy="280" r="6"/><circle cx="380" cy="280" r="6"/>
+                  <circle cx="150" cy="150" r="3"/><circle cx="248" cy="150" r="3"/><circle cx="200" cy="216" r="3"/><circle cx="130" cy="236" r="3"/><circle cx="60" cy="150" r="3"/>
+                  <rect x="300" y="250" width="22" height="9" rx="2"/><rect x="330" y="250" width="22" height="9" rx="2"/><rect x="186" y="40" width="9" height="22" rx="2"/><rect x="204" y="40" width="9" height="22" rx="2"/>
+                </g>
+              </svg>
+              <button type="button" class="peca rede" data-peca="rede" aria-pressed="false"><span>REDE<br>RJ45</span></button>
+              <button type="button" class="peca cpu" data-peca="cpu" aria-pressed="false"><span>CPU</span></button>
+              <button type="button" class="peca ram" data-peca="ram" aria-pressed="false"><span>RAM</span></button>
+              <button type="button" class="peca disco" data-peca="disco" aria-pressed="false"><span>SSD</span></button>
+              <button type="button" class="peca energia" data-peca="energia" aria-pressed="false"><span>FONTE<br>COOLER</span></button>
+            </div>
+            <div class="placa-ficha" aria-live="polite">
+              <span class="olho">placa-mãe de sucata</span>
+              <h4>Clique numa peça</h4>
+              <p>Cada peça desta placa tem um nome na AWS. Tudo o que você aluga numa máquina virtual está aqui.</p>
+              <p class="placa-contagem">0 de 5 peças</p>
+            </div>
+          </div>
+          <p class="fonte">Fontes: <a href="https://aws.amazon.com/ec2/instance-types/t3/">AWS, Amazon EC2 T3 Instances</a>; <a href="https://aws.amazon.com/ebs/pricing/">AWS, Amazon EBS pricing</a>; <a href="https://aws.amazon.com/ec2/pricing/on-demand/">AWS, Amazon EC2 On-Demand Pricing</a> (transferência de dados). Consultados em 10/11/2026.</p>
+        </section>
+
         <!-- ===================== DEMONSTRAÇÃO ===================== -->
         <section class="parte" id="demonstracao">
           <div class="cab">
             <span class="olho">D1 · demonstração</span>
-            <h2>Tour pelo console da AWS</h2>
-            <p>No vídeo eu faço junto com você. Faça no seu Learner Lab, um passo de cada vez.</p>
+            <h2>Faça junto: tour pelo console da AWS</h2>
+            <p>Deixe o vídeo numa metade da tela e o Learner Lab na outra. Eu faço, você faz junto, e marca cada passo.</p>
           </div>
 
           <div class="conceito" style="grid-template-columns:1fr">
             <div class="texto">
-              <div class="faca-assim">
-                <strong>Faça assim:</strong>
-                <ol>
-                  <li>Entre na <a href="https://awsacademy.instructure.com/">AWS Academy</a> e abra o <strong>Learner Lab</strong>.</li>
-                  <li>Clique em <strong>Start Lab</strong> e espere a bolinha ao lado de <strong>AWS</strong> ficar verde.</li>
-                  <li>Clique em <strong>AWS</strong>. O console abre em outra aba.</li>
-                  <li>Abra o menu de serviços, no canto de cima à esquerda, e veja as categorias: computação, armazenamento, banco de dados, redes…</li>
-                  <li>Na busca do topo, digite <strong>EC2</strong> e abra o serviço. Cada serviço tem a sua página.</li>
-                  <li>No canto de cima à direita, veja o nome da <strong>região</strong>. Deixe a que vier: o Learner Lab trabalha com poucas regiões.</li>
-                  <li>Volte à aba do laboratório e clique em <strong>End Lab</strong>.</li>
-                </ol>
+              <div class="progresso-atividade" data-progresso="console-aula-01">
+                <span class="contagem">0 de 7</span>
+                <span class="barra-progresso"><span></span></span>
               </div>
+              <ol class="checklist" id="console-aula-01">
+                <li><label><input type="checkbox"><span>Entrei na <a href="https://awsacademy.instructure.com/">AWS Academy</a> e abri o <strong>Learner Lab</strong>.</span></label></li>
+                <li><label><input type="checkbox"><span>Cliquei em <strong>Start Lab</strong> e esperei a bolinha ao lado de <strong>AWS</strong> ficar verde.</span></label></li>
+                <li><label><input type="checkbox"><span>Cliquei em <strong>AWS</strong>. O console abriu em outra aba.</span></label></li>
+                <li><label><input type="checkbox"><span>Abri o menu de serviços, no canto de cima à esquerda, e vi as categorias: computação, armazenamento, banco de dados, redes…</span></label></li>
+                <li><label><input type="checkbox"><span>Digitei <strong>EC2</strong> na busca do topo e abri o serviço. Cada serviço tem a sua página.</span></label></li>
+                <li><label><input type="checkbox"><span>Achei o nome da <strong>região</strong>, no canto de cima à direita. Deixei a que veio: o Learner Lab trabalha com poucas regiões.</span></label></li>
+                <li><label><input type="checkbox"><span>Voltei à aba do laboratório e cliquei em <strong>End Lab</strong>.</span></label></li>
+              </ol>
               <div class="faca-assim">
                 <strong>Teste:</strong>
                 <ol>
@@ -279,6 +398,10 @@
                 <tr><td><strong>Agilidade</strong><span class="termo-en">agility</span></td><td>Ter recursos em minutos para testar e lançar coisas novas.</td><td>"Experimentar rápido", "de semanas para minutos".</td></tr>
               </tbody></table></div>
               <p class="dica cuidado"><strong>A regra:</strong> a questão fala em <strong>diminuir também</strong>? É elasticidade. Toda nuvem elástica é escalável, mas nem todo sistema escalável é elástico.</p>
+              <details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>Uma loja aguenta o Natal porque comprou servidores em outubro e nunca mais desligou. Ela é escalável ou elástica?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p><strong>Escalável:</strong> cresceu para aguentar mais. Mas não diminui sozinha depois do Natal, então não é elástica. É a salinha turbinada do simulador.</p></div>
+              </details>
               <div class="faca-assim">
                 <strong>Teste:</strong>
                 <ol>
@@ -353,7 +476,7 @@
 
           <div class="cartao">
             <div class="progresso-atividade" data-progresso="passos-aula-01">
-              <span class="contagem">0 de 8</span>
+              <span class="contagem">0 de 10</span>
               <span class="barra-progresso"><span></span></span>
             </div>
             <ol class="checklist" id="passos-aula-01">
@@ -362,9 +485,11 @@
               <li><label><input type="checkbox"><span>Separo IaaS, PaaS e SaaS pela pergunta "quem cuida de quê". <a href="#c2">Veja o C2</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Sei os três modelos de implantação da AWS. <a href="#c3">Veja o C3</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Sei as seis vantagens, também com o nome em inglês. <a href="#c4">Veja o C4</a>.</span></label></li>
-              <li><label><input type="checkbox"><span>Fiz o tour pelo console e cliquei em End Lab. <a href="#demonstracao">Veja o D1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Fiz o tour pelo console junto com o vídeo e cliquei em End Lab. <a href="#demonstracao">Veja o D1</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Fiz os dois treinos Classifique! e ganhei as insígnias. <a href="#treino">Veja o treino</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Fiz o Módulo 1 na AWS Academy e marquei no <a href="../#cursos">Meu progresso</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Rodei o simulador nos três modos e sei explicar quem perdeu cliente e quem pagou à toa. <a href="#simulador">Veja o SIM1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Desmontei a nuvem: sei o nome na AWS das cinco peças da placa. <a href="#placa">Veja o X1</a>.</span></label></li>
             </ol>
           </div>
         </section>
@@ -455,5 +580,6 @@
   <script src="../assets/js/aulas.js?v=3"></script>
   <script src="../assets/js/classifica.js?v=2"></script>
   <script src="../assets/js/matrix.js?v=3"></script>
+  <script src="../js/vivo.js?v=1"></script>
 </body>
 </html>
