@@ -1,6 +1,6 @@
 /*
   vivo.css: as peças das aulas "vivas" do Preparatório AWS (gancho, simulador, pausa aqui, casa ou hotel, placa).
-  versão 1 · 2026-11-10 · só deste site. Começou na aula 1; as outras aulas podem usar as mesmas peças.
+  versão 2 · 2026-11-10 · só deste site. Aula 1 e aula 2 (conta do susto, taxímetro, transporte, iceberg, pit stop, conta de luz).
   Todas as animações param com o botão de pausa (html.pausado) e com o "reduzir movimento" do sistema.
 */
 
@@ -515,6 +515,360 @@
   .camada .quem { grid-row: 1; grid-column: 2; }
 }
 
+/* ===================== aula 2 · G1 a conta do susto ===================== */
+.susto-celular {
+  width: min(100%, 22rem);
+  margin: 1.2rem auto;
+  padding: 1rem;
+  border-radius: 28px;
+  border: 3px solid #2b3530;
+  background: #0d1411;
+  text-align: left;
+}
+.susto-notif {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: .7rem;
+  align-items: center;
+  padding: .8rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, .08);
+  animation: chega .6s cubic-bezier(.2, 1.4, .4, 1) both;
+}
+.susto-notif .app {
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 10px;
+  background: #fff;
+}
+.susto-notif .app img { width: 1.9rem; }
+.susto-notif small { display: block; font: 500 .75rem var(--f-mono); color: #a3b0a8; }
+.susto-notif strong { font: 700 .98rem/1.3 var(--f-texto); color: #fff; }
+@keyframes chega { from { transform: translateY(-30px) scale(.9); opacity: 0; } }
+.susto-fatura {
+  margin-top: .8rem;
+  padding: 1rem;
+  border-radius: 14px;
+  background: #f6f5f1;
+  color: #121714;
+  font: 500 .9rem var(--f-mono);
+  animation: surge .4s ease-out;
+}
+.susto-fatura .linha { display: flex; justify-content: space-between; gap: 1rem; padding: .2rem 0; border-bottom: 1px dashed #cfcac0; }
+.susto-fatura .linha span:last-child { white-space: nowrap; }
+.susto-fatura .total { font: 900 1.6rem var(--f-titulo); color: #c22450; text-align: right; margin: .5rem 0 0; }
+.susto-fatura .normal { font-size: .8rem; color: #4a5650; text-align: right; margin: 0; }
+.susto .gancho-botoes button { font-size: .95rem; }
+
+/* ===================== aula 2 · SIM1 o taxímetro ===================== */
+.tx-topo {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: stretch;
+}
+.tx-visor {
+  display: grid;
+  align-content: center;
+  gap: .3rem;
+  padding: 1rem 1.2rem;
+  border-radius: 16px;
+  background: #050807;
+  box-shadow: inset 0 0 0 3px #1c2621;
+  color: #a3b0a8;
+  font: 500 .8rem var(--f-mono);
+}
+.tx-visor strong {
+  font: 500 clamp(2rem, 6vw, 3rem)/1 var(--f-mono);
+  color: #39ff9e;
+  text-shadow: 0 0 14px rgba(57, 255, 158, .55);
+  font-variant-numeric: tabular-nums;
+  transition: color .3s;
+}
+.estourou .tx-visor strong { color: #ff5c7a; text-shadow: 0 0 14px rgba(255, 92, 122, .6); animation: pisca .6s 3; }
+.tx-mes { height: 6px; border-radius: 3px; background: #1c2621; overflow: hidden; }
+.tx-mes i { display: block; height: 100%; width: 0; background: var(--neon); }
+.tx-rack {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 4px;
+  margin-top: .4rem;
+}
+.tx-rack span { aspect-ratio: 1; border-radius: 3px; background: #1c2621; transition: background .2s, box-shadow .2s; }
+.tx-rack span.on { background: #39ff9e; box-shadow: 0 0 8px rgba(57, 255, 158, .7); }
+.tx-setas {
+  display: grid;
+  gap: .5rem;
+  align-content: center;
+  padding: 1rem;
+  border-radius: 16px;
+  background: var(--superficie-2);
+  border: 1px solid var(--borda);
+}
+.tx-seta { display: grid; grid-template-columns: 1fr auto; gap: .5rem; align-items: center; font-size: .92rem; }
+.tx-seta b { font: 700 .82rem var(--f-mono); padding: .15rem .55rem; border-radius: 999px; }
+.tx-seta.entra b { background: color-mix(in srgb, var(--vivo-ok) 22%, transparent); color: var(--vivo-ok); }
+.tx-seta.sai b { background: color-mix(in srgb, var(--vivo-ruim) 18%, transparent); color: var(--vivo-ruim); }
+.tx-fluxo { height: 8px; border-radius: 4px; background-size: 24px 8px; grid-column: 1 / -1; }
+.tx-seta.entra .tx-fluxo { background-image: linear-gradient(90deg, transparent 40%, var(--vivo-ok) 40% 60%, transparent 60%); animation: flui 1s linear infinite; }
+.tx-seta.sai .tx-fluxo { background-image: linear-gradient(90deg, transparent 40%, var(--vivo-ruim) 40% 60%, transparent 60%); animation: flui 1s linear infinite reverse; }
+@keyframes flui { to { background-position: 24px 0; } }
+.tx-controles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: .6rem 1.2rem;
+  margin: 1rem 0;
+}
+.tx-controles label { display: grid; gap: .2rem; font-size: .9rem; color: var(--texto-2); }
+.tx-controles label span { display: flex; justify-content: space-between; gap: .5rem; }
+.tx-controles output { font: 700 .9rem var(--f-mono); color: var(--texto); white-space: nowrap; }
+.tx-controles input[type="range"] { width: 100%; accent-color: var(--neon); }
+.tx-conta { position: relative; margin: .4rem 0 1.8rem; }
+.tx-barra {
+  display: flex;
+  height: 26px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--superficie-2);
+  border: 1px solid var(--borda);
+}
+.tx-barra i { display: block; height: 100%; width: 0; transition: width .15s linear; }
+.tx-barra .comp { background: var(--neon); }
+.tx-barra .arm { background: var(--itn); }
+.tx-barra .sai { background: var(--vivo-ruim); }
+.tx-limite {
+  position: absolute;
+  top: -6px;
+  height: 38px;
+  border-left: 3px dashed var(--texto);
+  transition: left .2s;
+}
+.tx-limite::after {
+  content: "limite do Budgets";
+  position: absolute;
+  top: 40px;
+  left: -3px;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font: 500 .72rem var(--f-mono);
+  color: var(--texto-2);
+}
+.tx-alertas { margin: 0 0 .8rem; padding: 0; list-style: none; display: grid; gap: .4rem; }
+.tx-alertas li {
+  padding: .55rem .9rem;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--vivo-ruim) 14%, var(--superficie-2));
+  border-left: 4px solid var(--vivo-ruim);
+  animation: chega .5s cubic-bezier(.2, 1.4, .4, 1) both;
+}
+.sim-legenda .valor { font: 700 .85rem var(--f-mono); color: var(--texto); margin-left: .3rem; }
+
+/* ===================== aula 2 · C2 qual jeito de pagar ===================== */
+.pagar-perguntas { display: grid; gap: .5rem; margin-bottom: 1rem; }
+.pagar-perguntas button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: .7rem 1rem;
+  border-radius: 14px;
+  border: 1px solid var(--borda-forte);
+  background: var(--superficie-2);
+  color: var(--texto);
+  font: 600 1rem var(--f-texto);
+  text-align: left;
+  cursor: pointer;
+}
+.pagar-perguntas .sn {
+  flex: none;
+  min-width: 3.6rem;
+  padding: .25rem .7rem;
+  border-radius: 999px;
+  text-align: center;
+  font: 800 .8rem var(--f-mono);
+  text-transform: uppercase;
+  background: var(--superficie);
+  box-shadow: inset 0 0 0 2px var(--borda-forte);
+  transition: background .2s, color .2s;
+}
+.pagar-perguntas button[aria-pressed="true"] { border-color: var(--neon); }
+.pagar-perguntas button[aria-pressed="true"] .sn { background: var(--neon); color: #111; box-shadow: none; }
+.pagar-tiles {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: .5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.pagar-tiles li {
+  display: grid;
+  justify-items: center;
+  gap: .2rem;
+  padding: .8rem .4rem;
+  border-radius: 16px;
+  border: 1px solid var(--borda);
+  background: var(--superficie-2);
+  text-align: center;
+  opacity: .5;
+  transition: opacity .3s, transform .3s, border-color .3s, box-shadow .3s;
+}
+.pagar-tiles .ico { font-size: 2rem; }
+.pagar-tiles strong { font: 700 .9rem/1.15 var(--f-titulo); }
+.pagar-tiles small { font: 500 .74rem var(--f-mono); color: var(--neon); }
+.pagar-tiles .desc { font-size: .78rem; color: var(--texto-2); }
+.pagar-tiles li.escolhido { opacity: 1; transform: translateY(-4px); border-color: var(--neon); box-shadow: 0 0 0 1px var(--neon), 0 0 22px -6px var(--neon); }
+.pagar-tiles li.escolhido .ico { animation: nasce .45s ease-out; }
+
+/* ===================== aula 2 · C3 o iceberg ===================== */
+.iceberg {
+  position: relative;
+  overflow: hidden;
+  border-radius: 22px;
+  background: linear-gradient(180deg, #cfe9f5 0 30%, #1b5f86 30%, #0a2b44 100%);
+  padding: 1.2rem 1rem 1rem;
+  color: #0a2b44;
+}
+.iceberg .ponta {
+  width: min(70%, 18rem);
+  margin: 0 auto;
+  padding: 1rem .8rem .9rem;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  background: #fff;
+  text-align: center;
+  font: 800 .9rem/1.2 var(--f-titulo);
+  padding-top: 2.6rem;
+}
+.iceberg .fundo {
+  list-style: none;
+  margin: 0 auto;
+  padding: .8rem .6rem 1rem;
+  width: min(100%, 30rem);
+  display: grid;
+  gap: .4rem;
+  background: rgba(220, 240, 250, .12);
+  clip-path: polygon(14% 0, 86% 0, 100% 40%, 80% 100%, 20% 100%, 0 40%);
+  min-height: 12rem;
+  align-content: center;
+}
+.iceberg .fundo li {
+  justify-self: center;
+  padding: .35rem .9rem;
+  border-radius: 999px;
+  background: #fff;
+  color: #0a2b44;
+  font: 700 .85rem var(--f-texto);
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .4s, transform .4s;
+}
+.iceberg .fundo li.visto { opacity: 1; transform: none; }
+.iceberg .agua { position: absolute; left: 0; right: 0; top: 30%; height: 3px; background: rgba(255, 255, 255, .7); }
+.iceberg-acoes { display: flex; flex-wrap: wrap; gap: .8rem; align-items: center; margin-top: .8rem; }
+.iceberg-acoes .vai { padding: .7rem 1.3rem; border: 0; border-radius: 999px; background: var(--neon); color: #111; font: 700 1rem var(--f-texto); cursor: pointer; }
+.iceberg-acoes .vai:disabled { opacity: .6; cursor: default; }
+.iceberg-fala { margin: 0; color: var(--texto-2); }
+
+/* ===================== aula 2 · C4 antes, durante, depois ===================== */
+.quando {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .8rem;
+  margin: 1rem 0;
+  padding: 0;
+  list-style: none;
+}
+.quando::before {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 2.2rem;
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0 45%, #ffe8a8 45% 55%, transparent 55%) 0 0 / 30% 100% no-repeat, var(--ouro);
+  opacity: .7;
+  animation: trilha-quando 2.4s linear infinite;
+}
+@keyframes trilha-quando { from { background-position: -30% 0, 0 0; } to { background-position: 130% 0, 0 0; } }
+.quando li {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: .25rem;
+  padding: .9rem .6rem;
+  border-radius: 16px;
+  background: var(--superficie-2);
+  border: 1px solid var(--borda);
+  text-align: center;
+}
+.quando .ico { display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: 50%; background: var(--superficie); box-shadow: 0 0 0 3px var(--ouro); font-size: 1.5rem; }
+.quando .olho { margin-top: .3rem; }
+.quando strong { font: 800 1rem var(--f-titulo); }
+.quando span.dia-a-dia { font-size: .85rem; color: var(--texto-2); }
+
+/* ===================== aula 2 · P1 do manual ao pit stop ===================== */
+.pit-planos { grid-template-columns: repeat(4, 1fr); }
+.pit-pista {
+  position: relative;
+  height: 4.2rem;
+  margin: 1rem 0 .4rem;
+  border-radius: 14px;
+  background: repeating-linear-gradient(90deg, #2b2b2b 0 30px, #333 30px 60px);
+  overflow: hidden;
+}
+.pit-carro { position: absolute; top: 50%; left: 0; transform: translateY(-50%); font-size: 2.2rem; transition: left .8s cubic-bezier(.3, 1.3, .5, 1); }
+.pit-tempo { position: absolute; right: 10%; top: .3rem; font: 800 .85rem var(--f-mono); color: #ffe8a8; }
+.sem-pista .pit-pista { opacity: .45; }
+.pit-escala { display: flex; justify-content: space-between; font: 500 .75rem var(--f-mono); color: var(--texto-3); }
+
+/* ===================== aula 2 · X1 a conta de luz ===================== */
+.conta-luz {
+  position: relative;
+  border-radius: 18px;
+  padding: 1rem;
+  background: #fbfaf5;
+  color: #121714;
+  box-shadow: inset 0 0 0 2px #d9d4c6;
+  display: grid;
+  gap: .55rem;
+  font: 500 .9rem var(--f-texto);
+}
+.conta-luz .cab-conta { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px solid #121714; padding-bottom: .4rem; font: 800 1rem var(--f-titulo); }
+.conta-luz .cab-conta small { font: 500 .72rem var(--f-mono); color: #4a5650; }
+.campo {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: .6rem;
+  align-items: center;
+  width: 100%;
+  padding: .55rem .8rem;
+  border: 2px dashed #b9b2a2;
+  border-radius: 10px;
+  background: #fff;
+  color: #121714;
+  font: 600 .9rem var(--f-texto);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s, transform .15s;
+}
+.campo:hover, .campo[aria-pressed="true"] { border-style: solid; border-color: #b35c00; box-shadow: 0 0 0 3px rgba(255, 153, 0, .3); transform: translateX(3px); }
+.campo b { font: 800 .9rem var(--f-mono); }
+.campo .bandeira { display: inline-block; width: .9rem; height: .9rem; border-radius: 3px; background: #e0b400; vertical-align: -1px; margin-right: .3rem; }
+.mini-hist { display: inline-flex; align-items: end; gap: 3px; height: 1.4rem; }
+.mini-hist i { width: 6px; background: #4a5650; border-radius: 2px 2px 0 0; }
+
+@media (max-width: 760px) {
+  .tx-topo { grid-template-columns: 1fr; }
+  .pagar-tiles { grid-template-columns: repeat(2, 1fr); }
+  .pagar-tiles li:last-child { grid-column: 1 / -1; }
+  .quando { grid-template-columns: 1fr; }
+  .quando::before { display: none; }
+  .pit-planos { grid-template-columns: repeat(2, 1fr); }
+}
+
 /* ===================== pausa: tudo parado ===================== */
 .pausado .gancho.zero::before,
 .pausado .gancho.zero .gancho-relogio,
@@ -524,7 +878,15 @@
 .pausado .placa-pulso,
 .pausado .vantagens-vistas li,
 .pausado .pausa-resposta,
-.pausado .placa-ficha.troca { animation: none !important; }
+.pausado .placa-ficha.troca,
+.pausado .susto-notif,
+.pausado .susto-fatura,
+.pausado .tx-visor strong,
+.pausado .tx-fluxo,
+.pausado .tx-alertas li,
+.pausado .pagar-tiles .ico,
+.pausado .quando::before { animation: none !important; }
+.pausado .iceberg .fundo li, .pausado .pit-carro, .pausado .tx-barra i { transition: none; }
 .pausado .camada, .pausado .camada .quem { transition: none; }
 @media (prefers-reduced-motion: reduce) {
   .gancho.zero::before, .gancho.zero .gancho-relogio, .srv .led, .pausa-icone, .placa-pulso { animation: none !important; }
@@ -554,7 +916,9 @@
 [data-tema="claro"] .camada.voce .quem,
 [data-tema="claro"] .sim-acoes .vai,
 [data-tema="claro"] .pausa-icone,
-[data-tema="claro"] .placa-ficha .na-aws { color: #fff; }
+[data-tema="claro"] .placa-ficha .na-aws,
+[data-tema="claro"] .pagar-perguntas button[aria-pressed="true"] .sn,
+[data-tema="claro"] .iceberg-acoes .vai { color: #fff; }
 
 /* no celular, a linha da responsabilidade com rótulo curto */
 @media (max-width: 760px) {

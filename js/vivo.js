@@ -1,11 +1,16 @@
 /*
   vivo.js: as peças interativas das aulas "vivas" do Preparatório AWS. Só deste site.
-  versão 1 · 2026-11-10 · começou na aula 1 (conceitos de nuvem)
+  versão 2 · 2026-11-10 · aula 1 (conceitos de nuvem) e aula 2 (economia e cobrança)
 
   1. [data-gancho]  a contagem para a abertura das vendas e a votação "o site aguenta?"
   2. [data-sim]     simulador "A noite da abertura das vendas": salinha com 2, salinha com 20 ou nuvem
   3. [data-casa]    quem cuida de quê: casa própria, apê vazio, apê mobiliado ou hotel (local, IaaS, PaaS, SaaS)
-  4. [data-placa]   desmonte a nuvem: as peças de uma placa e o nome de cada uma na AWS
+  4. [data-placa]   desmonte: as peças de uma placa (aula 1) ou os campos de uma conta de luz (aula 2, data-placa="fatura")
+  5. [data-susto]   a fatura que chegou alta e o palpite "o que aconteceu?" (aula 2)
+  6. [data-taximetro] o taxímetro da nuvem: computação, armazenamento, dados que entram e saem, e o alerta do Budgets (aula 2)
+  7. [data-pagar]   qual jeito de pagar? três perguntas e o transporte de cada um (aula 2)
+  8. [data-iceberg] o iceberg do TCO: mergulhar e ver o que fica embaixo d'água (aula 2)
+  9. [data-suporte] planos de suporte, do manual ao pit stop (aula 2)
 
   Com as animações pausadas (botão do topo ou "reduzir movimento"), tudo mostra o resultado direto.
 */
@@ -449,30 +454,319 @@
   });
 
   // ===================== 4. desmonte a nuvem: a placa =====================
-  const PECAS = {
+  const PECAS = {};
+  PECAS.placa = {
     cpu: { nome: "Processador", aws: "vCPU", texto: "No Amazon EC2, você escolhe quantas vCPUs a máquina virtual tem. Mais vCPUs, mais contas por segundo, e mais cara a hora. Uma t3.micro tem 2 vCPUs." },
     ram: { nome: "Memória RAM", aws: "Memória (GiB)", texto: "Vem junto com o tipo de instância do EC2: a t3.micro tem 1 GiB. Precisa de mais? Troque o tipo, sem abrir gabinete nenhum." },
     disco: { nome: "Disco (SSD)", aws: "Amazon EBS", texto: "O disco da máquina virtual. Pegadinha: você paga pelos GB reservados todo mês, mesmo com a máquina desligada, até apagar o volume." },
     rede: { nome: "Placa de rede", aws: "Rede da AWS (VPC)", texto: "Liga a máquina à internet. Entrar dado na AWS é de graça; sair da AWS para a internet é cobrado por GB." },
-    energia: { nome: "Fonte e cooler", aws: "Com a AWS", texto: "Energia, refrigeração, prédio e segurança física: na nuvem você nunca vê. Já estão no preço da hora. É a vantagem \"parar de gastar com data center\"." }
+    energia: { nome: "Fonte e cooler", aws: "Com a AWS", texto: "Energia, refrigeração, prédio e segurança física: na nuvem você nunca vê. Já estão no preço da hora. É a vantagem \"parar de gastar com data center\"." },
+    _fim: "<strong>🔧 Placa desmontada!</strong> Agora você sabe o que está alugando quando liga uma máquina na nuvem.",
+    _unidade: "peças"
+  };
+  PECAS.fatura = {
+    consumo: { nome: "Consumo em kWh", aws: "Uso medido (pay-as-you-go)", texto: "A luz cobra o que o relógio mediu. A AWS também: horas de servidor, GB guardados, GB que saíram. Desligou, parou de contar." },
+    bandeira: { nome: "Bandeira tarifária", aws: "Preço spot", texto: "Na conta de luz, o preço do kWh muda com a bandeira. Na AWS, o preço das instâncias spot também se ajusta com a oferta e a procura." },
+    historico: { nome: "Histórico de consumo", aws: "AWS Cost Explorer", texto: "O gráfico dos últimos meses que vem na conta. O Cost Explorer mostra o gasto que já aconteceu, mês a mês, e faz previsão." },
+    itens: { nome: "Itens da fatura", aws: "Cost and Usage Report", texto: "A conta mostra cada item cobrado. O Cost and Usage Report é a versão mais detalhada da AWS: custo e uso linha a linha." },
+    titular: { nome: "Titular da conta", aws: "Conta de gerenciamento (Organizations)", texto: "Quem paga. No AWS Organizations, a conta de gerenciamento paga numa fatura só o uso de todas as contas da organização." },
+    _fim: "<strong>🧾 Fatura desmontada!</strong> A conta da AWS é uma conta de luz de muitos relógios: uso medido, preço que muda, histórico e detalhe.",
+    _unidade: "partes"
   };
   document.querySelectorAll("[data-placa]").forEach(function (placa) {
+    const conjunto = PECAS[placa.dataset.placa || "placa"];
     const ficha = placa.querySelector(".placa-ficha");
     const vistas = new Set();
     placa.querySelectorAll("[data-peca]").forEach(function (b) {
       b.addEventListener("click", function () {
-        const p = PECAS[b.dataset.peca];
+        const p = conjunto[b.dataset.peca];
         vistas.add(b.dataset.peca);
         placa.querySelectorAll("[data-peca]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-        const total = Object.keys(PECAS).length;
+        const total = Object.keys(conjunto).filter(k => k[0] !== "_").length;
         const fim = vistas.size === total
-          ? "<p><strong>🔧 Placa desmontada!</strong> Agora você sabe o que está alugando quando liga uma máquina na nuvem.</p>"
-          : `<p class="placa-contagem">${vistas.size} de ${total} peças</p>`;
+          ? "<p>" + conjunto._fim + "</p>"
+          : `<p class="placa-contagem">${vistas.size} de ${total} ${conjunto._unidade}</p>`;
         ficha.innerHTML = `<span class="olho">${p.nome}</span><h4>Na AWS:</h4><span class="na-aws">${p.aws}</span><p>${p.texto}</p>${fim}`;
         ficha.classList.remove("troca");
         void ficha.offsetWidth;
         ficha.classList.add("troca");
       });
     });
+  });
+
+  // ===================== 5. a conta do susto =====================
+  document.querySelectorAll("[data-susto]").forEach(function (box) {
+    const abrir = box.querySelector("[data-abrir]");
+    const fatura = box.querySelector(".susto-fatura");
+    const palpites = box.querySelectorAll("[data-palpite]");
+    const resposta = box.querySelector(".gancho-resposta");
+    const RESPOSTAS = {
+      hacker: "Pode acontecer, mas não foi dessa vez. Pista: no dia da venda ligaram 20 servidores… e depois? Descubra no <a href=\"#taximetro\">taxímetro logo abaixo</a>.",
+      erro: "A AWS mede tudo, e a conta bate. O erro foi de gente: ligaram 20 servidores para a venda e… Veja no <a href=\"#taximetro\">taxímetro logo abaixo</a>.",
+      esqueci: "Na mosca! Os 20 servidores da venda ficaram ligados o resto do mês, cobrando por hora. É o susto mais comum da nuvem. Veja acontecer no <a href=\"#taximetro\">taxímetro logo abaixo</a>."
+    };
+    abrir.addEventListener("click", function () {
+      box.classList.add("aberta");
+      abrir.hidden = true;
+      fatura.hidden = false;
+      box.querySelector(".gancho-voto").hidden = false;
+      box.querySelector(".gancho-pergunta").focus();
+    });
+    palpites.forEach(function (b) {
+      b.addEventListener("click", function () {
+        palpites.forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+        resposta.innerHTML = RESPOSTAS[b.dataset.palpite];
+      });
+    });
+  });
+
+  // ===================== 6. o taxímetro da nuvem =====================
+  // Preços de exemplo, arredondados (avisados na página): servidor US$ 0,20 por hora; armazenamento US$ 0,10 por GB no mês;
+  // dados que saem US$ 0,09 por GB; dados que entram não são cobrados. O mês tem 30 dias; a venda é no dia 10.
+  const PRECO = { hora: 0.2, gbMes: 0.1, saida: 0.09 };
+  const usd = n => "US$ " + n.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const MESES = {
+    normal: { srv: () => 2, gb: 200, entra: 50, sai: 30 },
+    esqueci: { srv: d => (d >= 10 ? 20 : 2), gb: 200, entra: 50, sai: 30 },
+    desliguei: { srv: d => (d >= 10 && d < 10.25 ? 20 : 2), gb: 200, entra: 50, sai: 30 }
+  };
+  document.querySelectorAll("[data-taximetro]").forEach(function (tx) {
+    const visor = tx.querySelector(".tx-visor strong");
+    const diaTxt = tx.querySelector("[data-dia]");
+    const barra = tx.querySelector(".tx-mes i");
+    const fatias = {};
+    tx.querySelectorAll("[data-fatia]").forEach(el => (fatias[el.dataset.fatia] = el));
+    const valores = {};
+    tx.querySelectorAll("[data-valor]").forEach(el => (valores[el.dataset.valor] = el));
+    const controles = {};
+    tx.querySelectorAll("input[data-c]").forEach(el => (controles[el.dataset.c] = el));
+    const saidas = {};
+    tx.querySelectorAll("output[data-c]").forEach(el => (saidas[el.dataset.c] = el));
+    const rack = tx.querySelector(".tx-rack");
+    const alertas = tx.querySelector(".tx-alertas");
+    const limiteMarca = tx.querySelector(".tx-limite");
+    const vai = tx.querySelector(".vai");
+    const veredito = tx.querySelector(".sim-veredito");
+    const aviso = tx.querySelector(".sim-aviso");
+    const botoes = tx.querySelectorAll("[data-mes]");
+    for (let i = 0; i < 20; i++) rack.appendChild(document.createElement("span"));
+    const luzes = rack.querySelectorAll("span");
+
+    let mes = "normal";
+    let rodando = false;
+    let quadro = 0;
+    let st;
+
+    function valorDe(c) { return Number(controles[c].value); }
+    function mostraControles() {
+      for (const c in controles) {
+        const v = valorDe(c);
+        saidas[c].textContent = c === "limite" ? usd(v) : c === "srv" ? v : v + " GB";
+      }
+    }
+    // o que vale agora: o roteiro do mês escolhido ou os controles (no "do meu jeito")
+    function agora(d) {
+      if (mes === "meu") return { srv: valorDe("srv"), gb: valorDe("gb"), entra: valorDe("entra"), sai: valorDe("sai") };
+      const m = MESES[mes];
+      return { srv: m.srv(d), gb: m.gb, entra: m.entra, sai: m.sai };
+    }
+    function aplicaMes() {
+      if (mes === "meu") return;
+      const m = MESES[mes];
+      controles.srv.value = m.srv(0);
+      controles.gb.value = m.gb;
+      controles.entra.value = m.entra;
+      controles.sai.value = m.sai;
+      mostraControles();
+    }
+    function desenha() {
+      const total = st.comp + st.arm + st.sai;
+      const lim = valorDe("limite");
+      const escala = Math.max(lim * 1.25, total, 1);
+      visor.textContent = usd(total);
+      tx.classList.toggle("estourou", total >= lim);
+      diaTxt.textContent = "dia " + Math.min(30, Math.floor(st.dia) + 1) + " de 30";
+      barra.style.width = (st.dia / 30) * 100 + "%";
+      fatias.comp.style.width = (st.comp / escala) * 100 + "%";
+      fatias.arm.style.width = (st.arm / escala) * 100 + "%";
+      fatias.sai.style.width = (st.sai / escala) * 100 + "%";
+      limiteMarca.style.left = (lim / escala) * 100 + "%";
+      valores.comp.textContent = usd(st.comp);
+      valores.arm.textContent = usd(st.arm);
+      valores.sai.textContent = usd(st.sai);
+      valores.entra.textContent = usd(0);
+      const ligados = agora(st.dia).srv;
+      luzes.forEach((l, k) => l.classList.toggle("on", k < ligados));
+      if (mes !== "meu") { controles.srv.value = ligados; saidas.srv.textContent = ligados; }
+    }
+    function confereAlertas() {
+      const total = st.comp + st.arm + st.sai;
+      const lim = valorDe("limite");
+      [[0.8, "80%"], [1, "100%"]].forEach(function (a) {
+        if (!st.tocou[a[1]] && total >= lim * a[0]) {
+          st.tocou[a[1]] = Math.floor(st.dia) + 1;
+          const li = document.createElement("li");
+          li.innerHTML = `🔔 <strong>AWS Budgets</strong>: o gasto passou de ${a[1]} do limite (${usd(lim * a[0])}) no dia ${st.tocou[a[1]]}.`;
+          alertas.appendChild(li);
+          aviso.textContent = li.textContent;
+        }
+      });
+    }
+    // um passo = 1/100 de dia (contado em inteiros, para a conta fechar certinho)
+    const PASSOS = 3000;
+    function passo() {
+      const a = agora(st.n / 100);
+      st.comp += a.srv * PRECO.hora * 24 * 0.01;
+      st.arm += a.gb * PRECO.gbMes * (0.01 / 30);
+      st.sai += a.sai * PRECO.saida * 0.01;
+      st.n++;
+      st.dia = st.n / 100;
+      confereAlertas();
+    }
+    const VEREDITOS = {
+      normal: r => `🙂 <strong>Mês tranquilo: ${usd(r.total)}.</strong> Repare: os dados que <strong>entraram</strong> custaram US$ 0,00. Só a saída é cobrada.`,
+      esqueci: r => `😱 <strong>${usd(r.total)}!</strong> Os 20 servidores da venda ficaram ligados até o fim do mês, cobrando por hora. ${r.tocou ? "O Budgets avisou no dia " + r.tocou + ": alguém leu o e-mail?" : ""} Computação foi ${r.pc}% da conta.`,
+      desliguei: r => `😎 <strong>${usd(r.total)}.</strong> A venda custou só ${usd(r.extra)} a mais: liga na hora do pico, usa e desliga. É o pagamento conforme o uso.`,
+      meu: r => `🧮 <strong>Conta do mês: ${usd(r.total)}.</strong> Computação ${r.pc}%, armazenamento ${r.pa}%, saída de dados ${r.ps}%. Os dados que entraram: US$ 0,00.`
+    };
+    function zera() {
+      rodando = false;
+      cancelAnimationFrame(quadro);
+      st = { n: 0, dia: 0, acum: 0, comp: 0, arm: 0, sai: 0, tocou: {} };
+      alertas.innerHTML = "";
+      veredito.innerHTML = "";
+      aplicaMes();
+      desenha();
+      vai.disabled = false;
+      vai.textContent = "▶ Rodar o mês";
+    }
+    function termina() {
+      rodando = false;
+      cancelAnimationFrame(quadro);
+      while (st.n < PASSOS) passo();
+      desenha();
+      const total = st.comp + st.arm + st.sai;
+      const pct = v => Math.round((v / total) * 100);
+      const base = 2 * PRECO.hora * 24 * 30 + 200 * PRECO.gbMes + 30 * PRECO.saida * 30;
+      veredito.style.setProperty("--c", total >= valorDe("limite") ? "var(--vivo-ruim)" : "var(--vivo-ok)");
+      veredito.innerHTML = "<p>" + VEREDITOS[mes]({ total: total, pc: pct(st.comp), pa: pct(st.arm), ps: pct(st.sai), extra: total - base, tocou: st.tocou["80%"] }) + "</p>";
+      aviso.textContent = "Fim do mês. " + veredito.textContent;
+      vai.disabled = false;
+      vai.textContent = "▶ Rodar o mês de novo";
+    }
+    // o mês anda depressa (2 dias por segundo) e devagar perto da venda (dia 9,5 ao 11)
+    const ritmo = d => (d >= 9.5 && d < 11 ? 0.35 : 2);
+    function roda() {
+      zera();
+      if (pausado()) return termina();
+      rodando = true;
+      vai.disabled = true;
+      vai.textContent = "O taxímetro está rodando…";
+      let antes = performance.now();
+      function quadroDoMes(t) {
+        if (!rodando) return;
+        if (pausado()) return termina();
+        st.acum += Math.min(0.1, (t - antes) / 1000) * ritmo(st.dia);
+        antes = t;
+        // passos pequenos, para os alertas caírem no dia certo
+        while (st.acum >= 0.01 && st.n < PASSOS) { passo(); st.acum -= 0.01; }
+        desenha();
+        if (st.n >= PASSOS) return termina();
+        quadro = requestAnimationFrame(quadroDoMes);
+      }
+      quadro = requestAnimationFrame(quadroDoMes);
+    }
+    botoes.forEach(function (b) {
+      b.addEventListener("click", function () {
+        mes = b.dataset.mes;
+        botoes.forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+        zera();
+      });
+    });
+    // mexeu num controle: vira "do meu jeito" (e vale na hora, mesmo com o mês rodando)
+    for (const c in controles) {
+      controles[c].addEventListener("input", function () {
+        if (c !== "limite" && mes !== "meu") {
+          mes = "meu";
+          botoes.forEach(x => x.setAttribute("aria-pressed", String(x.dataset.mes === "meu")));
+        }
+        mostraControles();
+        if (!rodando) desenha();
+      });
+    }
+    vai.addEventListener("click", roda);
+    tx.querySelector(".de-novo").addEventListener("click", zera);
+    document.addEventListener("placa:movimento", function (e) {
+      if (e.detail.pausado && rodando) termina();
+    });
+    mostraControles();
+    zera();
+  });
+
+  // ===================== 7. qual jeito de pagar? =====================
+  const PAGAR = {
+    demanda: "🚕 <strong>Táxi = sob demanda.</strong> Paga a corrida, sem compromisso. Na Ingresso Candango: os servidores extras, só nas horas da venda.",
+    plano: "🎫 <strong>Passe mensal = Savings Plans</strong> (ou 🚗 a reserva, o carro alugado por um ano). Você promete usar por 1 ou 3 anos e ganha desconto. Na Ingresso Candango: o site, no ar o ano todo.",
+    spot: "💺 <strong>Assento que sobrou = spot.</strong> Até 90% mais barato, mas a AWS pode pedir a máquina de volta. Na Ingresso Candango: os relatórios da madrugada, que recomeçam se pararem.",
+    dedicado: "🚐 <strong>Van fretada = host dedicado.</strong> O servidor físico inteiro é só seu. Serve quando a licença ou uma regra exige. A Ingresso Candango não precisa."
+  };
+  document.querySelectorAll("[data-pagar]").forEach(function (box) {
+    const perguntas = box.querySelectorAll("[data-q]");
+    const tiles = box.querySelectorAll("[data-jeito]");
+    const fala = box.querySelector(".casa-fala");
+    function decide() {
+      const sim = q => box.querySelector(`[data-q="${q}"]`).getAttribute("aria-pressed") === "true";
+      const jeito = sim("fisico") ? "dedicado" : sim("parar") ? "spot" : sim("anos") ? "plano" : "demanda";
+      tiles.forEach(function (t) {
+        const j = t.dataset.jeito;
+        t.classList.toggle("escolhido", j === jeito || (jeito === "plano" && j === "reserva"));
+      });
+      fala.innerHTML = PAGAR[jeito];
+    }
+    perguntas.forEach(function (b) {
+      b.addEventListener("click", function () {
+        b.setAttribute("aria-pressed", String(b.getAttribute("aria-pressed") !== "true"));
+        b.querySelector(".sn").textContent = b.getAttribute("aria-pressed") === "true" ? "sim" : "não";
+        decide();
+      });
+    });
+    decide();
+  });
+
+  // ===================== 8. o iceberg do TCO =====================
+  document.querySelectorAll("[data-iceberg]").forEach(function (box) {
+    const itens = box.querySelectorAll(".fundo li");
+    const botao = box.querySelector("[data-mergulhar]");
+    const fala = box.querySelector(".iceberg-fala");
+    let n = 0;
+    botao.addEventListener("click", function () {
+      if (n < itens.length) itens[n++].classList.add("visto");
+      fala.textContent = n < itens.length ? `${n} de ${itens.length} custos achados embaixo d'água.` : "Achou todos! Isso é o TCO: o preço do servidor é só a ponta.";
+      if (n >= itens.length) { botao.disabled = true; botao.textContent = "🧊 Iceberg inteiro à vista"; box.classList.add("inteiro"); }
+    });
+  });
+
+  // ===================== 9. suporte: do manual ao pit stop =====================
+  const SUPORTE = [
+    { min: null, txt: "📖 <strong>Basic = o manual do carro.</strong> Vem com todo carro, de graça: atendimento ao cliente, documentação, re:Post e as verificações principais do Trusted Advisor. Mecânico especialista? Não tem." },
+    { min: 30, txt: "🛻 <strong>Business Support+ = o guincho 24 horas.</strong> Especialistas a qualquer hora, assistente com IA e todo o Trusted Advisor. Caso crítico: até 30 minutos. A escolha da Ingresso Candango." },
+    { min: 15, txt: "🧑‍🔧 <strong>Enterprise = o mecânico só seu.</strong> Um gerente técnico de conta (TAM) designado, que conhece o seu carro. Caso crítico: até 15 minutos." },
+    { min: 5, txt: "🏎️ <strong>Unified Operations = a equipe de box da Fórmula 1.</strong> Uma equipe dedicada para missão crítica. Caso crítico: até 5 minutos." }
+  ];
+  document.querySelectorAll("[data-suporte]").forEach(function (box) {
+    const botoes = box.querySelectorAll("[data-plano]");
+    const carro = box.querySelector(".pit-carro");
+    const tempo = box.querySelector(".pit-tempo");
+    const fala = box.querySelector(".casa-fala");
+    function escolhe(k) {
+      botoes.forEach((b, i) => b.setAttribute("aria-pressed", String(i === k)));
+      const p = SUPORTE[k];
+      box.classList.toggle("sem-pista", p.min === null);
+      carro.style.left = p.min === null ? "0%" : (p.min / 30) * 92 + "%";
+      tempo.textContent = p.min === null ? "sem suporte técnico" : "até " + p.min + " min";
+      fala.innerHTML = p.txt;
+    }
+    botoes.forEach((b, k) => b.addEventListener("click", () => escolhe(k)));
+    escolhe(1);
   });
 })();

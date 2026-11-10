@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="../assets/css/neon.css?v=5">
   <link rel="stylesheet" href="../css/interativos.css?v=1">
   <link rel="stylesheet" href="../css/aula-aws.css?v=6">
+  <link rel="stylesheet" href="../css/vivo.css?v=2">
 </head>
 <body>
 
@@ -33,7 +34,7 @@
       <button type="button" class="btn-menu" id="btn-menu" aria-expanded="false" aria-controls="menu">Menu</button>
       <nav class="nav" id="menu" aria-label="Partes da aula">
         <a href="../#videos">← Preparatório</a>
-        <a href="#caso">Caso</a>
+        <a href="#taximetro">Taxímetro</a>
         <a href="#conceitos">Conceitos</a>
         <a href="#demonstracao">Calculadora</a>
         <a href="#pegadinha">Pegadinha</a>
@@ -111,22 +112,58 @@
         <section class="parte" id="video">
           <div class="cab">
             <span class="olho">V1 · vídeo</span>
-            <h2>Neste vídeo, em uns 11 minutos</h2>
-            <p>A página segue a mesma ordem. Quer rever só um pedaço? Pule direto para ele.</p>
+            <h2>Neste vídeo, em uns 10 minutos</h2>
+            <p>A página segue a mesma ordem. Viu o <strong>⏸ Pausa aqui</strong>? Pause o vídeo e tente responder antes de mim.</p>
           </div>
           <div class="cartao">
             <ol class="roteiro-video">
-              <li><time>0:00</time><a href="#caso">O caso: a primeira conta da Ingresso Candango</a></li>
-              <li><time>0:45</time><a href="#c1">C1 · As três coisas que pesam na conta</a></li>
-              <li><time>2:00</time><a href="#c2">C2 · Os jeitos de pagar a mesma máquina</a></li>
-              <li><time>3:30</time><a href="#c3">C3 · O custo total do servidor próprio (TCO)</a></li>
-              <li><time>5:00</time><a href="#c4">C4 · As ferramentas: estimar, analisar e avisar</a></li>
-              <li><time>6:00</time><a href="#c5">C5 · Várias contas, uma fatura: o AWS Organizations</a></li>
-              <li><time>6:45</time><a href="#demonstracao">D1 · A estimativa na AWS Pricing Calculator</a></li>
-              <li><time>8:30</time><a href="#pegadinha">P1 · A pegadinha: os planos de suporte novos</a></li>
+              <li><time>0:00</time><a href="#gancho">G1 · A conta do susto</a></li>
+              <li><time>0:40</time><a href="#caso">EC1 · As três perguntas dos sócios</a></li>
+              <li><time>1:00</time><a href="#taximetro">SIM1 · O taxímetro da nuvem</a></li>
+              <li><time>2:45</time><a href="#c1">C1 · As três coisas que pesam na conta</a></li>
+              <li><time>3:15</time><a href="#c2">C2 · Os jeitos de pagar: táxi, passe ou assento que sobrou?</a></li>
+              <li><time>4:45</time><a href="#c3">C3 · O iceberg do servidor próprio (TCO)</a></li>
+              <li><time>5:45</time><a href="#c4">C4 · As ferramentas: antes, durante e depois</a></li>
+              <li><time>6:30</time><a href="#c5">C5 · Várias contas, uma fatura: o AWS Organizations</a></li>
+              <li><time>7:00</time><a href="#fatura">X1 · Desmonte a fatura: a conta de luz</a></li>
+              <li><time>7:45</time><a href="#demonstracao">D1 · Faça junto: a estimativa na Pricing Calculator</a></li>
+              <li><time>9:15</time><a href="#pegadinha">P1 · Os planos de suporte, do manual ao pit stop</a></li>
               <li><time>10:15</time><a href="#academy">Agora é na AWS Academy</a></li>
             </ol>
           </div>
+        </section>
+
+        <!-- ===================== GANCHO (vivo.js, parte 5) ===================== -->
+        <section class="parte" id="gancho">
+          <div class="cab">
+            <span class="olho">G1 · gancho</span>
+            <h2>A conta do susto</h2>
+          </div>
+          <div class="gancho susto" data-susto>
+            <p class="gancho-evento">📱 Ingresso Candango · o primeiro mês na nuvem</p>
+            <p class="gancho-titulo">Dia 1º, 7h da manhã. O celular da sócia vibra.</p>
+            <div class="susto-celular">
+              <div class="susto-notif"><span class="app"><img src="../assets/img/tec/aws.svg" alt="" width="30" height="30"></span><span><small>AWS Billing · agora</small><strong>A fatura do mês passado está disponível.</strong></span></div>
+              <div class="susto-fatura" hidden>
+                <div class="linha"><span>Computação (servidores)</span><span>US$ 2.016,00</span></div>
+                <div class="linha"><span>Armazenamento</span><span>US$ 20,00</span></div>
+                <div class="linha"><span>Dados que saíram</span><span>US$ 81,00</span></div>
+                <p class="total">US$ 2.117,00</p>
+                <p class="normal">a estimativa era de uns US$ 389</p>
+              </div>
+            </div>
+            <button type="button" class="botao" data-abrir>👆 Abrir a fatura</button>
+            <div class="gancho-voto" hidden>
+              <p class="gancho-pergunta" tabindex="-1">Cinco vezes mais do que o esperado! O que aconteceu?</p>
+              <div class="gancho-botoes">
+                <button type="button" data-palpite="hacker" aria-pressed="false">🕵️ Um hacker</button>
+                <button type="button" data-palpite="erro" aria-pressed="false">🤖 Erro da AWS</button>
+                <button type="button" data-palpite="esqueci" aria-pressed="false">🔌 Esqueceram algo ligado</button>
+              </div>
+              <p class="gancho-resposta" aria-live="polite"></p>
+            </div>
+          </div>
+          <p class="fonte">Fatura de exemplo, com os mesmos preços fictícios do taxímetro logo abaixo.</p>
         </section>
 
         <!-- ===================== ESTUDO DE CASO ===================== -->
@@ -150,6 +187,66 @@
             </ol>
             <p class="fonte">Empresa fictícia, criada para as aulas. Cada pergunta é respondida por um conceito.</p>
           </div>
+        </section>
+
+        <!-- ===================== TAXÍMETRO (vivo.js, parte 6) ===================== -->
+        <section class="parte" id="taximetro">
+          <div class="cab">
+            <span class="olho">SIM1 · simulador</span>
+            <h2>O taxímetro da nuvem</h2>
+            <p>Na nuvem, a conta é um taxímetro: roda enquanto a máquina está ligada. Escolha um mês e aperte <strong>Rodar o mês</strong>. Mexa nos controles quando quiser, até com o mês rodando.</p>
+          </div>
+          <div class="sim" data-taximetro>
+            <div class="sim-modos" role="group" aria-label="Escolha o mês">
+              <button type="button" data-mes="normal" aria-pressed="true"><span class="ico" aria-hidden="true">🙂</span><span><strong>Mês normal</strong><small>2 servidores o mês todo</small></span></button>
+              <button type="button" data-mes="esqueci" aria-pressed="false"><span class="ico" aria-hidden="true">😱</span><span><strong>Esqueci ligados</strong><small>20 na venda do dia 10… e ficaram</small></span></button>
+              <button type="button" data-mes="desliguei" aria-pressed="false"><span class="ico" aria-hidden="true">😎</span><span><strong>Desliguei depois</strong><small>20 só nas 6 horas da venda</small></span></button>
+              <button type="button" data-mes="meu" aria-pressed="false"><span class="ico" aria-hidden="true">🎛️</span><span><strong>Do meu jeito</strong><small>você mexe nos controles</small></span></button>
+            </div>
+            <div class="tx-topo">
+              <div class="tx-visor">
+                <span>TAXÍMETRO DA NUVEM · <span data-dia>dia 1 de 30</span></span>
+                <strong>US$ 0,00</strong>
+                <div class="tx-mes" aria-hidden="true"><i></i></div>
+                <span>servidores ligados agora</span>
+                <div class="tx-rack" aria-hidden="true"></div>
+              </div>
+              <div class="tx-setas">
+                <div class="tx-seta entra"><span>⬇️ Dados que <strong>entram</strong> na AWS</span><b>grátis</b><span class="tx-fluxo" aria-hidden="true"></span></div>
+                <div class="tx-seta sai"><span>⬆️ Dados que <strong>saem</strong> para a internet</span><b>US$ 0,09/GB</b><span class="tx-fluxo" aria-hidden="true"></span></div>
+              </div>
+            </div>
+            <div class="tx-controles">
+              <label><span>Servidores ligados <output data-c="srv"></output></span><input type="range" data-c="srv" min="0" max="20" step="1" value="2"></label>
+              <label><span>Armazenamento <output data-c="gb"></output></span><input type="range" data-c="gb" min="0" max="2000" step="50" value="200"></label>
+              <label><span>Dados que entram, por dia <output data-c="entra"></output></span><input type="range" data-c="entra" min="0" max="500" step="10" value="50"></label>
+              <label><span>Dados que saem, por dia <output data-c="sai"></output></span><input type="range" data-c="sai" min="0" max="500" step="10" value="30"></label>
+              <label><span>Limite do AWS Budgets <output data-c="limite"></output></span><input type="range" data-c="limite" min="100" max="3000" step="50" value="500"></label>
+            </div>
+            <div class="tx-conta">
+              <div class="tx-barra" role="img" aria-label="A conta do mês, dividida em computação, armazenamento e saída de dados"><i class="comp" data-fatia="comp"></i><i class="arm" data-fatia="arm"></i><i class="sai" data-fatia="sai"></i></div>
+              <span class="tx-limite" aria-hidden="true"></span>
+            </div>
+            <ul class="sim-legenda">
+              <li><i style="--c:var(--neon)"></i>computação<span class="valor" data-valor="comp"></span></li>
+              <li><i style="--c:var(--itn)"></i>armazenamento<span class="valor" data-valor="arm"></span></li>
+              <li><i style="--c:var(--vivo-ruim)"></i>dados que saem<span class="valor" data-valor="sai"></span></li>
+              <li><i style="--c:var(--vivo-ok)"></i>dados que entram<span class="valor" data-valor="entra"></span></li>
+            </ul>
+            <ul class="tx-alertas"></ul>
+            <div class="sim-acoes">
+              <button type="button" class="vai">▶ Rodar o mês</button>
+              <button type="button" class="de-novo">↺ Recomeçar</button>
+            </div>
+            <div class="sim-veredito"></div>
+            <p class="sim-aviso visualmente-oculto" aria-live="polite"></p>
+          </div>
+          <p class="fonte">Preços de exemplo, arredondados, para a aula: servidor a US$ 0,20 por hora, armazenamento a US$ 0,10 por GB no mês e saída de dados a US$ 0,09 por GB. Os preços de verdade mudam com a região e o serviço: confira na <a href="https://calculator.aws/">AWS Pricing Calculator</a>.</p>
+
+          <details class="pausa-aqui">
+            <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>No taxímetro, quanto custaram os dados que entraram no site? E os que saíram?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+            <div class="pausa-resposta"><p>Entrar na AWS é de graça. Sair da AWS para a internet é cobrado por GB. A pegadinha da prova troca os dois: guarde o "entra grátis, sai pago".</p></div>
+          </details>
         </section>
 
         <!-- ===================== CONCEITOS ===================== -->
@@ -179,7 +276,22 @@
             <div class="texto">
               <span class="olho">C2</span>
               <h3>Os jeitos de pagar a mesma máquina</h3>
-              <p>A mesma máquina do Amazon EC2 tem preços diferentes, conforme o compromisso que você assume.</p>
+              <p>A mesma máquina do Amazon EC2 tem preços diferentes, conforme o compromisso que você assume. É como ir de um lugar a outro: dá para ir de táxi, de passe, de carona… Responda às três perguntas e veja qual combina.</p>
+              <div class="casa" data-pagar>
+                <div class="pagar-perguntas">
+                  <button type="button" data-q="anos" aria-pressed="false"><span>📅 Vai ficar ligado direto, por 1 ou 3 anos?</span><span class="sn">não</span></button>
+                  <button type="button" data-q="parar" aria-pressed="false"><span>⏸️ Pode parar no meio e recomeçar depois?</span><span class="sn">não</span></button>
+                  <button type="button" data-q="fisico" aria-pressed="false"><span>🔒 Uma licença ou regra exige um servidor físico só seu?</span><span class="sn">não</span></button>
+                </div>
+                <ul class="pagar-tiles">
+                  <li data-jeito="demanda"><span class="ico" aria-hidden="true">🚕</span><strong>Táxi</strong><small>sob demanda</small><span class="desc">paga a corrida</span></li>
+                  <li data-jeito="plano"><span class="ico" aria-hidden="true">🎫</span><strong>Passe mensal</strong><small>Savings Plans</small><span class="desc">até 72% de desconto</span></li>
+                  <li data-jeito="reserva"><span class="ico" aria-hidden="true">🚗</span><strong>Carro alugado por 1 ano</strong><small>reservada</small><span class="desc">reserva com desconto</span></li>
+                  <li data-jeito="spot"><span class="ico" aria-hidden="true">💺</span><strong>Assento que sobrou</strong><small>spot</small><span class="desc">até 90%, mas pode ter que descer</span></li>
+                  <li data-jeito="dedicado"><span class="ico" aria-hidden="true">🚐</span><strong>Van fretada</strong><small>host dedicado</small><span class="desc">o veículo inteiro é seu</span></li>
+                </ul>
+                <p class="casa-fala" aria-live="polite"></p>
+              </div>
               <div class="tabela-rola"><table class="metodos"><thead><tr><th>Jeito de pagar</th><th>Como funciona</th><th>Na Ingresso Candango</th></tr></thead><tbody>
                 <tr><td><strong>Sob demanda</strong><span class="termo-en">On-Demand</span></td><td>Paga por hora ou por segundo, sem compromisso e sem pagar antes.</td><td>Os servidores extras, ligados só nas horas da venda.</td></tr>
                 <tr><td><strong>Savings Plans</strong></td><td>Você se compromete a gastar um valor por hora durante 1 ou 3 anos. Desconto de até 72%.</td><td>O site, que fica no ar o ano inteiro.</td></tr>
@@ -189,6 +301,10 @@
               </tbody></table></div>
               <p class="fonte">Fonte: <a href="https://aws.amazon.com/ec2/pricing/">AWS, Amazon EC2 pricing</a>, consultado em 04/11/2026.</p>
               <p class="dica cuidado"><strong>A regra da prova:</strong> pode parar? Spot. Fica ligado anos? Savings Plans ou reserva. Não sabe quanto vai usar, ou é curto? Sob demanda. Licença ou regra exige servidor físico só seu? Host dedicado.</p>
+              <details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>Os relatórios de vendas rodam toda madrugada e recomeçam se pararem. Táxi, passe ou assento que sobrou?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p><strong>Assento que sobrou: spot.</strong> O desconto é enorme e, se a AWS pedir a máquina de volta, o relatório simplesmente recomeça.</p></div>
+              </details>
             </div>
           </div>
 
@@ -197,12 +313,22 @@
               <span class="olho">C3</span>
               <h3>O custo total do servidor próprio (TCO)</h3>
               <p>O preço do servidor é só a ponta do iceberg. O <strong>custo total de propriedade</strong> (TCO, <em>total cost of ownership</em>) soma tudo o que a empresa gasta para mantê-lo funcionando:</p>
-              <ul>
-                <li><strong>Compra:</strong> servidores, discos, nobreak, rack.</li>
-                <li><strong>Espaço e energia:</strong> a sala, a luz do servidor e a do ar-condicionado.</li>
-                <li><strong>Pessoas:</strong> quem instala, atualiza, faz o backup e conserta.</li>
-                <li><strong>Licenças e manutenção:</strong> programas, garantia, peças.</li>
-              </ul>
+              <div data-iceberg>
+                <div class="iceberg">
+                  <div class="agua" aria-hidden="true"></div>
+                  <div class="ponta">🖥️ Compra: os servidores</div>
+                  <ul class="fundo">
+                    <li>💽 Discos, nobreak e rack</li>
+                    <li>⚡ Espaço e energia: a sala, a luz do servidor e a do ar-condicionado</li>
+                    <li>👩‍🔧 Pessoas: quem instala, atualiza, faz o backup e conserta</li>
+                    <li>📜 Licenças e manutenção: programas, garantia, peças</li>
+                  </ul>
+                </div>
+                <div class="iceberg-acoes">
+                  <button type="button" class="vai" data-mergulhar>🤿 Mergulhar</button>
+                  <p class="iceberg-fala" aria-live="polite">Embaixo d'água tem mais. Mergulhe!</p>
+                </div>
+              </div>
               <p>Faça a conta da Ingresso Candango. Os números já vêm preenchidos com os <strong>valores de exemplo</strong> (fictícios): os vinte servidores que o sócio queria comprar, contra a nuvem ligada só nas horas de venda.</p>
               <form class="calc-custo" aria-label="Calculadora comprar ou alugar">
                 <div class="calc-campos">
@@ -225,6 +351,11 @@
               <span class="olho">C4</span>
               <h3>As ferramentas: estimar, analisar e avisar</h3>
               <p>Cada pergunta dos sócios tem a sua ferramenta. A diferença entre elas é <strong>quando</strong> você usa.</p>
+              <ol class="quando">
+                <li><span class="ico" aria-hidden="true">📐</span><span class="olho">antes</span><strong>Pricing Calculator</strong><span class="dia-a-dia">o orçamento do pedreiro, antes da obra</span></li>
+                <li><span class="ico" aria-hidden="true">🔔</span><span class="olho">durante</span><strong>Budgets</strong><span class="dia-a-dia">o alerta do app do banco quando o gasto passa do limite</span></li>
+                <li><span class="ico" aria-hidden="true">🧾</span><span class="olho">depois</span><strong>Cost Explorer</strong><span class="dia-a-dia">o extrato do banco, para ver para onde o dinheiro foi</span></li>
+              </ol>
               <div class="tabela-rola"><table class="metodos"><thead><tr><th>Ferramenta</th><th>Para quê</th><th>Quando</th></tr></thead><tbody>
                 <tr><td><strong>AWS Pricing Calculator</strong></td><td>Estimar o custo de uma arquitetura que ainda não existe.</td><td><strong>Antes</strong> de criar. Não precisa de conta.</td></tr>
                 <tr><td><strong>AWS Cost Explorer</strong></td><td>Ver e analisar o que já foi gasto, com gráficos e previsão.</td><td><strong>Depois</strong>, olhando para trás.</td></tr>
@@ -253,28 +384,55 @@
           </div>
         </section>
 
+        <!-- ===================== DESMONTE A FATURA (vivo.js, parte 4) ===================== -->
+        <section class="parte" id="fatura">
+          <div class="cab">
+            <span class="olho">X1 · desmonte a fatura</span>
+            <h2>A conta da AWS é uma conta de luz</h2>
+            <p>No vídeo eu mostro uma conta de luz de verdade. Aqui, clique em cada parte desta conta de exemplo e descubra o nome dela na AWS.</p>
+          </div>
+          <div class="placa-nuvem" data-placa="fatura">
+            <div class="conta-luz">
+              <div class="cab-conta"><span>⚡ Conta de luz</span><small>exemplo</small></div>
+              <button type="button" class="campo" data-peca="titular" aria-pressed="false"><span>Titular: Ingresso Candango Ltda.</span><b aria-hidden="true">👤</b></button>
+              <button type="button" class="campo" data-peca="consumo" aria-pressed="false"><span>Consumo do mês</span><b>412 kWh</b></button>
+              <button type="button" class="campo" data-peca="bandeira" aria-pressed="false"><span><span class="bandeira" aria-hidden="true"></span>Bandeira tarifária</span><b>amarela</b></button>
+              <button type="button" class="campo" data-peca="historico" aria-pressed="false"><span>Histórico de consumo</span><span class="mini-hist" aria-hidden="true"><i style="height:45%"></i><i style="height:60%"></i><i style="height:40%"></i><i style="height:75%"></i><i style="height:55%"></i><i style="height:100%"></i></span></button>
+              <button type="button" class="campo" data-peca="itens" aria-pressed="false"><span>Itens da fatura</span><b>5 itens</b></button>
+            </div>
+            <div class="placa-ficha" aria-live="polite">
+              <span class="olho">conta de luz de exemplo</span>
+              <h4>Clique numa parte da conta</h4>
+              <p>Cada parte desta conta tem uma irmã na AWS. A fatura da nuvem é uma conta de luz de muitos relógios.</p>
+              <p class="placa-contagem">0 de 5 partes</p>
+            </div>
+          </div>
+          <p class="fonte">Fonte do preço spot: <a href="https://aws.amazon.com/ec2/spot/pricing/">AWS, Amazon EC2 Spot Instances Pricing</a>, consultado em 10/11/2026 (os preços spot se ajustam aos poucos, pela oferta e pela procura).</p>
+        </section>
+
         <!-- ===================== DEMONSTRAÇÃO ===================== -->
         <section class="parte" id="demonstracao">
           <div class="cab">
             <span class="olho">D1 · demonstração</span>
-            <h2>A estimativa na AWS Pricing Calculator</h2>
-            <p>A calculadora é aberta: não precisa do Learner Lab nem de conta. No vídeo eu faço junto com você.</p>
+            <h2>Faça junto: a estimativa na AWS Pricing Calculator</h2>
+            <p>A calculadora é aberta: não precisa do Learner Lab nem de conta. Deixe o vídeo numa metade da tela e a calculadora na outra, e marque cada passo.</p>
           </div>
 
           <div class="conceito" style="grid-template-columns:1fr">
             <div class="texto">
-              <div class="faca-assim">
-                <strong>Faça assim:</strong>
-                <ol>
-                  <li>Abra a <a href="https://calculator.aws/">AWS Pricing Calculator</a> e clique em <strong>Create estimate</strong> (criar estimativa).</li>
-                  <li>Escolha a região <strong>South America (São Paulo)</strong>.</li>
-                  <li>Procure <strong>Amazon EC2</strong> e clique em <strong>Configure</strong>.</li>
-                  <li>Peça uma máquina Linux com <strong>2 vCPU e 4 GB de memória</strong>, como a <code>t3.medium</code>.</li>
-                  <li>No jeito de pagar, troque para <strong>On-Demand</strong>: a calculadora costuma vir marcada com um Savings Plan de 3 anos.</li>
-                  <li>Coloque o uso de <strong>20 máquinas por 6 horas no mês</strong>, os servidores da venda.</li>
-                  <li>Clique em <strong>Save and view summary</strong> e anote o valor mensal, em dólar.</li>
-                </ol>
+              <div class="progresso-atividade" data-progresso="calc-aula-02">
+                <span class="contagem">0 de 7</span>
+                <span class="barra-progresso"><span></span></span>
               </div>
+              <ol class="checklist" id="calc-aula-02">
+                <li><label><input type="checkbox"><span>Abri a <a href="https://calculator.aws/">AWS Pricing Calculator</a> e cliquei em <strong>Create estimate</strong> (criar estimativa).</span></label></li>
+                <li><label><input type="checkbox"><span>Escolhi a região <strong>South America (São Paulo)</strong>.</span></label></li>
+                <li><label><input type="checkbox"><span>Procurei <strong>Amazon EC2</strong> e cliquei em <strong>Configure</strong>.</span></label></li>
+                <li><label><input type="checkbox"><span>Pedi uma máquina Linux com <strong>2 vCPU e 4 GB de memória</strong>, como a <code>t3.medium</code>.</span></label></li>
+                <li><label><input type="checkbox"><span>No jeito de pagar, troquei para <strong>On-Demand</strong>: a calculadora costuma vir marcada com um Savings Plan de 3 anos.</span></label></li>
+                <li><label><input type="checkbox"><span>Coloquei o uso de <strong>20 máquinas por 6 horas no mês</strong>, os servidores da venda.</span></label></li>
+                <li><label><input type="checkbox"><span>Cliquei em <strong>Save and view summary</strong> e anotei o valor mensal, em dólar.</span></label></li>
+              </ol>
               <div class="faca-assim">
                 <strong>Teste:</strong>
                 <ol>
@@ -297,6 +455,18 @@
           <div class="conceito" style="grid-template-columns:1fr">
             <div class="texto">
               <p>A AWS lançou novos planos em 02/12/2025. Os planos <strong>Developer</strong>, <strong>Business</strong> e <strong>Enterprise On-Ramp</strong> acabam em <strong>01/01/2027</strong>. O guia da prova, na versão de 29/10/2026, já cobra os planos novos.</p>
+              <p>Pense na assistência do carro: do manual no porta-luvas à equipe de box da Fórmula 1. Clique em cada plano e veja quanto tempo a ajuda leva para chegar num caso crítico.</p>
+              <div class="casa" data-suporte>
+                <div class="casa-modos pit-planos" role="group" aria-label="Escolha o plano de suporte">
+                  <button type="button" data-plano="0" aria-pressed="false"><span class="ico" aria-hidden="true">📖</span><strong>Basic</strong><small>grátis</small></button>
+                  <button type="button" data-plano="1" aria-pressed="true"><span class="ico" aria-hidden="true">🛻</span><strong>Business Support+</strong><small>US$ 29+</small></button>
+                  <button type="button" data-plano="2" aria-pressed="false"><span class="ico" aria-hidden="true">🧑‍🔧</span><strong>Enterprise</strong><small>US$ 5.000+</small></button>
+                  <button type="button" data-plano="3" aria-pressed="false"><span class="ico" aria-hidden="true">🏎️</span><strong>Unified Operations</strong><small>US$ 50.000+</small></button>
+                </div>
+                <div class="pit-pista" aria-hidden="true"><span class="pit-carro">🧰</span><span class="pit-tempo"></span></div>
+                <div class="pit-escala" aria-hidden="true"><span>0 min</span><span>15 min</span><span>30 min</span></div>
+                <p class="casa-fala" aria-live="polite"></p>
+              </div>
               <div class="tabela-rola"><table class="metodos"><thead><tr><th>Plano</th><th>O que tem de especial</th><th>Caso crítico respondido em</th></tr></thead><tbody>
                 <tr><td><strong>Basic</strong><span class="termo-en">grátis, para todo cliente</span></td><td>Atendimento ao cliente 24 horas, documentação, re:Post e as verificações principais do Trusted Advisor.</td><td>não tem suporte técnico</td></tr>
                 <tr><td><strong>Business Support+</strong><span class="termo-en">a partir de US$ 29 por mês</span></td><td>Especialistas da AWS 24 horas, assistente com IA e todas as verificações do Trusted Advisor. Para desenvolvedores, startups e pequenas empresas.</td><td>até 30 minutos</td></tr>
@@ -315,6 +485,10 @@
                 </ol>
               </div>
               <p>E a Ingresso Candango? Uma startup que precisa de ajuda às três da manhã, com o menor custo: <strong>Business Support+</strong>.</p>
+              <details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>Qual plano vem de graça com toda conta? E o que ele não tem?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p>O <strong>Basic</strong>. Tem atendimento ao cliente, documentação, re:Post e as verificações principais do Trusted Advisor, mas <strong>não tem suporte técnico</strong> de especialistas.</p></div>
+              </details>
             </div>
           </div>
         </section>
@@ -402,7 +576,7 @@
 
           <div class="cartao">
             <div class="progresso-atividade" data-progresso="passos-aula-02">
-              <span class="contagem">0 de 8</span>
+              <span class="contagem">0 de 10</span>
               <span class="barra-progresso"><span></span></span>
             </div>
             <ol class="checklist" id="passos-aula-02">
@@ -411,9 +585,11 @@
               <li><label><input type="checkbox"><span>Escolho o jeito de pagar pela situação. <a href="#c2">Veja o C2</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Fiz a conta do TCO da Ingresso Candango e mudei os números. <a href="#c3">Veja o C3</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Separo Pricing Calculator, Cost Explorer e Budgets. <a href="#c4">Veja o C4</a>.</span></label></li>
-              <li><label><input type="checkbox"><span>Fiz a estimativa na Pricing Calculator. <a href="#demonstracao">Veja o D1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Fiz a estimativa na Pricing Calculator junto com o vídeo. <a href="#demonstracao">Veja o D1</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Sei os quatro planos de suporte novos e fiz os três treinos. <a href="#pegadinha">Veja a P1</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Fiz o Módulo 2 na AWS Academy e marquei no <a href="../#cursos">Meu progresso</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Rodei o taxímetro nos meses prontos e vi o Budgets tocar. <a href="#taximetro">Veja o SIM1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Desmontei a fatura: sei o nome na AWS das cinco partes da conta de luz. <a href="#fatura">Veja o X1</a>.</span></label></li>
             </ol>
           </div>
         </section>
@@ -505,5 +681,6 @@
   <script src="../assets/js/classifica.js?v=2"></script>
   <script src="../assets/js/contas.js?v=1"></script>
   <script src="../assets/js/matrix.js?v=3"></script>
+  <script src="../js/vivo.js?v=2"></script>
 </body>
 </html>
