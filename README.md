@@ -99,7 +99,7 @@ aluno@aws:~$ aws s3 ls s3://preparatorio-aws/encontros/
 | 06 | 10/10 | Armazenamento | Amazon EBS; bucket no Amazon S3 | Escolha certa: S3, EBS, EFS ou Glacier |
 | 07 | 24/10 | Bancos de dados | Servidor de banco de dados com Amazon RDS | Escolha certa: RDS, Aurora, DynamoDB ou Redshift |
 | 08 | 07/11 | Arquitetura: Well-Architected | Análise de arquiteturas reais | Projeto relâmpago para um órgão público de Brasília |
-| 09 | 21/11 | Escalabilidade, monitoramento e revisão | Load balancing, Auto Scaling e CloudWatch | Jeopardy da nuvem |
+| 09 | a definir (21/11 é recesso; reposição durante a semana) | Escalabilidade, monitoramento e revisão | Load balancing, Auto Scaling e CloudWatch | Jeopardy da nuvem |
 | 10 | 05/12 | Simulado final e caminho até a prova | Simulado completo com tempo de prova | Correção por domínio |
 
 ---

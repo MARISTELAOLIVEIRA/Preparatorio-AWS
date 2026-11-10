@@ -26,7 +26,7 @@
 -->
 <link rel="stylesheet" href="assets/css/estilo.css">
 <link rel="stylesheet" href="assets/css/neon.css?v=5">
-<link rel="stylesheet" href="css/aws.css?v=5">
+<link rel="stylesheet" href="css/aws.css?v=6">
 </head>
 <body>
 <!-- ===================== BARRA DO TOPO (igual em todos os sites) ===================== -->
@@ -212,7 +212,7 @@ const ENCONTROS=[
  {d:"2026-10-10",c:"Tecnologia",t:"Armazenamento",lab:["Amazon EBS","Bucket no Amazon S3"],des:["Escolha certa: S3, EBS, EFS ou Glacier"],casa:["Vídeo 8","Módulo 8"]},
  {d:"2026-10-24",c:"Tecnologia",t:"Bancos de dados",lab:["Servidor de banco de dados com Amazon RDS"],des:["Escolha certa: RDS, Aurora, DynamoDB ou Redshift"],casa:["Vídeo 9","Módulo 9"]},
  {d:"2026-11-07",c:"Tecnologia",t:"Arquitetura: Well-Architected",lab:["Análise de arquiteturas reais"],des:["Projeto relâmpago para um órgão público de Brasília"],casa:["Vídeos 10 e 11","Módulo 10 e exame final do Cloud Foundations"]},
- {d:"2026-11-21",c:"Tecnologia",t:"Escalabilidade, monitoramento e revisão",lab:["Load balancing, Auto Scaling e CloudWatch"],des:["Jeopardy da nuvem"],casa:["Vídeo 12","Skill Builder: Essentials e questões práticas"]},
+ {d:"2026-11-21",rep:"Recesso escolar no dia 21/11: este encontro vai ser reposto durante a semana. A data nova sai aqui e no Teams.",c:"Tecnologia",t:"Escalabilidade, monitoramento e revisão",lab:["Load balancing, Auto Scaling e CloudWatch"],des:["Jeopardy da nuvem"],casa:["Vídeo 12","Skill Builder: Essentials e questões práticas"]},
  {d:"2026-12-05",c:"Prova",t:"Simulado final e caminho até a prova",lab:["Simulado completo com tempo de prova"],des:["Correção por domínio"],casa:["Tutorial do voucher","Plano de estudos até a prova"]}
 ];
 /* MODULOS e NOMES (o "Meu progresso") ficam em js/modulos.js */
@@ -266,6 +266,8 @@ const AULAS_NO_AR=[1,2,3,4,5,6,7,8,9,10,11,12];
 
 const $=s=>document.querySelector(s);
 const fmt=d=>{const [a,m,dd]=d.split("-");return dd+"/"+m};
+/* encontro com rep: o sábado caiu (recesso) e a reposição ainda não tem data */
+const quandoE=e=>e.rep?"a definir":fmt(e.d);
 const hoje=new Date();hoje.setHours(0,0,0,0);
 const dataDe=s=>{const [a,m,d]=s.split("-").map(Number);return new Date(a,m-1,d)};
 
@@ -287,16 +289,16 @@ const dataDe=s=>{const [a,m,d]=s.split("-").map(Number);return new Date(a,m-1,d)
     const li=document.createElement("li");li.style.setProperty("--c",CORES[e.c]);
     if(!fim&&i<idx) li.classList.add("feito"); if(i===idx) li.classList.add("agora");
     const ul=a=>"<ul>"+a.map(x=>`<li>${x}</li>`).join("")+"</ul>";
-    li.innerHTML=`<span class="no">${String(i+1).padStart(2,"0")}</span><details ${i===idx?"open":""}><summary><span class="d">${fmt(e.d)}</span><h3>${e.t}</h3><span class="tag">${e.c}</span></summary><div class="corpo"><div><h4>Laboratório</h4>${ul(e.lab)}</div><div><h4>Desafio</h4>${ul(e.des)}</div><div><h4>Para a quinzena</h4>${ul(e.casa)}</div></div></details>`;
+    li.innerHTML=`<span class="no">${String(i+1).padStart(2,"0")}</span><details ${i===idx?"open":""}><summary><span class="d">${quandoE(e)}</span><h3>${e.t}</h3><span class="tag">${e.c}</span></summary><div class="corpo">${e.rep?`<p class="aviso-rep">${e.rep}</p>`:""}<div><h4>Laboratório</h4>${ul(e.lab)}</div><div><h4>Desafio</h4>${ul(e.des)}</div><div><h4>Para a quinzena</h4>${ul(e.casa)}</div></div></details>`;
     lista.appendChild(li);
   });
   const c=$("#cartaoProximo");
   if(fim){c.innerHTML=`<div class="data">Fim</div><div><h3>O semestre terminou</h3><p>Agora é com você: agende a prova com o voucher e siga o seu plano de estudos.</p></div>`;return}
   const e=ENCONTROS[idx];c.style.borderLeftColor=CORES[e.c];
   const dias=Math.round((dataDe(e.d)-hoje)/864e5);
-  const quando=dias===0?"é hoje!":dias===1?"amanhã":`em ${dias} dias`;
+  const quando=e.rep?"reposição":dias===0?"é hoje!":dias===1?"amanhã":`em ${dias} dias`;
   const ant=ENCONTROS[idx-1];
-  c.innerHTML=`<div class="data">${fmt(e.d)}<small>${quando}</small></div><div><h3>Encontro ${idx+1}: ${e.t}</h3><p style="margin:.3rem 0 0">No laboratório: ${e.lab.join("; ")}. Desafio: ${e.des.join(" e ")}.</p>${ant?`<p style="margin:.8rem 0 0;font-weight:700">Antes de vir:</p><ul>${ant.casa.map(x=>`<li>${x}</li>`).join("")}</ul>`:""}</div>`;
+  c.innerHTML=`<div class="data">${e.rep?"A definir":fmt(e.d)}<small>${quando}</small></div><div><h3>Encontro ${idx+1}: ${e.t}</h3>${e.rep?`<p style="margin:.3rem 0 0;font-weight:700">${e.rep}</p>`:""}<p style="margin:.3rem 0 0">No laboratório: ${e.lab.join("; ")}. Desafio: ${e.des.join(" e ")}.</p>${ant?`<p style="margin:.8rem 0 0;font-weight:700">Antes de vir:</p><ul>${ant.casa.map(x=>`<li>${x}</li>`).join("")}</ul>`:""}</div>`;
 })();
 
 /* progresso nos cursos (no navegador; com login, também na nuvem: js/conta.js) */
