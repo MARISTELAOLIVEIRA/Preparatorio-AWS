@@ -1,6 +1,7 @@
 /*
   vivo.css: as peças das aulas "vivas" do Preparatório AWS (gancho, simulador, pausa aqui, casa ou hotel, placa).
-  versão 2 · 2026-11-10 · só deste site. Aula 1 e aula 2 (conta do susto, taxímetro, transporte, iceberg, pit stop, conta de luz).
+  versão 3 · 2026-11-10 · só deste site. Aula 1, aula 2 (conta do susto, taxímetro, transporte, iceberg, pit stop, conta de luz)
+  e aula 3 (plantão, derrube um data center, do globo ao prédio, funil da região).
   Todas as animações param com o botão de pausa (html.pausado) e com o "reduzir movimento" do sistema.
 */
 
@@ -869,6 +870,171 @@
   .pit-planos { grid-template-columns: repeat(2, 1fr); }
 }
 
+/* ===================== aula 3 · G1 o plantão ===================== */
+.plantao .tarja {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin: 1rem auto .4rem;
+  padding: .35rem .9rem;
+  border-radius: 6px;
+  background: #c22450;
+  color: #fff;
+  font: 800 .85rem var(--f-mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  animation: pisca 1.2s infinite;
+}
+.plantao .manchete {
+  max-width: 34rem;
+  margin: .4rem auto 1rem;
+  font: 800 clamp(1.2rem, 3.6vw, 1.7rem)/1.2 var(--f-titulo);
+}
+.plantao .letreiro {
+  overflow: hidden;
+  margin: 0 auto 1.2rem;
+  max-width: 36rem;
+  border-block: 1px solid rgba(255, 153, 0, .4);
+  white-space: nowrap;
+  font: 500 .85rem var(--f-mono);
+  color: #ffb84d;
+}
+.plantao .letreiro span { display: inline-block; padding: .35rem 0; padding-left: 100%; animation: letreiro 14s linear infinite; }
+@keyframes letreiro { to { transform: translateX(-100%); } }
+
+/* ===================== aula 3 · SIM1 derrube um data center ===================== */
+.dz-controles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.dz-grupo { display: grid; gap: .4rem; align-content: start; }
+.dz-grupo > span { font: 500 .78rem var(--f-mono); color: var(--texto-2); text-transform: uppercase; letter-spacing: .05em; }
+.dz-botoes { display: flex; flex-wrap: wrap; gap: .4rem; }
+.dz-botoes button {
+  padding: .5rem .85rem;
+  border-radius: 999px;
+  border: 1px solid var(--borda-forte);
+  background: var(--superficie-2);
+  color: var(--texto);
+  font: 700 .9rem var(--f-texto);
+  cursor: pointer;
+  transition: transform .15s, border-color .15s, background .15s;
+}
+.dz-botoes button:hover { transform: translateY(-2px); }
+.dz-botoes button[aria-pressed="true"] { border-color: var(--vivo-ok); background: color-mix(in srgb, var(--vivo-ok) 22%, var(--superficie-2)); }
+.dz-botoes.golpes button[aria-pressed="true"] { border-color: var(--vivo-ruim); background: color-mix(in srgb, var(--vivo-ruim) 22%, var(--superficie-2)); }
+.dz-copias { font: 700 .85rem var(--f-mono); color: var(--neon); }
+.fa-cliente { fill: var(--neon); opacity: .8; }
+.dz-regiao { fill: rgba(255, 255, 255, .03); stroke: var(--ouro); stroke-width: 2; stroke-dasharray: 6 4; transition: fill .3s, stroke .3s; }
+.dz-regiao.caiu { fill: rgba(255, 92, 122, .12); stroke: #ff5c7a; }
+.dz-zona { fill: #121a16; stroke: #3b4a42; stroke-width: 2; transition: fill .3s, stroke .3s; }
+.dz-zona.caiu { fill: #2a1218; stroke: #ff5c7a; }
+.dz-predio { fill: #1c2c25; stroke: #9fd0b7; stroke-width: 1.5; transition: fill .3s, stroke .3s; }
+.dz-predio.caiu { fill: #3a1820; stroke: #ff5c7a; }
+.dz-site { fill: #fff; font: 800 13px var(--f-titulo); }
+.dz-fogo { font-size: 26px; animation: treme .5s infinite; }
+.dz-fogo.grande { font-size: 30px; }
+.dz-trilha { opacity: .18; transition: opacity .3s; }
+.dz-trilha.ativa { opacity: .6; stroke: #9fd0b7; }
+.dz-missoes { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: .6rem; margin-top: 1rem; }
+.dz-missoes li {
+  list-style: none;
+  padding: .8rem 1rem;
+  border-radius: 14px;
+  border: 1px dashed var(--borda-forte);
+  background: var(--superficie-2);
+}
+.dz-missoes { padding: 0; }
+.dz-missoes .estado { display: inline-block; margin-top: .3rem; font: 700 .8rem var(--f-mono); color: var(--texto-3); }
+.dz-missoes li.feita { border: 1px solid var(--vivo-ok); box-shadow: 0 0 20px -8px var(--vivo-ok); animation: nasce .4s ease-out; }
+.dz-missoes li.feita .estado { color: var(--vivo-ok); }
+
+/* ===================== aula 3 · X1 do globo ao prédio ===================== */
+.zoom-niveis { grid-template-columns: repeat(5, 1fr); }
+.zoom-mapa {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.zoom-caixa {
+  position: relative;
+  padding: 1.6rem .8rem .8rem;
+  border-radius: 14px;
+  border: 2px dashed var(--borda-forte);
+  transition: border-color .3s, background .3s, box-shadow .3s;
+}
+.zoom-caixa > b {
+  position: absolute;
+  top: .3rem;
+  left: .7rem;
+  font: 700 .72rem var(--f-mono);
+  color: var(--texto-3);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.zoom-caixa.ativa { border-style: solid; border-color: var(--neon); background: color-mix(in srgb, var(--neon) 9%, transparent); box-shadow: 0 0 24px -8px var(--neon); }
+.zoom-caixa.ativa > b { color: var(--neon); }
+.zoom-zonas { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; }
+.zoom-predios { display: flex; gap: .3rem; justify-content: center; font-size: 1.3rem; }
+.zoom-borda { width: 7rem; text-align: center; padding-top: 1.8rem; }
+.zoom-borda span { font-size: 1.8rem; }
+
+/* ===================== aula 3 · C4 o funil da região ===================== */
+.funil-crit { display: grid; grid-template-columns: repeat(4, 1fr); gap: .4rem; margin: 0 0 1rem; padding: 0; list-style: none; counter-reset: c; }
+.funil-crit li {
+  padding: .55rem .6rem;
+  border-radius: 12px;
+  background: var(--superficie-2);
+  border: 1px solid var(--borda);
+  font: 700 .85rem/1.2 var(--f-titulo);
+  text-align: center;
+  opacity: .55;
+  transition: opacity .3s, border-color .3s;
+}
+.funil-crit li small { display: block; font: 400 .74rem/1.25 var(--f-texto); color: var(--texto-2); margin-top: .2rem; }
+.funil-crit li.agora { opacity: 1; border-color: var(--neon); box-shadow: 0 0 18px -6px var(--neon); }
+.funil-crit li.feito { opacity: .9; border-color: var(--vivo-ok); }
+.funil-regioes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .6rem;
+  margin: 0;
+  padding: 1rem;
+  list-style: none;
+  border-radius: 18px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--neon) 10%, transparent), transparent);
+  clip-path: polygon(0 0, 100% 0, 92% 100%, 8% 100%);
+}
+.funil-regioes li {
+  display: grid;
+  justify-items: center;
+  gap: .15rem;
+  padding: .8rem .5rem;
+  border-radius: 14px;
+  background: var(--superficie);
+  border: 1px solid var(--vivo-ok);
+  text-align: center;
+  transition: opacity .5s, transform .5s, filter .5s, border-color .5s;
+}
+.funil-regioes .ico { font-size: 1.7rem; }
+.funil-regioes code { font-size: .78rem; }
+.funil-regioes .motivo { font-size: .76rem; color: var(--vivo-ruim); min-height: 1em; }
+.funil-regioes li.saiu { opacity: .45; transform: translateY(10px) rotate(-3deg); filter: grayscale(1); border-color: var(--vivo-ruim); }
+.funil-acoes { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; margin-top: 1rem; }
+.funil-acoes .vai { padding: .7rem 1.3rem; border: 0; border-radius: 999px; background: var(--neon); color: #111; font: 700 1rem var(--f-texto); cursor: pointer; }
+
+@media (max-width: 760px) {
+  .zoom-niveis { grid-template-columns: repeat(3, 1fr); }
+  .zoom-mapa { grid-template-columns: 1fr; }
+  .zoom-borda { width: auto; }
+  .funil-crit { grid-template-columns: repeat(2, 1fr); }
+  .funil-regioes { grid-template-columns: 1fr; clip-path: none; }
+}
+
 /* ===================== pausa: tudo parado ===================== */
 .pausado .gancho.zero::before,
 .pausado .gancho.zero .gancho-relogio,
@@ -885,7 +1051,12 @@
 .pausado .tx-fluxo,
 .pausado .tx-alertas li,
 .pausado .pagar-tiles .ico,
-.pausado .quando::before { animation: none !important; }
+.pausado .quando::before,
+.pausado .plantao .tarja,
+.pausado .plantao .letreiro span,
+.pausado .dz-fogo,
+.pausado .dz-missoes li.feita { animation: none !important; }
+.pausado .funil-regioes li { transition: none; }
 .pausado .iceberg .fundo li, .pausado .pit-carro, .pausado .tx-barra i { transition: none; }
 .pausado .camada, .pausado .camada .quem { transition: none; }
 @media (prefers-reduced-motion: reduce) {
@@ -918,7 +1089,8 @@
 [data-tema="claro"] .pausa-icone,
 [data-tema="claro"] .placa-ficha .na-aws,
 [data-tema="claro"] .pagar-perguntas button[aria-pressed="true"] .sn,
-[data-tema="claro"] .iceberg-acoes .vai { color: #fff; }
+[data-tema="claro"] .iceberg-acoes .vai,
+[data-tema="claro"] .funil-acoes .vai { color: #fff; }
 
 /* no celular, a linha da responsabilidade com rótulo curto */
 @media (max-width: 760px) {

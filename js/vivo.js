@@ -1,6 +1,6 @@
 /*
   vivo.js: as peças interativas das aulas "vivas" do Preparatório AWS. Só deste site.
-  versão 2 · 2026-11-10 · aula 1 (conceitos de nuvem) e aula 2 (economia e cobrança)
+  versão 3 · 2026-11-10 · aula 1 (conceitos de nuvem), aula 2 (economia e cobrança) e aula 3 (infraestrutura global)
 
   1. [data-gancho]  a contagem para a abertura das vendas e a votação "o site aguenta?"
   2. [data-sim]     simulador "A noite da abertura das vendas": salinha com 2, salinha com 20 ou nuvem
@@ -11,6 +11,10 @@
   7. [data-pagar]   qual jeito de pagar? três perguntas e o transporte de cada um (aula 2)
   8. [data-iceberg] o iceberg do TCO: mergulhar e ver o que fica embaixo d'água (aula 2)
   9. [data-suporte] planos de suporte, do manual ao pit stop (aula 2)
+  10. [data-plantao] o plantão do incêndio e o palpite "o site cai?" (aula 3; as respostas ficam nos botões, em data-explica)
+  11. [data-desastre] derrube um data center: o site em zonas e regiões, três desastres e duas missões (aula 3)
+  12. [data-zoom]   do globo ao prédio: região, zona, data center e ponto de presença, com analogia (aula 3)
+  13. [data-funil]  o funil da região: os quatro critérios, na ordem, com e sem o contrato do órgão público (aula 3)
 
   Com as animações pausadas (botão do topo ou "reduzir movimento"), tudo mostra o resultado direto.
 */
@@ -768,5 +772,249 @@
     }
     botoes.forEach((b, k) => b.addEventListener("click", () => escolhe(k)));
     escolhe(1);
+  });
+
+  // ===================== 10. o plantão (gancho com palpites) =====================
+  document.querySelectorAll("[data-plantao]").forEach(function (box) {
+    const abrir = box.querySelector("[data-abrir]");
+    const palpites = box.querySelectorAll("[data-explica]");
+    const resposta = box.querySelector(".gancho-resposta");
+    abrir.addEventListener("click", function () {
+      box.classList.add("aberta");
+      abrir.hidden = true;
+      box.querySelectorAll("[data-revela]").forEach(el => (el.hidden = false));
+      box.querySelector(".gancho-pergunta").focus();
+    });
+    palpites.forEach(function (b) {
+      b.addEventListener("click", function () {
+        palpites.forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+        resposta.innerHTML = b.dataset.explica + (box.dataset.link ? ` <a href="${box.dataset.link}">${box.dataset.linkTexto}</a>.` : "");
+      });
+    });
+  });
+
+  // ===================== 11. derrube um data center =====================
+  document.querySelectorAll("[data-desastre]").forEach(function (sim) {
+    const palco = sim.querySelector(".sim-palco");
+    const status = sim.querySelector(".sim-veredito");
+    const aviso = sim.querySelector(".sim-aviso");
+    const copiasTxt = sim.querySelector("[data-copias]");
+    const lugares = sim.querySelectorAll("[data-lugar]");
+    const desastres = sim.querySelectorAll("[data-golpe]");
+    const missoes = {};
+    sim.querySelectorAll("[data-missao]").forEach(el => (missoes[el.dataset.missao] = el));
+    let golpe = null;
+    let quadro = 0;
+
+    // o desenho: os clientes, a região de São Paulo com três zonas (dois prédios cada) e a região da Virgínia
+    const cena = svg("svg", { viewBox: "0 0 640 280", "aria-hidden": "true", focusable: "false" }, palco);
+    const rot = (x, y, txt, anc) => { const el = svg("text", { x: x, y: y, class: "sim-rotulo", "text-anchor": anc || "middle" }, cena); el.textContent = txt; return el; };
+    for (let c = 0; c < 3; c++) for (let l = 0; l < 6; l++) svg("circle", { cx: 30 + c * 16, cy: 90 + l * 18, r: 4, class: "fa-cliente" }, cena);
+    rot(46, 214, "clientes");
+    rot(46, 228, "no Brasil");
+    const sp = svg("rect", { x: 150, y: 28, width: 330, height: 200, rx: 14, class: "dz-regiao" }, cena);
+    rot(315, 20, "região sa-east-1 · São Paulo");
+    const va = svg("rect", { x: 510, y: 28, width: 120, height: 200, rx: 14, class: "dz-regiao" }, cena);
+    rot(570, 20, "us-east-1 · Virgínia");
+    const ZONAS = { a: 165, b: 270, c: 375 };
+    const zonaEl = {}, prediosEl = {}, chips = {};
+    Object.keys(ZONAS).forEach(function (z) {
+      const x = ZONAS[z];
+      zonaEl[z] = svg("rect", { x: x, y: 50, width: 90, height: 160, rx: 10, class: "dz-zona" }, cena);
+      rot(x + 45, 68, "zona " + z);
+      prediosEl[z] = [0, 1].map(k => svg("rect", { x: x + 12 + k * 36, y: 112, width: 30, height: 56, rx: 3, class: "dz-predio" }, cena));
+      chips[z] = svg("text", { x: x + 45, y: 96, class: "dz-site", "text-anchor": "middle" }, cena);
+    });
+    svg("rect", { x: 525, y: 50, width: 90, height: 160, rx: 10, class: "dz-zona" }, cena);
+    rot(570, 68, "zonas de lá");
+    [0, 1].forEach(k => svg("rect", { x: 537 + k * 36, y: 112, width: 30, height: 56, rx: 3, class: "dz-predio" }, cena));
+    chips.va = svg("text", { x: 570, y: 96, class: "dz-site", "text-anchor": "middle" }, cena);
+    const fogo = svg("text", { x: ZONAS.a + 27, y: 108, class: "dz-fogo", "text-anchor": "middle" }, cena);
+    const raio = svg("text", { x: ZONAS.a + 45, y: 200, class: "dz-fogo", "text-anchor": "middle" }, cena);
+    const tornado = svg("text", { x: 315, y: 46, class: "dz-fogo grande", "text-anchor": "middle" }, cena);
+    // trilhas dos clientes até cada lugar
+    // cada lugar tem a sua pista, por baixo das zonas (como trilhas de placa), e entra pela base dela
+    const DESTINOS = { a: [ZONAS.a + 45, 236], b: [ZONAS.b + 45, 248], c: [ZONAS.c + 45, 260], va: [570, 272] };
+    const trilhas = {};
+    Object.keys(DESTINOS).forEach(function (k) {
+      const d = DESTINOS[k];
+      trilhas[k] = svg("path", { d: `M78 140 H112 V${d[1]} H${d[0]} V172`, class: "sim-trilha dz-trilha" }, cena);
+    });
+    const pulsos = svg("g", {}, cena);
+
+    const temSite = k => sim.querySelector(`[data-lugar="${k}"]`).getAttribute("aria-pressed") === "true";
+    // o lugar ainda está de pé depois do desastre?
+    function vivo(k) {
+      if (golpe === "regiao") return k === "va";
+      if (golpe === "apagao" || golpe === "fogo") return k !== "a";
+      return true;
+    }
+    function quemAtende() {
+      return ["a", "b", "c", "va"].find(k => temSite(k) && vivo(k)) || null;
+    }
+    function desenha() {
+      Object.keys(ZONAS).forEach(function (z) {
+        const caiuZona = !vivo(z) && (golpe === "apagao" || golpe === "regiao");
+        zonaEl[z].setAttribute("class", "dz-zona" + (caiuZona ? " caiu" : ""));
+        prediosEl[z].forEach((p, k) => p.setAttribute("class", "dz-predio" + (caiuZona || (golpe === "fogo" && z === "a" && k === 0) ? " caiu" : "")));
+        chips[z].textContent = temSite(z) ? (vivo(z) ? "🌐 site" : "💀 site") : "";
+      });
+      chips.va.textContent = temSite("va") ? "🌐 site" : "";
+      sp.setAttribute("class", "dz-regiao" + (golpe === "regiao" ? " caiu" : ""));
+      fogo.textContent = golpe === "fogo" ? "🔥" : "";
+      raio.textContent = golpe === "apagao" ? "⚡" : "";
+      tornado.textContent = golpe === "regiao" ? "🌪️" : "";
+      const atende = quemAtende();
+      Object.keys(trilhas).forEach(k => trilhas[k].classList.toggle("ativa", k === atende));
+      const n = ["a", "b", "c", "va"].filter(temSite).length;
+      copiasTxt.textContent = n + (n === 1 ? " cópia" : " cópias");
+      // o resultado
+      const NOMES = { a: "zona a", b: "zona b", c: "zona c", va: "outra região (Virgínia)" };
+      const GOLPES = { fogo: "o incêndio no data center da zona a", apagao: "o apagão na zona a", regiao: "o desastre na região de São Paulo" };
+      if (!n) {
+        status.style.setProperty("--c", "var(--vivo-ruim)");
+        status.innerHTML = "<p>Coloque o site em pelo menos um lugar.</p>";
+      } else if (!golpe) {
+        status.style.setProperty("--c", "var(--vivo-ok)");
+        status.innerHTML = `<p>✅ <strong>Tudo normal:</strong> o site está no ar, na ${NOMES[atende]}. Agora dispare um desastre.</p>`;
+      } else if (atende) {
+        status.style.setProperty("--c", "var(--vivo-ok)");
+        status.innerHTML = `<p>✅ <strong>O site aguentou ${GOLPES[golpe]}!</strong> Os clientes foram atendidos pela ${NOMES[atende]}.</p>`;
+      } else {
+        status.style.setProperty("--c", "var(--vivo-ruim)");
+        status.innerHTML = `<p>💥 <strong>Site fora do ar.</strong> ${GOLPES[golpe][0].toUpperCase() + GOLPES[golpe].slice(1)} derrubou todas as cópias. ${golpe === "regiao" ? "Só uma cópia em outra região salva." : "Uma cópia em outra zona salvaria."}</p>`;
+      }
+      // as missões
+      const zonasSP = ["a", "b", "c"].filter(temSite).length;
+      if (golpe && golpe !== "regiao" && atende && zonasSP === 2 && !temSite("va")) cumpre("zonas");
+      if (golpe === "regiao" && atende) cumpre("regioes");
+      aviso.textContent = status.textContent;
+    }
+    function cumpre(m) {
+      const el = missoes[m];
+      if (!el || el.classList.contains("feita")) return;
+      el.classList.add("feita");
+      el.querySelector(".estado").textContent = "✓ cumprida";
+    }
+    // os pulsos: clientes correndo até quem atende (ou batendo na porta fechada)
+    let lista = [];
+    let acum = 0;
+    let antes = performance.now();
+    function anima(agora) {
+      const dt = Math.min(0.05, (agora - antes) / 1000);
+      antes = agora;
+      if (!pausado()) {
+        acum += dt * 6;
+        const alvo = quemAtende() || (["a", "b", "c", "va"].find(temSite));
+        while (acum >= 1 && alvo && lista.length < 40) {
+          const c = trilhas[alvo];
+          lista.push({ el: svg("circle", { r: 3.5, class: "fa" + (quemAtende() ? "" : " desistiu") }, pulsos), c: c, tam: c.getTotalLength(), t: 0, falha: !quemAtende() });
+          acum--;
+        }
+        lista = lista.filter(function (f) {
+          f.t += dt * 0.9;
+          const lim = f.falha ? 0.85 : 1;
+          if (f.t >= lim) { f.el.remove(); return false; }
+          const pt = f.c.getPointAtLength(f.t * f.tam);
+          f.el.setAttribute("cx", pt.x);
+          f.el.setAttribute("cy", pt.y);
+          return true;
+        });
+      } else if (lista.length) {
+        lista.forEach(f => f.el.remove());
+        lista = [];
+      }
+      quadro = requestAnimationFrame(anima);
+    }
+    lugares.forEach(function (b) {
+      b.addEventListener("click", function () {
+        b.setAttribute("aria-pressed", String(b.getAttribute("aria-pressed") !== "true"));
+        desenha();
+      });
+    });
+    desastres.forEach(function (b) {
+      b.addEventListener("click", function () {
+        golpe = b.dataset.golpe || null;
+        desastres.forEach(x => x.setAttribute("aria-pressed", String(x === b && !!golpe)));
+        desenha();
+      });
+    });
+    desenha();
+    quadro = requestAnimationFrame(anima);
+  });
+
+  // ===================== 12. do globo ao prédio =====================
+  const ZOOM = {
+    mundo: "🌎 <strong>A AWS no mundo = o mapa-múndi.</strong> Em 04/11/2026, eram 39 regiões no ar e mais de 750 pontos de presença, espalhados pelos continentes.",
+    regiao: "🏙️ <strong>Região = a cidade.</strong> São Paulo, código <code>sa-east-1</code>. Cada cidade é separada das outras: um problema numa não derruba a outra, e nada é copiado de uma para outra sem você mandar.",
+    zona: "🏘️ <strong>Zona de disponibilidade = bairros distantes da mesma cidade.</strong> Cada bairro com a sua luz, água e internet. Longe o bastante para não cair junto, perto o bastante para conversar rápido: <code>sa-east-1a</code>, <code>b</code> e <code>c</code>.",
+    dc: "🏢 <strong>Data center = o prédio.</strong> Onde os servidores ficam de verdade. Uma zona tem um ou mais prédios.",
+    borda: "📦 <strong>Ponto de presença = o armário de retirada perto da sua casa.</strong> Guarda cópias do que é mais pedido, para entregar rápido. Não é região nem zona: fica fora da escada, espalhado pelas cidades."
+  };
+  document.querySelectorAll("[data-zoom]").forEach(function (box) {
+    const botoes = box.querySelectorAll("[data-nivel]");
+    const caixas = box.querySelectorAll("[data-caixa]");
+    const fala = box.querySelector(".casa-fala");
+    function escolhe(nivel) {
+      botoes.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.nivel === nivel)));
+      caixas.forEach(c => c.classList.toggle("ativa", c.dataset.caixa === nivel));
+      fala.innerHTML = ZOOM[nivel];
+    }
+    botoes.forEach(b => b.addEventListener("click", () => escolhe(b.dataset.nivel)));
+    escolhe("mundo");
+  });
+
+  // ===================== 13. o funil da região =====================
+  const FUNIL = [
+    { nome: "1. Conformidade", pergunta: "Alguma lei ou contrato exige um lugar?",
+      com: { sai: { va: "o contrato exige os dados no Brasil", ie: "o contrato exige os dados no Brasil" }, fala: "O contrato do órgão público exige o Brasil: só São Paulo segue. <strong>A lei manda primeiro.</strong>" },
+      sem: { sai: {}, fala: "Nenhuma lei ou contrato prende os dados: as três seguem no funil." } },
+    { nome: "2. Latência", pergunta: "Onde estão os usuários?",
+      com: { sai: {}, fala: "Os clientes estão no Brasil, e São Paulo é a mais perto. Confirmado." },
+      sem: { sai: { va: "longe dos clientes do Brasil", ie: "longe dos clientes do Brasil" }, fala: "Os clientes estão no Brasil: São Paulo é a mais perto. Virgínia e Irlanda ficam longe." } },
+    { nome: "3. Custo", pergunta: "Quanto o mesmo serviço custa em cada região?",
+      com: { sai: {}, fala: "O sócio viu que Virgínia é mais barata. Mas ela já caiu no critério 1: <strong>o preço só escolhe entre quem cumpre a lei.</strong>" },
+      sem: { sai: {}, fala: "O sócio viu que Virgínia é mais barata. Mas ela perdeu na latência, que vem antes do custo." } },
+    { nome: "4. Serviços e recursos", pergunta: "O serviço que eu preciso existe nessa região?",
+      com: { sai: {}, fala: "Os serviços do site existem em São Paulo. <strong>Região escolhida: sa-east-1.</strong> Desta vez, quem decidiu foi a lei." },
+      sem: { sai: {}, fala: "Os serviços do site existem em São Paulo. <strong>Região escolhida: sa-east-1.</strong> Desta vez, quem decidiu foi a latência." } }
+  ];
+  document.querySelectorAll("[data-funil]").forEach(function (box) {
+    const cards = {};
+    box.querySelectorAll("[data-regiao]").forEach(el => (cards[el.dataset.regiao] = el));
+    const crits = box.querySelectorAll("[data-crit]");
+    const fala = box.querySelector(".casa-fala");
+    const proximo = box.querySelector("[data-proximo]");
+    const cenarios = box.querySelectorAll("[data-cenario]");
+    let cenario = "com";
+    let passo = 0;
+    function zera() {
+      passo = 0;
+      Object.values(cards).forEach(c => { c.classList.remove("saiu"); c.querySelector(".motivo").textContent = ""; });
+      crits.forEach(c => c.classList.remove("feito", "agora"));
+      fala.innerHTML = cenario === "com" ? "Com o contrato do órgão público. Aperte <strong>Próximo critério</strong> e veja quem cai." : "Sem o contrato do órgão público. Aperte <strong>Próximo critério</strong> e veja quem cai.";
+      proximo.disabled = false;
+      proximo.textContent = "▶ Próximo critério";
+    }
+    proximo.addEventListener("click", function () {
+      if (passo >= FUNIL.length) return zera();
+      const c = FUNIL[passo][cenario];
+      crits.forEach((el, k) => { el.classList.toggle("feito", k < passo); el.classList.toggle("agora", k === passo); });
+      Object.keys(c.sai).forEach(function (r) {
+        cards[r].classList.add("saiu");
+        cards[r].querySelector(".motivo").textContent = "saiu: " + c.sai[r];
+      });
+      fala.innerHTML = c.fala;
+      passo++;
+      if (passo >= FUNIL.length) proximo.textContent = "↺ Recomeçar";
+    });
+    cenarios.forEach(function (b) {
+      b.addEventListener("click", function () {
+        cenario = b.dataset.cenario;
+        cenarios.forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+        zera();
+      });
+    });
+    zera();
   });
 })();

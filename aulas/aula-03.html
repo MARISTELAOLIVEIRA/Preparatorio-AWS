@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="../assets/css/neon.css?v=5">
   <link rel="stylesheet" href="../css/interativos.css?v=1">
   <link rel="stylesheet" href="../css/aula-aws.css?v=7">
+  <link rel="stylesheet" href="../css/vivo.css?v=3">
 </head>
 <body>
 
@@ -33,7 +34,7 @@
       <button type="button" class="btn-menu" id="btn-menu" aria-expanded="false" aria-controls="menu">Menu</button>
       <nav class="nav" id="menu" aria-label="Partes da aula">
         <a href="../#videos">← Preparatório</a>
-        <a href="#caso">Caso</a>
+        <a href="#simulador">Simulador</a>
         <a href="#conceitos">Conceitos</a>
         <a href="#demonstracao">Console</a>
         <a href="#pegadinha">Pegadinha</a>
@@ -116,17 +117,45 @@
           </div>
           <div class="cartao">
             <ol class="roteiro-video sem-tempo">
+              <li><a href="#gancho">G1 · Plantão das 2 da manhã</a></li>
               <li><a href="#caso">O caso: onde colocar o site da Ingresso Candango?</a></li>
+              <li><a href="#simulador">SIM1 · Derrube um data center</a></li>
               <li><a href="#c1">C1 · Região: um lugar no mapa</a></li>
               <li><a href="#c2">C2 · Zona de disponibilidade: os data centers da região</a></li>
               <li><a href="#c3">C3 · Pontos de presença: a AWS perto do cliente</a></li>
               <li><a href="#c4">C4 · Os quatro critérios para escolher a região</a></li>
               <li><a href="#c5">C5 · Uma zona, várias zonas ou várias regiões?</a></li>
-              <li><a href="#demonstracao">D1 · O seletor de regiões no console</a></li>
+              <li><a href="#zoom">X1 · Do mapa-múndi ao prédio</a></li>
+              <li><a href="#demonstracao">D1 · Faça junto: o seletor de regiões no console</a></li>
               <li><a href="#pegadinha">P1 · A pegadinha: região não é zona</a></li>
               <li><a href="#academy">Agora é na AWS Academy</a></li>
             </ol>
           </div>
+        </section>
+
+        <!-- ===================== GANCHO (vivo.js, parte 10) ===================== -->
+        <section class="parte" id="gancho">
+          <div class="cab">
+            <span class="olho">G1 · gancho</span>
+            <h2>Plantão das 2 da manhã</h2>
+          </div>
+          <div class="gancho plantao" data-plantao data-link="#simulador" data-link-texto="Teste no simulador logo abaixo">
+            <p class="gancho-evento">📺 Ingresso Candango · a madrugada antes da venda</p>
+            <span class="tarja">🔴 Plantão</span>
+            <p class="manchete">Incêndio atinge um data center em São Paulo às 2h. A venda do show abre às 9h.</p>
+            <div class="letreiro" aria-hidden="true"><span>Bombeiros controlam o fogo · ninguém se feriu · o prédio fica sem energia até amanhã · empresas correm para saber se os seus sites continuam no ar…</span></div>
+            <button type="button" class="botao" data-abrir>▶ E o site da Ingresso Candango?</button>
+            <div class="gancho-voto" data-revela hidden>
+              <p class="gancho-pergunta" tabindex="-1">O site cai?</p>
+              <div class="gancho-botoes">
+                <button type="button" aria-pressed="false" data-explica="Só se ele estiver inteiro naquele prédio. Espalhado por mais de uma zona, ele continua no ar.">💥 Cai</button>
+                <button type="button" aria-pressed="false" data-explica="Só se alguém tiver espalhado o site por mais de uma zona. Num prédio só, ele cai junto.">💪 Não cai</button>
+                <button type="button" aria-pressed="false" data-explica="Isso! Depende de onde o site está: num prédio só, cai; espalhado por duas zonas, nem pisca.">🤔 Depende</button>
+              </div>
+              <p class="gancho-resposta" aria-live="polite"></p>
+            </div>
+          </div>
+          <p class="fonte">Notícia fictícia, criada para a aula.</p>
         </section>
 
         <!-- ===================== ESTUDO DE CASO ===================== -->
@@ -151,6 +180,50 @@
             </ol>
             <p class="fonte">Empresa e pedidos fictícios, criados para as aulas.</p>
           </div>
+        </section>
+
+        <!-- ===================== SIMULADOR (vivo.js, parte 11) ===================== -->
+        <section class="parte" id="simulador">
+          <div class="cab">
+            <span class="olho">SIM1 · simulador</span>
+            <h2>Derrube um data center</h2>
+            <p>Coloque o site onde quiser, dispare um desastre e veja se os clientes continuam comprando. Depois, cumpra as duas missões.</p>
+          </div>
+          <div class="sim" data-desastre>
+            <div class="dz-controles">
+              <div class="dz-grupo">
+                <span>1. Onde está o site? · <b class="dz-copias" data-copias></b></span>
+                <div class="dz-botoes">
+                  <button type="button" data-lugar="a" aria-pressed="true">zona a</button>
+                  <button type="button" data-lugar="b" aria-pressed="false">zona b</button>
+                  <button type="button" data-lugar="c" aria-pressed="false">zona c</button>
+                  <button type="button" data-lugar="va" aria-pressed="false">outra região</button>
+                </div>
+              </div>
+              <div class="dz-grupo">
+                <span>2. Dispare um desastre</span>
+                <div class="dz-botoes golpes">
+                  <button type="button" data-golpe="fogo" aria-pressed="false">🔥 Incêndio num prédio da zona a</button>
+                  <button type="button" data-golpe="apagao" aria-pressed="false">⚡ Apagão na zona a</button>
+                  <button type="button" data-golpe="regiao" aria-pressed="false">🌪️ Desastre em São Paulo</button>
+                  <button type="button" data-golpe="" aria-pressed="false">↺ Tudo normal</button>
+                </div>
+              </div>
+            </div>
+            <div class="sim-palco"></div>
+            <div class="sim-veredito"></div>
+            <ul class="dz-missoes">
+              <li data-missao="zonas"><strong>🎯 Missão 1:</strong> sobreviva ao incêndio (ou ao apagão) com o menor esforço: o mínimo de cópias, só em São Paulo.<br><span class="estado">a cumprir</span></li>
+              <li data-missao="regioes"><strong>🎯 Missão 2:</strong> sobreviva ao desastre na região inteira de São Paulo.<br><span class="estado">a cumprir</span></li>
+            </ul>
+            <p class="sim-aviso visualmente-oculto" aria-live="polite"></p>
+          </div>
+          <p class="fonte">Simulação para a aula. Na AWS de verdade, colocar o site em várias zonas ou regiões é uma escolha sua, e cada cópia custa.</p>
+
+          <details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>Por que duas zonas, e não dois prédios na mesma zona?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p>Os prédios de uma zona podem cair juntos: um apagão na zona derruba todos eles. As zonas são separadas de propósito, cada uma com energia e rede próprias. Por isso, alta disponibilidade é espalhar o site <strong>por zonas</strong>.</p></div>
+              </details>
         </section>
 
         <!-- ===================== CONCEITOS ===================== -->
@@ -267,6 +340,30 @@
               </tbody></table></div>
               <p class="fonte">Fonte: <a href="https://aws.amazon.com/blogs/architecture/what-to-consider-when-selecting-a-region-for-your-workloads/">AWS Architecture Blog, What to consider when selecting a Region</a>, 20/09/2021, consultado em 04/11/2026.</p>
               <p class="dica cuidado"><strong>A regra:</strong> lei ou contrato manda primeiro. Os outros critérios só escolhem entre as regiões que já cumprem a regra.</p>
+              <p>Passe três regiões pelo funil, um critério de cada vez, nas duas situações.</p>
+              <div class="casa" data-funil>
+                <div class="casa-modos" role="group" aria-label="Escolha a situação" style="grid-template-columns:repeat(2,1fr)">
+                  <button type="button" data-cenario="com" aria-pressed="true"><span class="ico" aria-hidden="true">📜</span><strong>Com o contrato do órgão público</strong><small>dados no Brasil</small></button>
+                  <button type="button" data-cenario="sem" aria-pressed="false"><span class="ico" aria-hidden="true">🕊️</span><strong>Sem o contrato</strong><small>nenhuma lei prende os dados</small></button>
+                </div>
+                <ol class="funil-crit">
+                  <li data-crit>1. Conformidade<small>lei ou contrato</small></li>
+                  <li data-crit>2. Latência<small>onde estão os usuários</small></li>
+                  <li data-crit>3. Custo<small>o preço em cada região</small></li>
+                  <li data-crit>4. Serviços<small>o serviço existe lá?</small></li>
+                </ol>
+                <ul class="funil-regioes">
+                  <li data-regiao="sp"><span class="ico" aria-hidden="true">🇧🇷</span><strong>São Paulo</strong><code>sa-east-1</code><span class="motivo"></span></li>
+                  <li data-regiao="va"><span class="ico" aria-hidden="true">🇺🇸</span><strong>Virgínia do Norte</strong><code>us-east-1</code><span class="motivo"></span></li>
+                  <li data-regiao="ie"><span class="ico" aria-hidden="true">🇮🇪</span><strong>Irlanda</strong><code>eu-west-1</code><span class="motivo"></span></li>
+                </ul>
+                <div class="funil-acoes"><button type="button" class="vai" data-proximo>▶ Próximo critério</button></div>
+                <p class="casa-fala" aria-live="polite"></p>
+              </div>
+              <details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>O órgão público exige os dados no Brasil, e o sócio diz que Virgínia é mais barata. Quem vence?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p>A <strong>conformidade</strong>. Lei ou contrato vem primeiro; o preço só escolhe entre as regiões que já cumprem a regra.</p></div>
+              </details>
             </div>
           </div>
 
@@ -284,27 +381,60 @@
           </div>
         </section>
 
+        <!-- ===================== DO GLOBO AO PRÉDIO (vivo.js, parte 12) ===================== -->
+        <section class="parte" id="zoom">
+          <div class="cab">
+            <span class="olho">X1 · do globo ao prédio</span>
+            <h2>Do mapa-múndi ao prédio</h2>
+            <p>Clique em cada nível e compare com a sua cidade. Abra o mapa da sua cidade no celular e procure três bairros distantes: eles fariam o papel das zonas.</p>
+          </div>
+          <div class="casa" data-zoom>
+            <div class="casa-modos zoom-niveis" role="group" aria-label="Escolha o nível">
+              <button type="button" data-nivel="mundo" aria-pressed="true"><span class="ico" aria-hidden="true">🌎</span><strong>Mundo</strong><small>a AWS</small></button>
+              <button type="button" data-nivel="regiao" aria-pressed="false"><span class="ico" aria-hidden="true">🏙️</span><strong>Região</strong><small>a cidade</small></button>
+              <button type="button" data-nivel="zona" aria-pressed="false"><span class="ico" aria-hidden="true">🏘️</span><strong>Zona</strong><small>os bairros</small></button>
+              <button type="button" data-nivel="dc" aria-pressed="false"><span class="ico" aria-hidden="true">🏢</span><strong>Data center</strong><small>o prédio</small></button>
+              <button type="button" data-nivel="borda" aria-pressed="false"><span class="ico" aria-hidden="true">📦</span><strong>Ponto de presença</strong><small>o armário</small></button>
+            </div>
+            <div class="zoom-mapa" aria-hidden="true">
+              <div class="zoom-caixa" data-caixa="mundo"><b>mundo</b>
+                <div class="zoom-caixa" data-caixa="regiao"><b>região sa-east-1</b>
+                  <div class="zoom-zonas">
+                    <div class="zoom-caixa" data-caixa="zona"><b>zona a</b><div class="zoom-caixa" data-caixa="dc"><b>prédios</b><div class="zoom-predios">🏢🏢</div></div></div>
+                    <div class="zoom-caixa" data-caixa="zona"><b>zona b</b><div class="zoom-caixa" data-caixa="dc"><b>prédios</b><div class="zoom-predios">🏢🏢</div></div></div>
+                    <div class="zoom-caixa" data-caixa="zona"><b>zona c</b><div class="zoom-caixa" data-caixa="dc"><b>prédio</b><div class="zoom-predios">🏢</div></div></div>
+                  </div>
+                </div>
+              </div>
+              <div class="zoom-caixa zoom-borda" data-caixa="borda"><b>fora da escada</b><span>📦</span><br><small>ponto de presença</small></div>
+            </div>
+            <p class="casa-fala" aria-live="polite"></p>
+          </div>
+          <p class="fonte">Números: <a href="https://aws.amazon.com/about-aws/global-infrastructure/">AWS, Global Infrastructure</a>, consultado em 04/11/2026. O número de prédios no desenho é só ilustração.</p>
+        </section>
+
         <!-- ===================== DEMONSTRAÇÃO ===================== -->
         <section class="parte" id="demonstracao">
           <div class="cab">
             <span class="olho">D1 · demonstração</span>
-            <h2>O seletor de regiões no console</h2>
-            <p>Faça no seu Learner Lab, um passo de cada vez.</p>
+            <h2>Faça junto: o seletor de regiões no console</h2>
+            <p>Abra o Learner Lab noutra aba, siga um passo de cada vez e marque cada um aqui.</p>
           </div>
 
           <div class="conceito" style="grid-template-columns:1fr">
             <div class="texto">
-              <div class="faca-assim">
-                <strong>Faça assim:</strong>
-                <ol>
-                  <li>Abra o <strong>Learner Lab</strong>, clique em <strong>Start Lab</strong> e espere a bolinha ao lado de <strong>AWS</strong> ficar verde.</li>
-                  <li>Clique em <strong>AWS</strong> para abrir o console.</li>
-                  <li>No canto de cima à direita, clique no <strong>nome da região</strong>. Veja a lista: cada região tem o nome e o código.</li>
-                  <li>Procure a <strong>América do Sul (São Paulo)</strong> e o código dela, <code>sa-east-1</code>. Não precisa trocar: o Learner Lab só libera poucas regiões.</li>
-                  <li>Abra o <strong>EC2</strong> pela busca. No painel do EC2, procure a lista de <strong>zonas</strong> da região em que você está, com o nome e o ID de cada uma.</li>
-                  <li>Volte à aba do laboratório e clique em <strong>End Lab</strong>.</li>
-                </ol>
+              <div class="progresso-atividade" data-progresso="console-aula-03">
+                <span class="contagem">0 de 6</span>
+                <span class="barra-progresso"><span></span></span>
               </div>
+              <ol class="checklist" id="console-aula-03">
+                <li><label><input type="checkbox"><span>Abri o <strong>Learner Lab</strong>, cliquei em <strong>Start Lab</strong> e esperei a bolinha ao lado de <strong>AWS</strong> ficar verde.</span></label></li>
+                <li><label><input type="checkbox"><span>Cliquei em <strong>AWS</strong> para abrir o console.</span></label></li>
+                <li><label><input type="checkbox"><span>No canto de cima à direita, cliquei no <strong>nome da região</strong> e vi a lista: cada região tem o nome e o código.</span></label></li>
+                <li><label><input type="checkbox"><span>Achei a <strong>América do Sul (São Paulo)</strong> e o código dela, <code>sa-east-1</code>. Não troquei: o Learner Lab só libera poucas regiões.</span></label></li>
+                <li><label><input type="checkbox"><span>Abri o <strong>EC2</strong> pela busca e achei a lista de <strong>zonas</strong> da região em que estou, com o nome e o ID de cada uma.</span></label></li>
+                <li><label><input type="checkbox"><span>Voltei à aba do laboratório e cliquei em <strong>End Lab</strong>.</span></label></li>
+              </ol>
               <div class="faca-assim">
                 <strong>Teste:</strong>
                 <ol>
@@ -336,6 +466,10 @@
                 </ol>
               </div>
               <p>O <strong>ponto de presença</strong> fica de fora dessa escada: está espalhado pelas cidades, perto dos clientes, e não é uma região nem uma zona.</p>
+              <details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>Um ponto de presença é uma região pequena?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p>Não. Ele não é região nem zona: é um lugar perto dos clientes que guarda cópias do conteúdo para entregar rápido, como o armário de retirada perto de casa.</p></div>
+              </details>
               <p class="dica cuidado"><strong>As frases erradas que mais aparecem:</strong> "uma zona de disponibilidade tem várias regiões" (é o contrário); "uma zona é um data center só" (pode ser mais de um); "os dados são copiados sozinhos para outra região" (só se você configurar).</p>
               <div class="faca-assim">
                 <strong>Teste:</strong>
@@ -431,7 +565,7 @@
 
           <div class="cartao">
             <div class="progresso-atividade" data-progresso="passos-aula-03">
-              <span class="contagem">0 de 8</span>
+              <span class="contagem">0 de 10</span>
               <span class="barra-progresso"><span></span></span>
             </div>
             <ol class="checklist" id="passos-aula-03">
@@ -443,6 +577,8 @@
               <li><label><input type="checkbox"><span>Vi o seletor de regiões e as zonas no console e cliquei em End Lab. <a href="#demonstracao">Veja o D1</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Fiz os três treinos Classifique!. <a href="#treino">Veja o treino</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Fiz o Módulo 3 na AWS Academy e marquei no <a href="../#cursos">Meu progresso</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Derrubei data centers no simulador e cumpri as duas missões. <a href="#simulador">Veja o SIM1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Fiz o zoom do globo ao prédio e passei as regiões pelo funil. <a href="#zoom">Veja o X1</a> e o <a href="#c4">C4</a>.</span></label></li>
             </ol>
           </div>
         </section>
@@ -533,5 +669,6 @@
   <script src="../assets/js/aulas.js?v=3"></script>
   <script src="../assets/js/classifica.js?v=2"></script>
   <script src="../assets/js/matrix.js?v=3"></script>
+  <script src="../js/vivo.js?v=3"></script>
 </body>
 </html>
