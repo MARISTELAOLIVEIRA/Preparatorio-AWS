@@ -1,5 +1,5 @@
 /* ==============================================================
-   aula-aws.css: o que as páginas de aula do preparatório pegam do aws.css (versão 6 · 2026-11-04: mapas das aulas 3 e 5, decodificador da aula 6, simulador da aula 10, dicionário da 11, barras da 12)
+   aula-aws.css: o que as páginas de aula do preparatório pegam do aws.css (versão 7 · 2026-11-10: roteiro da aula sem os tempos do vídeo; v6: mapas das aulas 3 e 5, decodificador da aula 6, simulador da aula 10, dicionário da 11, barras da 12)
    As aulas não carregam o aws.css (o "// " dos títulos e o .wrap são da página inicial).
    Aqui ficam só as cores dos domínios da prova, o botão Entrar e a janela da conta
    (cópia do bloco "Conta" do aws.css: mudou lá, mude aqui) e as peças próprias das aulas.
@@ -194,6 +194,8 @@
   gap: .6rem;
   align-items: baseline;
 }
+/* enquanto os vídeos não saem, o roteiro vai sem os tempos */
+.roteiro-video.sem-tempo li { grid-template-columns: 1fr; }
 
 /* o pad da trilha em cada bloco */
 .roteiro-video li::before {
