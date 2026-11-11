@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="../assets/css/neon.css?v=5">
   <link rel="stylesheet" href="../css/interativos.css?v=1">
   <link rel="stylesheet" href="../css/aula-aws.css?v=7">
+  <link rel="stylesheet" href="../css/vivo.css?v=6">
 </head>
 <body>
 
@@ -33,7 +34,7 @@
       <button type="button" class="btn-menu" id="btn-menu" aria-expanded="false" aria-controls="menu">Menu</button>
       <nav class="nav" id="menu" aria-label="Partes da aula">
         <a href="../#videos">← Preparatório</a>
-        <a href="#caso">Caso</a>
+        <a href="#simulador">Simulador</a>
         <a href="#conceitos">Conceitos</a>
         <a href="#demonstracao">Console</a>
         <a href="#pegadinha">Pegadinha</a>
@@ -116,17 +117,49 @@
           </div>
           <div class="cartao">
             <ol class="roteiro-video sem-tempo">
+              <li><a href="#gancho">G1 · Dois segundos</a></li>
               <li><a href="#caso">O caso: cinco tarefas, cinco jeitos de rodar</a></li>
+              <li><a href="#simulador">SIM1 · A central de tarefas</a></li>
               <li><a href="#c1">C1 · O EC2 e as peças de uma instância</a></li>
               <li><a href="#c2">C2 · Os tipos de instância e o nome de cada um</a></li>
               <li><a href="#c3">C3 · Contêineres: ECS, EKS e Fargate</a></li>
               <li><a href="#c4">C4 · Sem servidor: Lambda, e o atalho do Elastic Beanstalk</a></li>
               <li><a href="#c5">C5 · Servidor, contêiner ou função?</a></li>
-              <li><a href="#demonstracao">D1 · Lançando uma instância no console</a></li>
+              <li><a href="#regua">X1 · Do ESP32 ao monstro da AWS</a></li>
+              <li><a href="#demonstracao">D1 · Faça junto: lançando uma instância no console</a></li>
               <li><a href="#pegadinha">P1 · A pegadinha: quando usar spot</a></li>
               <li><a href="#academy">Agora é na AWS Academy</a></li>
             </ol>
           </div>
+        </section>
+
+        <!-- ===================== GANCHO (vivo.js, parte 10) ===================== -->
+        <section class="parte" id="gancho">
+          <div class="cab">
+            <span class="olho">G1 · gancho</span>
+            <h2>Dois segundos</h2>
+          </div>
+          <div class="gancho" data-plantao data-link="#simulador" data-link-texto="Monte a central logo abaixo">
+            <p class="gancho-evento">🎟️ Ingresso Candango · o PDF do ingresso</p>
+            <p class="gancho-titulo">Cada compra gera um PDF em 2 segundos.</p>
+            <div class="relogio-dia">
+              <div><strong>86.400 s</strong><small>um dia inteiro</small></div>
+              <div><strong>800 s</strong><small>400 compras × 2 s</small></div>
+              <div><strong>99%</strong><small>do dia sem trabalho</small></div>
+            </div>
+            <div class="dia-barra" role="img" aria-label="O dia inteiro em cinza, com um tracinho verde: o tempo de trabalho de verdade"><i></i></div>
+            <button type="button" class="botao" data-abrir>🤔 E aí?</button>
+            <div class="gancho-voto" data-revela hidden>
+              <p class="gancho-pergunta" tabindex="-1">Vale deixar um servidor ligado as 24 horas para isso?</p>
+              <div class="gancho-botoes">
+                <button type="button" aria-pressed="false" data-explica="Funciona, mas você paga as 24 horas para trabalhar uns 13 minutos. É a lâmpada acesa na sala vazia.">🖥️ Vale, é mais simples</button>
+                <button type="button" aria-pressed="false" data-explica="Isso! Uma função que acorda quando alguém compra, trabalha 2 segundos e volta a dormir. Você paga só os segundos.">⚡ Melhor algo que acorda na compra</button>
+                <button type="button" aria-pressed="false" data-explica="E quem compra de madrugada fica sem o ingresso? Melhor algo que acorda sozinho a cada compra, a qualquer hora.">🌙 Desligar o servidor à noite</button>
+              </div>
+              <p class="gancho-resposta" aria-live="polite"></p>
+            </div>
+          </div>
+          <p class="fonte">Números de exemplo, para a aula: 400 compras num dia comum.</p>
         </section>
 
         <!-- ===================== ESTUDO DE CASO ===================== -->
@@ -152,6 +185,82 @@
             </ol>
             <p class="fonte">Empresa e tarefas fictícias, criadas para as aulas.</p>
           </div>
+        </section>
+
+        <!-- ===================== SIMULADOR (vivo.js, parte 19) ===================== -->
+        <section class="parte" id="simulador">
+          <div class="cab">
+            <span class="olho">SIM1 · simulador</span>
+            <h2>A central de tarefas</h2>
+            <p>As cinco tarefas do caso precisam de um motor. Escolha um para cada uma e aperte <strong>Rodar tudo</strong>. Verde é o motor certo, amarelo funciona mas não é o melhor, vermelho quebra.</p>
+          </div>
+          <div class="sim" data-central>
+            <ol class="central">
+              <li class="central-linha" data-tarefa="site">
+                <span class="tarefa"><strong>🌐 O site</strong><small>no ar o tempo todo; a equipe escolhe o sistema operacional</small></span>
+                <div class="dz-botoes" role="group" aria-label="Motor para O site">
+                  <button type="button" data-motor="ec2" aria-pressed="false">🖥️ EC2</button>
+                  <button type="button" data-motor="fargate" aria-pressed="false">📦 Contêiner (Fargate)</button>
+                  <button type="button" data-motor="lambda" aria-pressed="false">⚡ Lambda</button>
+                  <button type="button" data-motor="beanstalk" aria-pressed="false">🌱 Elastic Beanstalk</button>
+                  <button type="button" data-motor="spot" aria-pressed="false">💺 EC2 spot</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+              <li class="central-linha" data-tarefa="pdf">
+                <span class="tarefa"><strong>🎟️ O PDF do ingresso</strong><small>2 segundos de trabalho a cada compra</small></span>
+                <div class="dz-botoes" role="group" aria-label="Motor para O PDF do ingresso">
+                  <button type="button" data-motor="ec2" aria-pressed="false">🖥️ EC2</button>
+                  <button type="button" data-motor="fargate" aria-pressed="false">📦 Contêiner (Fargate)</button>
+                  <button type="button" data-motor="lambda" aria-pressed="false">⚡ Lambda</button>
+                  <button type="button" data-motor="beanstalk" aria-pressed="false">🌱 Elastic Beanstalk</button>
+                  <button type="button" data-motor="spot" aria-pressed="false">💺 EC2 spot</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+              <li class="central-linha" data-tarefa="pag">
+                <span class="tarefa"><strong>💳 Os pagamentos</strong><small>rodar igual no notebook e na AWS, sem cuidar de servidor</small></span>
+                <div class="dz-botoes" role="group" aria-label="Motor para Os pagamentos">
+                  <button type="button" data-motor="ec2" aria-pressed="false">🖥️ EC2</button>
+                  <button type="button" data-motor="fargate" aria-pressed="false">📦 Contêiner (Fargate)</button>
+                  <button type="button" data-motor="lambda" aria-pressed="false">⚡ Lambda</button>
+                  <button type="button" data-motor="beanstalk" aria-pressed="false">🌱 Elastic Beanstalk</button>
+                  <button type="button" data-motor="spot" aria-pressed="false">💺 EC2 spot</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+              <li class="central-linha" data-tarefa="estag">
+                <span class="tarefa"><strong>🎓 O site do estagiário</strong><small>publicar sem saber nada de servidor</small></span>
+                <div class="dz-botoes" role="group" aria-label="Motor para O site do estagiário">
+                  <button type="button" data-motor="ec2" aria-pressed="false">🖥️ EC2</button>
+                  <button type="button" data-motor="fargate" aria-pressed="false">📦 Contêiner (Fargate)</button>
+                  <button type="button" data-motor="lambda" aria-pressed="false">⚡ Lambda</button>
+                  <button type="button" data-motor="beanstalk" aria-pressed="false">🌱 Elastic Beanstalk</button>
+                  <button type="button" data-motor="spot" aria-pressed="false">💺 EC2 spot</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+              <li class="central-linha" data-tarefa="rel">
+                <span class="tarefa"><strong>📊 Os relatórios do mês</strong><small>horas de trabalho; pode parar e recomeçar</small></span>
+                <div class="dz-botoes" role="group" aria-label="Motor para Os relatórios do mês">
+                  <button type="button" data-motor="ec2" aria-pressed="false">🖥️ EC2</button>
+                  <button type="button" data-motor="fargate" aria-pressed="false">📦 Contêiner (Fargate)</button>
+                  <button type="button" data-motor="lambda" aria-pressed="false">⚡ Lambda</button>
+                  <button type="button" data-motor="beanstalk" aria-pressed="false">🌱 Elastic Beanstalk</button>
+                  <button type="button" data-motor="spot" aria-pressed="false">💺 EC2 spot</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+            </ol>
+            <div class="sim-acoes"><button type="button" class="vai">▶ Rodar tudo</button><span>placar: <span class="central-placar" data-placar>–</span></span></div>
+            <p class="casa-fala" aria-live="polite"></p>
+          </div>
+          <p class="fonte">Simulação para a aula, com os motores do C1 ao C5 e o spot da aula 2.</p>
+
+          <details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>Por que o PDF do ingresso não vai num servidor ligado o dia todo?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p>Porque ele trabalha 2 segundos por compra. O servidor ficaria quase o dia inteiro parado, pagando por hora. No <strong>Lambda</strong>, você paga só os segundos em que o código rodou.</p></div>
+              </details>
         </section>
 
         <!-- ===================== CONCEITOS ===================== -->
@@ -221,6 +330,21 @@
                 <tr><td><strong>Amazon ECR</strong><span class="termo-en">Elastic Container Registry</span></td><td>Guarda as imagens dos contêineres.</td></tr>
               </tbody></table></div>
               <p class="fonte">Fonte: <a href="https://aws.amazon.com/fargate/">AWS Fargate</a>, consultado em 04/11/2026.</p>
+              <p>Teste o clássico "na minha máquina funciona!": o mesmo app no notebook de quem programou e num servidor da AWS.</p>
+              <div class="casa" data-conteiner>
+                <div class="maquinas">
+                  <div class="maquina"><span class="ico" aria-hidden="true">💻</span><strong>Notebook de quem programou</strong><span class="ambiente">Python 3.12 · biblioteca pdf 2.0</span><span class="app">app de pagamentos</span><span class="status" aria-live="polite"></span></div>
+                  <div class="maquina"><span class="ico" aria-hidden="true">☁️</span><strong>Servidor na AWS</strong><span class="ambiente">Python 3.9 · biblioteca pdf 1.4</span><span class="app">app de pagamentos</span><span class="status" aria-live="polite"></span></div>
+                </div>
+                <div class="pagar-perguntas"><button type="button" data-empacotar aria-pressed="false"><span>📦 Empacotar o app num contêiner</span><span class="sn">desligado</span></button></div>
+                <div class="sim-acoes"><button type="button" class="vai">▶ Rodar o app</button></div>
+                <p class="casa-fala" aria-live="polite"></p>
+              </div>
+              <p class="fonte">Versões de exemplo, para a aula.</p>
+              <details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>O que vai dentro do contêiner para ele rodar igual em todo lugar?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p>A aplicação e tudo de que ela precisa: a versão da linguagem, as bibliotecas e as configurações. O servidor só precisa saber rodar contêiner.</p></div>
+              </details>
               <p class="dica"><strong>Na Ingresso Candango:</strong> o sistema de pagamentos (tarefa 3) vai em contêiner, no ECS com Fargate: roda igual em todo lugar, e ninguém cuida de servidor.</p>
             </div>
           </div>
@@ -236,6 +360,26 @@
                 <li>Feito para tarefas curtas, que não guardam nada de uma execução para a outra.</li>
               </ul>
               <p class="fonte">Fonte: <a href="https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html">AWS, Lambda quotas</a>, consultado em 04/11/2026.</p>
+              <div class="casa" data-lambda>
+                <div class="lb-topo">
+                  <div class="lb-numeros">
+                    <span>execuções agora <strong data-agora>0</strong></span>
+                    <span>execuções no total <strong data-total>0</strong></span>
+                    <span>tempo cobrado <strong data-cobrado>0 s</strong></span>
+                    <span data-escala>cada luz = 1 execução</span>
+                  </div>
+                  <div class="lb-grade" aria-hidden="true"></div>
+                </div>
+                <div class="dz-botoes" style="margin-top:.8rem">
+                  <button type="button" data-compra="1">🛒 Uma compra</button>
+                  <button type="button" data-compra="1000">🛒×1000 Abertura da venda</button>
+                  <button type="button" data-relatorio>📊 Rodar o relatório de 2 horas</button>
+                </div>
+                <div class="lb-rel" aria-hidden="true"><i></i></div>
+                <div class="lb-rel-legenda" aria-hidden="true"><span>0</span><span>15 min: o limite</span><span>2 horas</span></div>
+                <p><strong data-rel></strong></p>
+                <p class="casa-fala" aria-live="polite">Aperte <strong>Uma compra</strong> e veja o Lambda acordar.</p>
+              </div>
               <p>E o <strong>AWS Elastic Beanstalk</strong> é o atalho do PaaS (aula 1): você envia o código, e ele cria e cuida das máquinas, do balanceamento e do crescimento.</p>
               <p class="dica"><strong>Na Ingresso Candango:</strong> o PDF do ingresso (tarefa 2) é Lambda: o evento é a compra, e o trabalho dura dois segundos. O site do estagiário (tarefa 4) é Elastic Beanstalk.</p>
               <p class="dica"><strong>Como é no Azure:</strong> o EC2 são as <strong>Máquinas Virtuais</strong>, o Lambda é o <strong>Azure Functions</strong>, o EKS é o <strong>AKS</strong> e o Elastic Beanstalk lembra o <strong>Serviço de Aplicativo</strong>.</p>
@@ -258,29 +402,45 @@
           </div>
         </section>
 
+        <!-- ===================== DO ESP32 AO MONSTRO (vivo.js, parte 22) ===================== -->
+        <section class="parte" id="regua">
+          <div class="cab">
+            <span class="olho">X1 · do ESP32 ao monstro da AWS</span>
+            <h2>Quanta máquina cabe numa máquina?</h2>
+            <p>O <strong>ESP32</strong> é uma plaquinha de eletrônica, menor que um cartão de crédito, que é o cérebro de muitos projetos: acende luzes, lê sensores e conversa por Wi-Fi e Bluetooth. Compare a memória dele com a de máquinas da AWS e de um notebook.</p>
+          </div>
+          <div class="casa" data-regua>
+            <ol class="regua-lista"></ol>
+            <div class="pagar-perguntas" style="margin-top:.8rem"><button type="button" data-log aria-pressed="false"><span>📐 Escala logarítmica (cada pedaço multiplica por 10)</span><span class="sn">desligada</span></button></div>
+            <p class="casa-fala" aria-live="polite">Clique em <strong>quantos ESP32?</strong> numa máquina. Depois ligue a escala logarítmica.</p>
+          </div>
+          <p class="fonte">Fontes: <a href="https://documentation.espressif.com/esp32_datasheet_en.pdf">Espressif, ESP32 Series Datasheet v5.3</a> (2 núcleos a 240 MHz, 520 KB de SRAM, Wi-Fi e Bluetooth); <a href="https://aws.amazon.com/ec2/instance-types/t3/">AWS, Amazon EC2 T3</a> e <a href="https://aws.amazon.com/ec2/instance-types/p5/">AWS, Amazon EC2 P5</a>. Consultados em 10/11/2026. O notebook é um exemplo.</p>
+        </section>
+
         <!-- ===================== DEMONSTRAÇÃO ===================== -->
         <section class="parte" id="demonstracao">
           <div class="cab">
             <span class="olho">D1 · demonstração</span>
-            <h2>Lançando uma instância no console</h2>
-            <p>Faça no seu Learner Lab, um passo de cada vez, e encerre a instância no fim.</p>
+            <h2>Faça junto: lançando uma instância no console</h2>
+            <p>Abra o Learner Lab noutra aba, siga um passo de cada vez, marque cada um aqui e encerre a instância no fim.</p>
           </div>
 
           <div class="conceito" style="grid-template-columns:1fr">
             <div class="texto">
-              <div class="faca-assim">
-                <strong>Faça assim:</strong>
-                <ol>
-                  <li>Abra o <strong>Learner Lab</strong>, clique em <strong>Start Lab</strong> e, com a bolinha verde, clique em <strong>AWS</strong>.</li>
-                  <li>Abra o <strong>EC2</strong> pela busca e clique em <strong>Launch instance</strong>.</li>
-                  <li>Em <strong>Name</strong>, escreva <code>site-candango</code>.</li>
-                  <li>Em <strong>AMI</strong>, deixe o <strong>Amazon Linux</strong> que vem marcado.</li>
-                  <li>Em <strong>Instance type</strong>, escolha uma pequena, como a <code>t3.micro</code>. Teste o nome dela no decodificador do C2.</li>
-                  <li>Em <strong>Key pair</strong>, escolha a chave que o laboratório oferece. Hoje você não vai entrar na máquina.</li>
-                  <li>Em <strong>Network settings</strong>, veja a VPC, a sub-rede e o grupo de segurança: as peças da aula 5.</li>
-                  <li>Clique em <strong>Launch instance</strong> e, na lista de instâncias, espere o estado ficar <strong>Running</strong>.</li>
-                </ol>
+              <div class="progresso-atividade" data-progresso="console-aula-06">
+                <span class="contagem">0 de 8</span>
+                <span class="barra-progresso"><span></span></span>
               </div>
+              <ol class="checklist" id="console-aula-06">
+                <li><label><input type="checkbox"><span>Abri o <strong>Learner Lab</strong>, cliquei em <strong>Start Lab</strong> e, com a bolinha verde, cliquei em <strong>AWS</strong>.</span></label></li>
+                <li><label><input type="checkbox"><span>Abri o <strong>EC2</strong> pela busca e cliquei em <strong>Launch instance</strong>.</span></label></li>
+                <li><label><input type="checkbox"><span>Em <strong>Name</strong>, escrevi <code>site-candango</code>.</span></label></li>
+                <li><label><input type="checkbox"><span>Em <strong>AMI</strong>, deixei o <strong>Amazon Linux</strong> que vem marcado.</span></label></li>
+                <li><label><input type="checkbox"><span>Em <strong>Instance type</strong>, escolhi uma pequena, como a <code>t3.micro</code>, e testei o nome dela no decodificador do C2.</span></label></li>
+                <li><label><input type="checkbox"><span>Em <strong>Key pair</strong>, escolhi a chave que o laboratório oferece. Hoje não vou entrar na máquina.</span></label></li>
+                <li><label><input type="checkbox"><span>Em <strong>Network settings</strong>, vi a VPC, a sub-rede e o grupo de segurança: as peças da aula 5.</span></label></li>
+                <li><label><input type="checkbox"><span>Cliquei em <strong>Launch instance</strong> e esperei o estado ficar <strong>Running</strong>.</span></label></li>
+              </ol>
               <div class="faca-assim">
                 <strong>Teste:</strong>
                 <ol>
@@ -307,6 +467,10 @@
                 <tr><td>Tarefas que podem parar e recomeçar: relatórios, renderização de vídeo, testes.</td><td>O que não pode cair: o site na abertura da venda, o banco de dados.</td></tr>
                 <tr><td>Processamento em lote, sem hora certa para acabar.</td><td>Tarefas com prazo rígido, que não podem ser interrompidas.</td></tr>
               </tbody></table></div>
+<details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>Spot para o site na abertura da venda?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p>Não. A AWS pode pedir a máquina de volta justo no pico, e o site cai. Spot é para o que pode parar e recomeçar, como os relatórios.</p></div>
+              </details>
               <p class="dica cuidado"><strong>E a outra pegadinha da aula:</strong> uma tarefa de duas horas <strong>não</strong> cabe numa execução do Lambda, que vai até 15 minutos. Para ela, EC2, contêiner ou dividir em pedaços.</p>
               <div class="faca-assim">
                 <strong>Teste:</strong>
@@ -402,7 +566,7 @@
 
           <div class="cartao">
             <div class="progresso-atividade" data-progresso="passos-aula-06">
-              <span class="contagem">0 de 8</span>
+              <span class="contagem">0 de 10</span>
               <span class="barra-progresso"><span></span></span>
             </div>
             <ol class="checklist" id="passos-aula-06">
@@ -414,6 +578,8 @@
               <li><label><input type="checkbox"><span>Lancei uma instância no console e encerrei no fim. <a href="#demonstracao">Veja o D1</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Fiz os três treinos Classifique!. <a href="#treino">Veja o treino</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Fiz o Módulo 6 e o laboratório do EC2 na AWS Academy e marquei no <a href="../#cursos">Meu progresso</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Montei a central de tarefas com as cinco no motor certo. <a href="#simulador">Veja o SIM1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Rodei o app com e sem contêiner, acordei o Lambda e comparei as máquinas na régua. <a href="#c3">Veja o C3</a>, o <a href="#c4">C4</a> e o <a href="#regua">X1</a>.</span></label></li>
             </ol>
           </div>
         </section>
@@ -504,6 +670,7 @@
   <script src="../assets/js/aulas.js?v=3"></script>
   <script src="../assets/js/classifica.js?v=2"></script>
   <script src="../js/instancia.js?v=1"></script>
+  <script src="../js/vivo.js?v=6"></script>
   <script src="../assets/js/matrix.js?v=3"></script>
 </body>
 </html>

@@ -1,9 +1,10 @@
 /*
   vivo.css: as peças das aulas "vivas" do Preparatório AWS (gancho, simulador, pausa aqui, casa ou hotel, placa).
-  versão 5 · 2026-11-10 · só deste site. Aula 1, aula 2 (conta do susto, taxímetro, transporte, iceberg, pit stop, conta de luz)
+  versão 6 · 2026-11-10 · só deste site. Aula 1, aula 2 (conta do susto, taxímetro, transporte, iceberg, pit stop, conta de luz)
   aula 3 (plantão, derrube um data center, do globo ao prédio, funil da região)
   aula 4 (o vazamento, tranque a conta, a porta abre?, a fechadura com ESP32)
-  e aula 5 (a planta errada, a viagem do pacote, com e sem memória, a régua de bits).
+  aula 5 (a planta errada, a viagem do pacote, com e sem memória, a régua de bits)
+  e aula 6 (dois segundos, a central de tarefas, na minha máquina funciona, o botão do Lambda, do ESP32 ao monstro).
   Todas as animações param com o botão de pausa (html.pausado) e com o "reduzir movimento" do sistema.
 */
 
@@ -1248,6 +1249,123 @@
   .bits-painel { grid-template-columns: 1fr; }
 }
 
+/* ===================== aula 6 · G1 dois segundos ===================== */
+.relogio-dia {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .6rem;
+  width: min(100%, 32rem);
+  margin: 1.2rem auto;
+}
+.relogio-dia div { padding: .8rem .5rem; border-radius: 14px; background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 153, 0, .3); }
+.relogio-dia strong { display: block; font: 900 clamp(1.3rem, 4vw, 1.9rem)/1.1 var(--f-titulo); color: #ff9900; }
+.relogio-dia small { color: #d8d4c8; font-size: .8rem; }
+.dia-barra { width: min(100%, 32rem); height: 14px; margin: 0 auto 1rem; border-radius: 7px; background: #2b3530; overflow: hidden; position: relative; }
+.dia-barra i { position: absolute; left: 60%; width: 1%; top: 0; bottom: 0; background: #39ff9e; box-shadow: 0 0 10px #39ff9e; animation: pisca 1.2s infinite; }
+
+/* ===================== aula 6 · SIM1 a central de tarefas ===================== */
+.central { display: grid; gap: .6rem; margin: 0 0 1rem; padding: 0; list-style: none; }
+.central-linha {
+  display: grid;
+  grid-template-columns: minmax(12rem, 1fr) 2fr;
+  gap: .4rem 1rem;
+  align-items: center;
+  padding: .8rem 1rem;
+  border-radius: 14px;
+  background: var(--superficie-2);
+  border: 1px solid var(--borda);
+  position: relative;
+  overflow: hidden;
+}
+.central-linha .tarefa strong { display: block; font: 800 1rem var(--f-titulo); }
+.central-linha .tarefa small { color: var(--texto-2); font-size: .82rem; }
+.central-linha .dz-botoes button { padding: .35rem .7rem; font-size: .82rem; }
+.central-saida { grid-column: 1 / -1; margin: 0; font-size: .9rem; min-height: 0; }
+.central-saida:empty { display: none; }
+.central-linha::after { content: ""; position: absolute; left: 0; bottom: 0; height: 4px; width: 0; background: var(--neon); }
+.central-linha.rodando::after { width: 100%; transition: width .5s ease-out; }
+.central-linha.certo { border-color: var(--vivo-ok); }
+.central-linha.certo::after { background: var(--vivo-ok); }
+.central-linha.meh { border-color: var(--srwe); }
+.central-linha.meh::after { background: var(--srwe); }
+.central-linha.falha { border-color: var(--vivo-ruim); animation: treme .35s 2; }
+.central-linha.falha::after { background: var(--vivo-ruim); width: 25%; }
+.central-placar { font: 800 1rem var(--f-mono); color: var(--neon); }
+
+/* ===================== aula 6 · C3 na minha máquina funciona ===================== */
+.maquinas { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: .4rem 0 .8rem; }
+.maquina {
+  display: grid;
+  justify-items: center;
+  gap: .4rem;
+  padding: 1rem .8rem;
+  border-radius: 16px;
+  background: var(--chip);
+  border: 2px solid #2b3530;
+  color: #e8e4d8;
+  text-align: center;
+  transition: border-color .3s, box-shadow .3s;
+}
+.maquina .ico { font-size: 2.2rem; }
+.maquina strong { font: 800 .95rem var(--f-titulo); }
+.maquina .ambiente { font: 500 .76rem var(--f-mono); color: #a3b0a8; }
+.maquina .app { padding: .45rem .8rem; border-radius: 10px; background: #18221d; border: 1px solid #3b4a42; font: 700 .82rem var(--f-mono); transition: all .35s; }
+.empacotado .maquina .app { background: #1d3a5e; border: 2px solid #5fd0de; box-shadow: 0 0 14px -4px #5fd0de; }
+.empacotado .maquina .app::before { content: "📦 "; }
+.maquina .status { min-height: 1.2em; font: 800 .9rem var(--f-titulo); }
+.maquina.rodando { border-color: var(--neon); }
+.maquina.ok { border-color: #39ff9e; box-shadow: 0 0 20px -6px #39ff9e; }
+.maquina.ok .status::before { content: "✅ rodou"; color: #39ff9e; }
+.maquina.erro { border-color: #ff5c7a; box-shadow: 0 0 20px -6px #ff5c7a; animation: treme .35s 2; }
+.maquina.erro .status::before { content: "💥 erro de versão"; color: #ff5c7a; }
+
+/* ===================== aula 6 · C4 o botão do Lambda ===================== */
+.lb-topo { display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: center; }
+.lb-grade { display: grid; grid-template-columns: repeat(20, 1fr); gap: 3px; padding: .8rem; border-radius: 14px; background: var(--chip); }
+.lb-grade span { aspect-ratio: 1; border-radius: 3px; background: #1c2621; transition: background .15s, box-shadow .15s; }
+.lb-grade span.on { background: #ff9900; box-shadow: 0 0 8px #ff9900; }
+.lb-numeros { display: grid; gap: .3rem; font-size: .88rem; color: var(--texto-2); }
+.lb-numeros strong { font: 800 1.2rem var(--f-mono); color: var(--texto); }
+.lb-rel { position: relative; height: 18px; margin: .4rem 0 .2rem; border-radius: 9px; background: var(--superficie-2); border: 1px solid var(--borda); overflow: hidden; }
+.lb-rel i { display: block; height: 100%; width: 0; background: var(--neon); transition: width 1.2s linear; }
+.lb-rel::after { content: ""; position: absolute; left: 12.5%; top: 0; bottom: 0; border-left: 3px dashed var(--vivo-ruim); }
+.lb-rel.estourou i { background: var(--vivo-ruim); }
+.lb-rel-legenda { position: relative; height: 1.1em; font: 500 .74rem var(--f-mono); color: var(--texto-3); }
+.lb-rel-legenda span { position: absolute; white-space: nowrap; }
+.lb-rel-legenda span:nth-child(1) { left: 0; }
+.lb-rel-legenda span:nth-child(2) { left: 12.5%; color: var(--vivo-ruim); }
+.lb-rel-legenda span:nth-child(3) { right: 0; }
+
+/* ===================== aula 6 · X1 do ESP32 ao monstro ===================== */
+.regua-lista { display: grid; gap: .6rem; margin: 0; padding: 0; list-style: none; }
+.regua-lista li {
+  display: grid;
+  grid-template-columns: auto minmax(10rem, 14rem) 1fr auto;
+  gap: .4rem .8rem;
+  align-items: center;
+  padding: .6rem .8rem;
+  border-radius: 14px;
+  background: var(--superficie-2);
+  border: 1px solid var(--borda);
+}
+.regua-lista .ico { font-size: 1.6rem; }
+.regua-lista .nome strong { display: block; font: 800 .95rem var(--f-titulo); }
+.regua-lista .nome small { font-size: .78rem; color: var(--texto-2); }
+.regua-lista .trilho { height: 16px; border-radius: 8px; background: var(--chip); overflow: hidden; }
+.regua-lista .trilho i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--menta), var(--neon)); transition: width .6s ease-out; }
+.regua-lista button { padding: .35rem .7rem; border-radius: 999px; border: 1px solid var(--borda-forte); background: var(--superficie); color: var(--texto); font: 700 .8rem var(--f-texto); cursor: pointer; }
+.regua-lista button:hover { border-color: var(--neon); }
+
+@media (max-width: 760px) {
+  .central-linha { grid-template-columns: 1fr; }
+  .maquinas { grid-template-columns: 1fr; }
+  .lb-topo { grid-template-columns: 1fr; }
+  .lb-grade { grid-template-columns: repeat(20, 1fr); gap: 2px; padding: .5rem; }
+  .relogio-dia strong { font-size: 1.15rem; }
+  .regua-lista li { grid-template-columns: auto 1fr; }
+  .regua-lista .trilho, .regua-lista button { grid-column: 1 / -1; }
+}
+
 /* ===================== pausa: tudo parado ===================== */
 .pausado .gancho.zero::before,
 .pausado .gancho.zero .gancho-relogio,
@@ -1274,7 +1392,11 @@
 .pausado .viagem-trilha::before,
 .pausado .viagem-trilha li,
 .pausado .viagem-trilha .pacote,
-.pausado .mem-carro { animation: none !important; }
+.pausado .mem-carro,
+.pausado .dia-barra i,
+.pausado .central-linha.falha,
+.pausado .maquina.erro { animation: none !important; }
+.pausado .central-linha.rodando::after, .pausado .lb-rel i, .pausado .regua-lista .trilho i, .pausado .maquina .app { transition: none; }
 .pausado .mem-carro, .pausado .bit { transition: none; }
 .pausado .porta-passos li, .pausado .porta-led, .pausado .tr-risco i { transition: none; }
 .pausado .funil-regioes li { transition: none; }

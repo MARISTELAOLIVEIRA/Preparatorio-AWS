@@ -1,6 +1,6 @@
 /*
   vivo.js: as peças interativas das aulas "vivas" do Preparatório AWS. Só deste site.
-  versão 5 · 2026-11-10 · aulas 1 (conceitos), 2 (cobrança), 3 (infraestrutura global), 4 (segurança e IAM) e 5 (redes)
+  versão 6 · 2026-11-10 · aulas 1 (conceitos), 2 (cobrança), 3 (infraestrutura), 4 (segurança), 5 (redes) e 6 (computação)
 
   1. [data-gancho]  a contagem para a abertura das vendas e a votação "o site aguenta?"
   2. [data-sim]     simulador "A noite da abertura das vendas": salinha com 2, salinha com 20 ou nuvem
@@ -21,6 +21,10 @@
   16. [data-viagem] a viagem do pacote: portão, placas, cancela e porteiro da superquadra, com quatro chaves (aula 5)
   17. [data-memoria] com memória × sem memória: o carro que sai e volta pelo porteiro e pela cancela (aula 5)
   18. [data-bits]   a régua de bits: 32 LEDs, a máscara de /16 a /28 e os 5 endereços reservados (aula 5)
+  19. [data-central] a central de tarefas: cinco tarefas, cinco motores (EC2, Fargate, Lambda, Beanstalk, spot) (aula 6)
+  20. [data-conteiner] "na minha máquina funciona!": o app sem e com contêiner (aula 6)
+  21. [data-lambda] o botão que acorda o Lambda: uma compra, mil compras e o relatório que bate nos 15 minutos (aula 6)
+  22. [data-regua]  do ESP32 ao monstro da AWS: a memória de cada máquina, em escala normal e logarítmica (aula 6)
 
   Com as animações pausadas (botão do topo ou "reduzir movimento"), tudo mostra o resultado direto.
 */
@@ -1397,5 +1401,219 @@
     barra.addEventListener("input", mostra);
     box.querySelectorAll("[data-mascara]").forEach(b => b.addEventListener("click", () => { barra.value = b.dataset.mascara; mostra(); }));
     mostra();
+  });
+
+  // ===================== 19. a central de tarefas =====================
+  // para cada tarefa, o resultado de cada motor: [tipo, texto]; tipo: certo, meh (funciona, mas não é o melhor) ou falha
+  const CENTRAL = {
+    site: { certo: "ec2",
+      ec2: "Servidor seu, com o sistema escolhido pela equipe, ligado o tempo todo.",
+      fargate: ["meh", "Roda, mas a equipe queria escolher e cuidar do sistema operacional; no Fargate, quem cuida é a AWS."],
+      lambda: ["falha", "⏱️ O Lambda acorda por evento e vai até 15 minutos. Um site no ar o tempo todo, com o sistema escolhido pela equipe, não é com ele."],
+      beanstalk: ["meh", "Funciona, mas a equipe queria mexer no sistema operacional, e o Beanstalk cuida disso por você."],
+      spot: ["falha", "💥 Na abertura da venda, a AWS pede a máquina de volta e o site cai. Spot não é para o que não pode cair."] },
+    pdf: { certo: "lambda",
+      lambda: "Acorda na compra, trabalha 2 segundos e volta a dormir. Você paga só os 2 segundos.",
+      ec2: ["meh", "😴 Funciona, mas o servidor fica quase o dia inteiro parado, e você paga cada hora."],
+      fargate: ["meh", "Funciona, mas é muito motor para 2 segundos de trabalho."],
+      beanstalk: ["meh", "Funciona, mas deixa máquinas ligadas para um trabalho de 2 segundos."],
+      spot: ["falha", "💥 Interrompido no meio da compra: o cliente fica sem o ingresso."] },
+    pag: { certo: "fargate",
+      fargate: "O contêiner roda igual no notebook e na AWS, e o Fargate cuida das máquinas.",
+      ec2: ["meh", "Roda, mas aí a equipe cuida do servidor, e o pedido era não cuidar."],
+      lambda: ["meh", "O Lambda é para tarefas curtas, por evento. O pedido era empacotar o sistema inteiro em contêiner."],
+      beanstalk: ["meh", "Sobe o código, mas o pedido era o contêiner rodando igual em todo lugar."],
+      spot: ["falha", "💥 Pagamento interrompido no meio? Nunca."] },
+    estag: { certo: "beanstalk",
+      beanstalk: "Ele envia o código, e o Beanstalk cria e cuida das máquinas. Zero servidor.",
+      ec2: ["falha", "😵 Ele travou: AMI, par de chaves, grupo de segurança… sem saber nada de servidor."],
+      fargate: ["falha", "😵 Ele teria que aprender contêiner primeiro."],
+      lambda: ["falha", "😵 Um site inteiro em funções? Ele queria só subir o código."],
+      spot: ["falha", "😵 Travou na configuração do servidor, e ainda pode ser interrompido."] },
+    rel: { certo: "spot",
+      spot: "Até 90% mais barato. Se a AWS pedir a máquina de volta, o relatório recomeça.",
+      ec2: ["meh", "Funciona, mas sob demanda custa mais. O relatório pode parar: dava para usar spot."],
+      fargate: ["meh", "Funciona, mas o pedido era o menor custo para algo que pode parar: spot."],
+      lambda: ["falha", "⏱️ Parou aos 15 minutos! O relatório leva horas."],
+      beanstalk: ["meh", "Funciona, mas é para sites. Para horas de cálculo que podem parar, spot."] }
+  };
+  document.querySelectorAll("[data-central]").forEach(function (box) {
+    const linhas = box.querySelectorAll("[data-tarefa]");
+    const placar = box.querySelector("[data-placar]");
+    const fala = box.querySelector(".casa-fala");
+    const vai = box.querySelector(".vai");
+    let espera = [];
+    linhas.forEach(function (l) {
+      l.querySelectorAll("[data-motor]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          l.querySelectorAll("[data-motor]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+          l.className = "central-linha";
+          l.querySelector(".central-saida").textContent = "";
+        });
+      });
+    });
+    vai.addEventListener("click", function () {
+      espera.forEach(clearTimeout);
+      espera = [];
+      let certos = 0, faltam = 0;
+      linhas.forEach(function (l, i) {
+        const t = l.dataset.tarefa;
+        const sel = l.querySelector('[data-motor][aria-pressed="true"]');
+        const saida = l.querySelector(".central-saida");
+        l.className = "central-linha";
+        if (!sel) { faltam++; saida.textContent = "Escolha um motor."; return; }
+        const m = sel.dataset.motor;
+        const r = CENTRAL[t];
+        const tipo = m === r.certo ? "certo" : r[m][0];
+        const texto = m === r.certo ? "✅ " + r[m] : r[m][1];
+        if (tipo === "certo") certos++;
+        const mostra = function () {
+          l.classList.add("rodando", tipo);
+          saida.textContent = texto;
+        };
+        if (pausado()) mostra(); else espera.push(setTimeout(mostra, 150 + i * 450));
+      });
+      const fim = function () {
+        placar.textContent = certos + " de 5";
+        fala.innerHTML = faltam ? `Faltou escolher o motor de ${faltam} tarefa${faltam > 1 ? "s" : ""}.` :
+          certos === 5 ? "🏆 <strong>Central montada!</strong> Cada tarefa no motor certo: servidor, função, contêiner, atalho e spot." :
+          `<strong>${certos} de 5 no motor certo.</strong> As amarelas funcionam, mas não são a melhor escolha; as vermelhas quebram. Troque e rode de novo.`;
+      };
+      if (pausado()) fim(); else espera.push(setTimeout(fim, 150 + linhas.length * 450));
+    });
+  });
+
+  // ===================== 20. na minha máquina funciona! =====================
+  document.querySelectorAll("[data-conteiner]").forEach(function (box) {
+    const emp = box.querySelector("[data-empacotar]");
+    const maquinas = box.querySelectorAll(".maquina");
+    const fala = box.querySelector(".casa-fala");
+    const vai = box.querySelector(".vai");
+    let espera = [];
+    function atualiza() {
+      const sim = emp.getAttribute("aria-pressed") === "true";
+      box.classList.toggle("empacotado", sim);
+      maquinas.forEach(m => (m.className = "maquina"));
+      fala.innerHTML = sim ? "📦 O app vai dentro do contêiner, junto com o Python 3.12 e a biblioteca 2.0. Aperte <strong>Rodar o app</strong>." : "Sem contêiner, o app usa o que cada máquina tiver instalado. Aperte <strong>Rodar o app</strong>.";
+    }
+    emp.addEventListener("click", function () {
+      emp.setAttribute("aria-pressed", String(emp.getAttribute("aria-pressed") !== "true"));
+      emp.querySelector(".sn").textContent = emp.getAttribute("aria-pressed") === "true" ? "ligado" : "desligado";
+      atualiza();
+    });
+    vai.addEventListener("click", function () {
+      espera.forEach(clearTimeout);
+      espera = [];
+      const sim = box.classList.contains("empacotado");
+      maquinas.forEach(m => (m.className = "maquina"));
+      const fim = function () {
+        maquinas[0].classList.add("ok");
+        maquinas[1].classList.add(sim ? "ok" : "erro");
+        fala.innerHTML = sim ? "✅ <strong>Rodou igual nas duas!</strong> O contêiner levou junto a versão da linguagem e as bibliotecas. O servidor só precisa saber rodar contêiner." :
+          "💥 <strong>\"Mas na minha máquina funciona!\"</strong> No servidor, o Python e a biblioteca são de outra versão, e o app quebra. Ligue o contêiner e rode de novo.";
+      };
+      if (pausado()) return fim();
+      maquinas.forEach(m => m.classList.add("rodando"));
+      fala.textContent = "Rodando…";
+      espera.push(setTimeout(fim, 900));
+    });
+    atualiza();
+  });
+
+  // ===================== 21. o botão que acorda o Lambda =====================
+  document.querySelectorAll("[data-lambda]").forEach(function (box) {
+    const grade = box.querySelector(".lb-grade");
+    const agoraTxt = box.querySelector("[data-agora]");
+    const totalTxt = box.querySelector("[data-total]");
+    const cobradoTxt = box.querySelector("[data-cobrado]");
+    const escalaTxt = box.querySelector("[data-escala]");
+    const relBarra = box.querySelector(".lb-rel i");
+    const relTxt = box.querySelector("[data-rel]");
+    const fala = box.querySelector(".casa-fala");
+    for (let i = 0; i < 100; i++) grade.appendChild(document.createElement("span"));
+    const luzes = grade.querySelectorAll("span");
+    let fim = [], total = 0, laco = 0;
+    function desenha() {
+      const agora = performance.now();
+      fim = fim.filter(t => t > agora);
+      const n = fim.length;
+      const cada = n > 100 ? 10 : 1;
+      const acesas = Math.min(100, Math.ceil(n / cada));
+      luzes.forEach((l, i) => l.classList.toggle("on", i < acesas));
+      agoraTxt.textContent = num(n);
+      totalTxt.textContent = num(total);
+      cobradoTxt.textContent = num(total * 2) + " s";
+      escalaTxt.textContent = cada === 1 ? "cada luz = 1 execução" : "cada luz = 10 execuções";
+      if (n) laco = requestAnimationFrame(desenha); else laco = 0;
+    }
+    function compra(qtd) {
+      total += qtd;
+      // com as animações pausadas, o painel mostra o pico (as execuções ficam acesas até o próximo clique)
+      if (pausado()) fim = [];
+      const ate = performance.now() + (pausado() ? 3600000 : 2000);
+      for (let i = 0; i < qtd; i++) fim.push(ate + Math.random() * 300);
+      fala.innerHTML = qtd === 1 ? "🛒 Uma compra: o Lambda acordou, gerou o PDF em 2 segundos e voltou a dormir." :
+        "🛒 <strong>Mil compras ao mesmo tempo:</strong> mil execuções, sem você ligar máquina nenhuma. Ele cresce sozinho, e você paga só os segundos usados.";
+      if (pausado()) { desenha(); return; }
+      if (!laco) laco = requestAnimationFrame(desenha);
+    }
+    box.querySelector("[data-compra='1']").addEventListener("click", () => compra(1));
+    box.querySelector("[data-compra='1000']").addEventListener("click", () => compra(1000));
+    box.querySelector("[data-relatorio]").addEventListener("click", function () {
+      const para = function () {
+        relBarra.style.width = (15 / 120) * 100 + "%";
+        relBarra.parentElement.classList.add("estourou");
+        relTxt.textContent = "⛔ parou aos 15 minutos";
+        fala.innerHTML = "📊 <strong>Tempo esgotado!</strong> Cada execução do Lambda vai até 15 minutos, e o relatório leva 2 horas. Para ele: EC2, contêiner, spot, ou dividir em pedaços menores.";
+      };
+      relBarra.parentElement.classList.remove("estourou");
+      relBarra.style.width = "0%";
+      relTxt.textContent = "rodando…";
+      if (pausado()) return para();
+      requestAnimationFrame(() => (relBarra.style.width = (15 / 120) * 100 + "%"));
+      setTimeout(para, 1300);
+    });
+    desenha();
+  });
+
+  // ===================== 22. do ESP32 ao monstro da AWS =====================
+  const KB = 1024, GB = 1024 ** 3;
+  const MAQUINAS = [
+    { ico: "🔌", nome: "ESP32", det: "2 núcleos a 240 MHz · 520 KB de memória", mem: 520 * KB },
+    { ico: "☁️", nome: "t3.micro", det: "2 vCPUs · 1 GiB de memória", mem: 1 * GB },
+    { ico: "💻", nome: "Um notebook comum", det: "exemplo: 8 núcleos · 16 GB de memória", mem: 16 * GB },
+    { ico: "🦾", nome: "p5.48xlarge", det: "192 vCPUs · 2 TiB de memória · 8 GPUs H100", mem: 2048 * GB }
+  ];
+  document.querySelectorAll("[data-regua]").forEach(function (box) {
+    const lista = box.querySelector(".regua-lista");
+    const escala = box.querySelector("[data-log]");
+    const fala = box.querySelector(".casa-fala");
+    lista.innerHTML = MAQUINAS.map((m, i) => `<li data-i="${i}"><span class="ico" aria-hidden="true">${m.ico}</span><span class="nome"><strong>${m.nome}</strong><small>${m.det}</small></span><span class="trilho" aria-hidden="true"><i></i></span><button type="button" data-cabem="${i}">🔌 quantos ESP32?</button></li>`).join("");
+    const max = MAQUINAS[MAQUINAS.length - 1].mem;
+    function desenha() {
+      const log = escala.getAttribute("aria-pressed") === "true";
+      lista.querySelectorAll("li").forEach(function (li, i) {
+        const m = MAQUINAS[i].mem;
+        const pct = log ? (Math.log10(m) - Math.log10(MAQUINAS[0].mem) * 0.9) / (Math.log10(max) - Math.log10(MAQUINAS[0].mem) * 0.9) * 100 : (m / max) * 100;
+        li.querySelector("i").style.width = Math.max(pct, 0.15) + "%";
+      });
+    }
+    escala.addEventListener("click", function () {
+      escala.setAttribute("aria-pressed", String(escala.getAttribute("aria-pressed") !== "true"));
+      const log = escala.getAttribute("aria-pressed") === "true";
+      escala.querySelector(".sn").textContent = log ? "ligada" : "desligada";
+      fala.innerHTML = log ? "📐 <strong>Escala logarítmica:</strong> cada pedaço da barra multiplica por 10 em vez de somar. Agora dá para ver todas as máquinas, do ESP32 ao monstro." :
+        "📏 <strong>Escala normal:</strong> o ESP32, a t3.micro e o notebook somem perto da p5.48xlarge. A diferença é grande demais para uma régua comum.";
+      desenha();
+    });
+    lista.addEventListener("click", function (e) {
+      const b = e.target.closest("[data-cabem]");
+      if (!b) return;
+      const m = MAQUINAS[b.dataset.cabem];
+      const n = Math.floor(m.mem / MAQUINAS[0].mem);
+      fala.innerHTML = n <= 1 ? "🔌 É o próprio ESP32: 520 KB de memória. Pequeno, barato e roda um semáforo inteiro." :
+        `🔌 Na memória de <strong>${m.nome}</strong> cabe a memória de <strong>${num(n)} ESP32</strong>. A conta: ${m.mem >= GB ? num(m.mem / GB) + " GiB" : ""} ÷ 520 KB.`;
+    });
+    desenha();
   });
 })();
