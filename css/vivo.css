@@ -1,6 +1,6 @@
 /*
   vivo.css: as peças das aulas "vivas" do Preparatório AWS (gancho, simulador, pausa aqui, casa ou hotel, placa).
-  versão 10 · 2026-11-11 · só deste site. Aula 1, aula 2 (conta do susto, taxímetro, transporte, iceberg, pit stop, conta de luz)
+  versão 11 · 2026-11-11 · só deste site. Aula 1, aula 2 (conta do susto, taxímetro, transporte, iceberg, pit stop, conta de luz)
   aula 3 (plantão, derrube um data center, do globo ao prédio, funil da região)
   aula 4 (o vazamento, tranque a conta, a porta abre?, a fechadura com ESP32)
   aula 5 (a planta errada, a viagem do pacote, com e sem memória, a régua de bits)
@@ -1618,6 +1618,32 @@
   .caixas-mudanca { grid-template-columns: repeat(2, 1fr); }
 }
 
+/* ===================== aula 10 · G1 sexta, 9h59 ===================== */
+.relogio-grande { margin: 1rem auto; font: 900 clamp(2.6rem, 10vw, 4.4rem)/1 var(--f-mono); color: #ff9900; text-shadow: 0 0 22px rgba(255, 153, 0, .5); letter-spacing: .04em; }
+.relogio-grande span { animation: pisca 1s steps(2) infinite; }
+
+/* ===================== aula 10 · SIM1 a sala de controle ===================== */
+.controle-topo { display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: center; margin-bottom: .8rem; }
+.controle-relogio { padding: .6rem 1rem; border-radius: 12px; background: #050807; color: #39ff9e; font: 700 1.8rem var(--f-mono); text-shadow: 0 0 10px rgba(57, 255, 158, .5); min-width: 7rem; text-align: center; }
+.controle-feed { max-height: 13rem; overflow-y: auto; margin: .6rem 0; padding: .6rem .8rem; border-radius: 12px; background: var(--chip); color: #e8e4d8; list-style: none; display: grid; gap: .35rem; font-size: .88rem; }
+.controle-feed li { animation: surge .3s ease-out; }
+.controle-feed time { display: inline-block; min-width: 3.4rem; font: 700 .8rem var(--f-mono); color: #ffb84d; }
+.controle-grafico svg { display: block; width: 100%; height: auto; }
+
+/* ===================== aula 10 · X1 a fila do supermercado ===================== */
+.fila-cena { display: grid; gap: .6rem; padding: 1rem; border-radius: 16px; background: var(--chip); color: #e8e4d8; }
+.fila-caixas { display: flex; flex-wrap: wrap; gap: .5rem; }
+.fila-caixas span { display: grid; justify-items: center; padding: .4rem .6rem; border-radius: 10px; background: #12301f; border: 2px solid #39ff9e; font-size: 1.6rem; animation: nasce .35s ease-out; }
+.fila-caixas span small { font: 800 .72rem var(--f-mono); color: #39ff9e; }
+.fila-caixas span.parado { border-color: #ffd36b; background: #3a3014; filter: grayscale(.5); }
+.fila-caixas span.parado small::after { content: " · parado"; color: #ffd36b; }
+.fila-clientes { font-size: 1.15rem; letter-spacing: .05rem; line-height: 1.5; word-break: break-all; min-height: 1.6em; }
+.fila-tempo { font: 500 .85rem var(--f-mono); color: #a3b0a8; }
+
+@media (max-width: 760px) {
+  .controle-topo { grid-template-columns: 1fr; }
+}
+
 /* ===================== pausa: tudo parado ===================== */
 .pausado .gancho.zero::before,
 .pausado .gancho.zero .gancho-relogio,
@@ -1656,6 +1682,7 @@
 .pausado .pb-banco.pesado,
 .pausado .gav-grade span.achou { animation: none !important; }
 .pausado .radar-forma, .pausado .radar-ponto, .pausado .fiscal-lista li { transition: none; }
+.pausado .relogio-grande span, .pausado .controle-feed li, .pausado .fila-caixas span { animation: none !important; }
 .pausado .pb-banco, .pausado .pb-lento i, .pausado .cache-pessoas span, .pausado .cache-nota { transition: none; }
 .pausado .vida-gavetas li, .pausado .dl-maquina { transition: none; }
 .pausado .carta-caminho li, .pausado .carta-porta { transition: none; }

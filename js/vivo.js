@@ -1,6 +1,6 @@
 /*
   vivo.js: as peças interativas das aulas "vivas" do Preparatório AWS. Só deste site.
-  versão 10 · 2026-11-11 · aulas 1 a 9 (conceitos, cobrança, infraestrutura, segurança, redes, computação, armazenamento, bancos e arquitetura)
+  versão 11 · 2026-11-11 · aulas 1 a 10 (conceitos, cobrança, infraestrutura, segurança, redes, computação, armazenamento, bancos, arquitetura e escala)
 
   1. [data-gancho]  a contagem para a abertura das vendas e a votação "o site aguenta?"
   2. [data-sim]     simulador "A noite da abertura das vendas": salinha com 2, salinha com 20 ou nuvem
@@ -38,6 +38,9 @@
   31. [data-pilares] o raio-x dos seis pilares: cada problema no seu pilar, e o hexágono cresce (aula 9)
   32. [data-fiscal] o fiscal da conta: a verificação do Trusted Advisor, achado por achado (aula 9)
   (a aula 9 também usa a central data-central="migracao" e a placa data-placa="mudanca")
+  33. [data-controle] a sala de controle da venda: balanceador, Auto Scaling, escala programada e alarme, das 9h ao meio-dia (aula 10)
+  34. [data-fila]   a fila do supermercado: mais caixas (horizontal) ou um caixa mais rápido (vertical) (aula 10)
+  (a aula 10 também usa a central data-central="vigias")
 
   Com as animações pausadas (botão do topo ou "reduzir movimento"), tudo mostra o resultado direto.
 */
@@ -1549,6 +1552,24 @@
       rehost: ["meh", "Leva, mas sem aproveitar a nuvem. O pedido era redesenhar: refactor."],
       outro: ["meh", "Redesenhar para a nuvem, com contêineres e Lambda, é refactor."] }
   };
+  CENTRAIS.vigias = {
+    cpu: { certo: "watch", watch: "Métrica e alarme: o CloudWatch vigia o processador e avisa.",
+      outro: ["falha", "💥 Uso do processador é métrica de desempenho: CloudWatch."] },
+    regra: { certo: "trail", trail: "Quem fez o quê, e quando: o CloudTrail registrou a mudança na regra.",
+      config: ["meh", "O Config mostra que a configuração mudou; o nome de quem mudou está no CloudTrail."],
+      outro: ["falha", "💥 \"Quem mudou\" é auditoria das ações na conta: CloudTrail."] },
+    padrao: { certo: "config", config: "O Config guarda o histórico das configurações e confere se elas seguem as regras.",
+      trail: ["meh", "O CloudTrail diz quem fez; para saber se a configuração segue a regra, Config."],
+      outro: ["falha", "💥 Configuração fora do padrão é com o AWS Config."] },
+    aws: { certo: "health", health: "O Health Dashboard mostra se a AWS tem algum problema que afeta você.",
+      outro: ["falha", "💥 Para saber se o problema é da própria AWS: AWS Health Dashboard."] },
+    logs: { certo: "watch", watch: "Logs da aplicação, juntos e pesquisáveis: CloudWatch Logs.",
+      trail: ["meh", "O CloudTrail registra as ações na conta da AWS, não os erros da sua aplicação: CloudWatch Logs."],
+      outro: ["falha", "💥 Os logs de erro da aplicação ficam no CloudWatch."] },
+    apagou: { certo: "trail", trail: "A ação de apagar ficou registrada: quem, quando e de onde.",
+      watch: ["falha", "💥 O CloudWatch mede desempenho; quem apagou está no CloudTrail."],
+      outro: ["falha", "💥 \"Quem apagou\" é auditoria: CloudTrail."] }
+  };
   document.querySelectorAll("[data-central]").forEach(function (box) {
     const linhas = box.querySelectorAll("[data-tarefa]");
     const placar = box.querySelector("[data-placar]");
@@ -1591,9 +1612,10 @@
         const gav = box.dataset.central === "armazenamento";
         const ban = box.dataset.central === "bancos";
         const mig = box.dataset.central === "migracao";
+        const vig = box.dataset.central === "vigias";
         placar.textContent = certos + " de " + n;
         fala.innerHTML = faltam ? `Faltou escolher ${gav ? "a gaveta" : "o motor"} de ${faltam} ${gav ? "pedido" : "tarefa"}${faltam > 1 ? "s" : ""}.` :
-          certos === n ? (mig ? "🏆 <strong>Mudança planejada!</strong> Cada sistema com o seu R: desativar, manter, levar, realocar, recomprar, ajustar e refazer." : ban ? "🏆 <strong>Um banco para cada dado!</strong> Relacional, NoSQL, cache, análise e migração, cada um no seu lugar." :
+          certos === n ? (vig ? "🏆 <strong>Cada vigia no seu posto!</strong> CloudWatch mede, CloudTrail registra quem fez, Config confere a configuração e o Health Dashboard fala da AWS." : mig ? "🏆 <strong>Mudança planejada!</strong> Cada sistema com o seu R: desativar, manter, levar, realocar, recomprar, ajustar e refazer." : ban ? "🏆 <strong>Um banco para cada dado!</strong> Relacional, NoSQL, cache, análise e migração, cada um no seu lugar." :
             gav ? "🏆 <strong>Gavetas organizadas!</strong> Cada dado no lugar certo: disco, balde, pasta, depósito, temporário e ponte." :
             "🏆 <strong>Central montada!</strong> Cada tarefa no motor certo: servidor, função, contêiner, atalho e spot.") :
           `<strong>${certos} de ${n} ${gav ? "na gaveta certa" : "no motor certo"}.</strong> As amarelas funcionam, mas não são a melhor escolha; as vermelhas quebram. Troque e rode de novo.`;
@@ -2202,5 +2224,178 @@
       itens.forEach((li, i) => espera.push(setTimeout(() => li.classList.add("visto"), 300 + i * 450)));
       espera.push(setTimeout(fim, 300 + itens.length * 450));
     });
+  });
+
+  // ===================== 33. a sala de controle da venda =====================
+  // O dia vai das 9h (minuto 0) ao meio-dia (minuto 180). A venda abre às 10h (minuto 60); uma máquina trava às 10h20 (minuto 80).
+  // A procura e as máquinas são contadas em "máquinas necessárias" (números de exemplo).
+  const hora = m => { const h = 9 + Math.floor(m / 60); const mm = m % 60; return h + "h" + String(mm).padStart(2, "0"); };
+  const procuraVenda = m => (m < 55 ? 0.8 : m < 60 ? 0.8 + (m - 55) * 0.5 : 0.8 + 6.7 * Math.exp(-(m - 60) / 55));
+  function rodaVenda(c) {
+    const serie = [], feed = [];
+    let cap = 2, espera = 0, desce = 0, travou = false, avisou = false, lentoDesde = -1, lentos = 0, primeiraLenta = false, desceuAvisou = false, paradas = false;
+    for (let m = 0; m <= 180; m++) {
+      const d = procuraVenda(m);
+      if (c.programada && m === 30) { cap = Math.max(cap, 8); feed.push([m, "⏰ Escala programada: o grupo passou para 8 máquinas antes da venda."]); }
+      if (c.dinamico) {
+        const alvo = Math.min(10, Math.max(c.programada && m >= 30 && m < 120 ? 8 : 2, Math.ceil(d * 1.25)));
+        if (alvo > cap) { if (++espera >= 3) { const antes = cap; cap = Math.min(alvo, cap + 2); espera = 0; feed.push([m, `📈 O Auto Scaling ligou mais ${cap - antes} máquina${cap - antes > 1 ? "s" : ""} (agora ${cap}).`]); } }
+        else { espera = 0; if (alvo < cap && ++desce >= 10) { cap--; desce = 0; if (!desceuAvisou) { desceuAvisou = true; feed.push([m, "📉 A procura caiu, e o Auto Scaling começou a desligar máquinas."]); } } }
+      }
+      if (m === 60) feed.push([m, "🎟️ Abriu a venda do Festival do Cerrado!"]);
+      // a máquina que trava às 10h20
+      let quebradas = 0;
+      if (m >= 80) {
+        if (m === 80) {
+          travou = true;
+          feed.push([m, c.balanceador ? "🩺 Uma máquina travou. O balanceador viu na verificação de integridade e tirou ela da fila." :
+            "💥 A máquina que recebia todos os clientes travou. Sem balanceador, ninguém desviou o tráfego: site fora do ar."]);
+        }
+        if (c.balanceador) quebradas = c.dinamico && m >= 84 ? 0 : 1;
+        if (c.balanceador && c.dinamico && m === 84) feed.push([m, "🔁 O Auto Scaling trocou a máquina travada por uma nova."]);
+      }
+      let efetiva = c.balanceador ? Math.max(0, cap - quebradas) : (m >= 80 ? 0 : 1);
+      if (!c.balanceador && cap > 1 && !paradas) { paradas = true; feed.push([m, "🤷 Há máquinas ligadas, mas paradas: sem balanceador, os clientes vão todos para o endereço de uma só."]); }
+      if (c.alarme && !avisou && d > efetiva * 0.8) { avisou = true; feed.push([m, "📱 Alarme do CloudWatch: processador acima de 80%. A equipe recebeu o aviso pelo SNS."]); }
+      const lento = d > efetiva;
+      if (lento) { lentos++; if (!primeiraLenta) { primeiraLenta = true; feed.push([m, efetiva === 0 ? "🔴 Ninguém consegue comprar." : "🐢 As máquinas não dão conta: o site ficou lento."]); } }
+      serie.push({ m: m, d: d, cap: efetiva });
+    }
+    feed.sort((a, b) => a[0] - b[0]);
+    return { serie: serie, feed: feed, lentos: lentos, pico: Math.max.apply(null, serie.map(p => p.cap)), avisou: avisou };
+  }
+  document.querySelectorAll("[data-controle]").forEach(function (box) {
+    const relogio = box.querySelector("[data-relogio]");
+    const feedEl = box.querySelector(".controle-feed");
+    const grafico = box.querySelector(".controle-grafico");
+    const vai = box.querySelector(".vai");
+    const veredito = box.querySelector(".sim-veredito");
+    const campos = {};
+    box.querySelectorAll("[data-n]").forEach(el => (campos[el.dataset.n] = el));
+    const liga = k => box.querySelector(`[data-chave-venda="${k}"]`).getAttribute("aria-pressed") === "true";
+    const G = { x0: 34, x1: 630, y0: 150, y1: 10 };
+    const gx = m => G.x0 + (m / 180) * (G.x1 - G.x0);
+    const gy = v => G.y0 - (v / 10) * (G.y0 - G.y1);
+    const graf = svg("svg", { viewBox: "0 0 640 176", role: "img", "aria-label": "Procura e máquinas atendendo, das 9h ao meio-dia" }, grafico);
+    [0, 5, 10].forEach(v => { svg("line", { x1: G.x0, x2: G.x1, y1: gy(v), y2: gy(v), class: "gr-eixo", opacity: v ? 0.35 : 1 }, graf); svg("text", { x: G.x0 - 6, y: gy(v) + 4, class: "gr-rotulo", "text-anchor": "end" }, graf).textContent = v; });
+    [0, 60, 120, 180].forEach(m => (svg("text", { x: gx(m), y: G.y0 + 18, class: "gr-rotulo", "text-anchor": "middle" }, graf).textContent = hora(m)));
+    const linhaD = svg("path", { class: "gr-procura" }, graf);
+    const linhaC = svg("path", { class: "gr-capacidade" }, graf);
+    const cursor = svg("line", { y1: G.y1, y2: G.y0, class: "gr-cursor", opacity: 0 }, graf);
+    let res, quadro = 0, rodando = false;
+    function desenha(ate) {
+      let dD = "", dC = "";
+      for (let i = 0; i <= ate; i++) {
+        const p = res.serie[i];
+        dD += (i ? "L" : "M") + gx(p.m).toFixed(1) + " " + gy(p.d).toFixed(1);
+        dC += (i ? "L" : "M") + gx(p.m).toFixed(1) + " " + gy(p.cap).toFixed(1);
+      }
+      linhaD.setAttribute("d", dD);
+      linhaC.setAttribute("d", dC);
+      cursor.setAttribute("x1", gx(ate));
+      cursor.setAttribute("x2", gx(ate));
+      relogio.textContent = hora(ate);
+      feedEl.innerHTML = res.feed.filter(f => f[0] <= ate).map(f => `<li><time>${hora(f[0])}</time> ${f[1]}</li>`).join("");
+      feedEl.scrollTop = feedEl.scrollHeight;
+    }
+    function termina() {
+      rodando = false;
+      cancelAnimationFrame(quadro);
+      desenha(180);
+      cursor.setAttribute("opacity", 0);
+      campos.lentos.textContent = res.lentos + " min";
+      campos.pico.textContent = res.pico;
+      campos.alarme.textContent = res.avisou ? "sim" : "não";
+      const tudo = liga("balanceador") && liga("dinamico") && liga("programada") && liga("alarme");
+      veredito.style.setProperty("--c", res.lentos === 0 ? "var(--vivo-ok)" : "var(--vivo-ruim)");
+      veredito.innerHTML = "<p>" + (tudo && res.lentos === 0 ? "🏆 <strong>Venda perfeita!</strong> Nenhum minuto lento: o balanceador repartiu, a escala programada adiantou, o Auto Scaling acompanhou e o alarme avisou. A aula 1 ficou para trás." :
+        res.lentos === 0 ? `✅ <strong>Nenhum minuto lento.</strong> ${!liga("alarme") ? "Mas sem o alarme, a equipe ficou sabendo só pelos clientes." : ""}` :
+        `😬 <strong>${res.lentos} minutos lentos ou fora do ar.</strong> Leia o feed para ver o que faltou, ligue a peça e rode de novo.`) + "</p>";
+      vai.disabled = false;
+      vai.textContent = "▶ Rodar a venda de novo";
+    }
+    const ritmo = m => (m >= 55 && m < 95 ? 6 : 24); // minutos por segundo: devagar na abertura da venda
+    function roda() {
+      res = rodaVenda({ balanceador: liga("balanceador"), dinamico: liga("dinamico"), programada: liga("programada"), alarme: liga("alarme") });
+      veredito.innerHTML = "";
+      ["lentos", "pico", "alarme"].forEach(k => (campos[k].textContent = "—"));
+      if (pausado()) return termina();
+      rodando = true;
+      vai.disabled = true;
+      vai.textContent = "A venda está rolando…";
+      cursor.setAttribute("opacity", 1);
+      let m = 0, antes = performance.now();
+      function quadroDaVenda(agora) {
+        if (!rodando) return;
+        if (pausado()) return termina();
+        m = Math.min(180, m + ritmo(m) * Math.min(0.1, (agora - antes) / 1000));
+        antes = agora;
+        desenha(Math.floor(m));
+        if (m >= 180) return termina();
+        quadro = requestAnimationFrame(quadroDaVenda);
+      }
+      quadro = requestAnimationFrame(quadroDaVenda);
+    }
+    box.querySelectorAll("[data-chave-venda]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        b.setAttribute("aria-pressed", String(b.getAttribute("aria-pressed") !== "true"));
+        b.querySelector(".sn").textContent = b.getAttribute("aria-pressed") === "true" ? "ligado" : "desligado";
+      });
+    });
+    vai.addEventListener("click", roda);
+    document.addEventListener("placa:movimento", e => { if (e.detail.pausado && rodando) termina(); });
+    res = rodaVenda({ balanceador: false, dinamico: false, programada: false, alarme: false });
+    desenha(0);
+    feedEl.innerHTML = "<li>Ligue as peças que a equipe montou e aperte <strong>Rodar a venda</strong>.</li>";
+  });
+
+  // ===================== 34. a fila do supermercado =====================
+  document.querySelectorAll("[data-fila]").forEach(function (box) {
+    const caixasEl = box.querySelector(".fila-caixas");
+    const filaEl = box.querySelector(".fila-clientes");
+    const fala = box.querySelector(".casa-fala");
+    const tempo = box.querySelector("[data-tempo]");
+    const CLIENTES = 30;
+    let caixas = 1, vel = 1, laco = 0;
+    function desenhaCaixas(parado) {
+      caixasEl.innerHTML = Array.from({ length: caixas }, (_, i) => `<span class="${parado && i === 0 ? "parado" : ""}">🧑‍💼<small>${vel}×</small></span>`).join("");
+      const t = Math.ceil(CLIENTES / (caixas * vel));
+      tempo.textContent = t + " rodadas";
+    }
+    function fila(n) { filaEl.textContent = "🙂".repeat(n) || "✨ fila vazia"; }
+    box.querySelector("[data-horizontal]").addEventListener("click", function () {
+      if (caixas >= 6) { fala.innerHTML = "Seis caixas já é o supermercado inteiro. Na nuvem, o limite seria o máximo do grupo do Auto Scaling."; return; }
+      caixas++;
+      desenhaCaixas(false);
+      fala.innerHTML = `➕ <strong>Escalar na horizontal:</strong> mais um caixa (agora ${caixas}), sem parar os que já atendem. É o Auto Scaling ligando mais máquinas.`;
+    });
+    box.querySelector("[data-vertical]").addEventListener("click", function () {
+      if (vel >= 3) { fala.innerHTML = "🧱 <strong>Chegou no teto:</strong> não existe caixa mais rápido que isso. Na vertical, a máquina maior também tem limite."; return; }
+      vel++;
+      desenhaCaixas(true);
+      fala.innerHTML = `⚡ <strong>Escalar na vertical:</strong> um caixa mais rápido (${vel}×). Mas, para trocar, o caixa <strong>parou</strong> por um tempo. É trocar a máquina por uma maior.`;
+      if (!pausado()) setTimeout(() => desenhaCaixas(false), 1200); else desenhaCaixas(false);
+    });
+    box.querySelector("[data-atender]").addEventListener("click", function () {
+      clearInterval(laco);
+      let resta = CLIENTES;
+      fila(resta);
+      const porRodada = caixas * vel;
+      const fim = () => (fala.innerHTML = `🛒 Fila atendida em <strong>${Math.ceil(CLIENTES / porRodada)} rodadas</strong>, com ${caixas} caixa${caixas > 1 ? "s" : ""} a ${vel}×.`);
+      if (pausado()) { fila(0); return fim(); }
+      laco = setInterval(function () {
+        resta = Math.max(0, resta - porRodada);
+        fila(resta);
+        if (!resta) { clearInterval(laco); fim(); }
+      }, 350);
+    });
+    box.querySelector("[data-recomeca-fila]").addEventListener("click", function () {
+      clearInterval(laco);
+      caixas = 1; vel = 1;
+      desenhaCaixas(false);
+      fila(CLIENTES);
+      fala.textContent = "Trinta clientes, um caixa. Abra mais caixas ou deixe o caixa mais rápido.";
+    });
+    box.querySelector("[data-recomeca-fila]").click();
   });
 })();
