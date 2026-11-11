@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="../assets/css/neon.css?v=5">
   <link rel="stylesheet" href="../css/interativos.css?v=1">
   <link rel="stylesheet" href="../css/aula-aws.css?v=7">
+  <link rel="stylesheet" href="../css/vivo.css?v=12">
 </head>
 <body>
 
@@ -33,7 +34,7 @@
       <button type="button" class="btn-menu" id="btn-menu" aria-expanded="false" aria-controls="menu">Menu</button>
       <nav class="nav" id="menu" aria-label="Partes da aula">
         <a href="../#videos">← Preparatório</a>
-        <a href="#caso">Caso</a>
+        <a href="#simulador">Simulador</a>
         <a href="#conceitos">Conceitos</a>
         <a href="#c5">Dicionário</a>
         <a href="#demonstracao">CLI</a>
@@ -117,16 +118,45 @@
           </div>
           <div class="cartao">
             <ol class="roteiro-video sem-tempo">
+              <li><a href="#gancho">G1 · O quadro de ideias</a></li>
               <li><a href="#caso">O caso: o quadro de ideias da Ingresso Candango</a></li>
+              <li><a href="#simulador">SIM1 · Cada ideia no seu serviço</a></li>
               <li><a href="#c1">C1 · Os jeitos de usar a AWS</a></li>
               <li><a href="#c2">C2 · Integração: filas, avisos e eventos</a></li>
               <li><a href="#c3">C3 · Análise de dados</a></li>
               <li><a href="#c4">C4 · Inteligência artificial</a></li>
               <li><a href="#c5">C5 · O dicionário de pistas</a></li>
-              <li><a href="#demonstracao">D1 · A AWS pela linha de comando</a></li>
+              <li><a href="#receita">X1 · A receita de bolo</a></li>
+              <li><a href="#demonstracao">D1 · Faça junto: a AWS pela linha de comando</a></li>
               <li><a href="#pegadinha">P1 · A pegadinha: nomes que se parecem</a></li>
               <li><a href="#academy">Agora é no Skill Builder</a></li>
             </ol>
+          </div>
+        </section>
+
+        <!-- ===================== GANCHO (vivo.js, parte 10) ===================== -->
+        <section class="parte" id="gancho">
+          <div class="cab">
+            <span class="olho">G1 · gancho</span>
+            <h2>O quadro de ideias</h2>
+          </div>
+          <div class="gancho" data-plantao data-link="#simulador" data-link-texto="Resolva o quadro logo abaixo">
+            <p class="gancho-evento">💡 Ingresso Candango · a reunião depois da venda perfeita</p>
+            <p class="gancho-titulo">A equipe encheu o quadro de post-its.</p>
+            <div class="quadro-ideias" aria-label="Oito ideias da equipe">
+              <span>Fila para nenhum pedido se perder</span><span>SMS do pagamento aprovado</span><span>Assistente que tira dúvidas</span><span>Ingresso lido em voz alta</span>
+              <span>Legendas nos vídeos</span><span>Elogio ou reclamação?</span><span>SQL nos arquivos do S3</span><span>Infra a partir de um arquivo</span>
+            </div>
+            <button type="button" class="botao" data-abrir>🤔 Por onde começar?</button>
+            <div class="gancho-voto" data-revela hidden>
+              <p class="gancho-pergunta" tabindex="-1">Para ler o ingresso em voz alta, precisa programar uma IA do zero?</p>
+              <div class="gancho-botoes">
+                <button type="button" aria-pressed="false" data-explica="Não precisa! A AWS tem serviços de IA prontos: você chama e usa, sem treinar modelo nenhum.">🧠 Precisa, do zero</button>
+                <button type="button" aria-pressed="false" data-explica="Isso! Existe serviço pronto para quase todo o quadro: voz, legenda, sentimento, assistente… Você chama e usa.">✅ Não: tem serviço pronto</button>
+                <button type="button" aria-pressed="false" data-explica="O SageMaker AI é para criar e treinar os seus próprios modelos. Para ler em voz alta, já existe um serviço pronto.">🧪 Só treinando um modelo</button>
+              </div>
+              <p class="gancho-resposta" aria-live="polite"></p>
+            </div>
           </div>
         </section>
 
@@ -155,6 +185,139 @@
             </ol>
             <p class="fonte">Empresa e ideias fictícias, criadas para as aulas.</p>
           </div>
+        </section>
+
+        <!-- ===================== SIMULADOR (vivo.js, parte 19) ===================== -->
+        <section class="parte" id="simulador">
+          <div class="cab">
+            <span class="olho">SIM1 · simulador</span>
+            <h2>Cada ideia no seu serviço</h2>
+            <p>As oito ideias do quadro. Escolha o serviço de cada uma e aperte <strong>Conferir</strong>. Verde é o certo, amarelo funciona mas não é o melhor, vermelho dá errado.</p>
+          </div>
+          <div class="sim" data-central="ideias">
+            <ol class="central">
+              <li class="central-linha" data-tarefa="fila">
+                <span class="tarefa"><strong>🧾 Fila para nenhum pedido se perder</strong></span>
+                <div class="dz-botoes" role="group" aria-label="Serviço para Fila para nenhum pedido se perder">
+                  <button type="button" data-motor="sqs" aria-pressed="false">🧾 SQS</button>
+                  <button type="button" data-motor="sns" aria-pressed="false">📢 SNS</button>
+                  <button type="button" data-motor="lex" aria-pressed="false">🤖 Lex</button>
+                  <button type="button" data-motor="polly" aria-pressed="false">🔊 Polly</button>
+                  <button type="button" data-motor="transcribe" aria-pressed="false">📝 Transcribe</button>
+                  <button type="button" data-motor="comprehend" aria-pressed="false">💬 Comprehend</button>
+                  <button type="button" data-motor="athena" aria-pressed="false">🔎 Athena</button>
+                  <button type="button" data-motor="cfn" aria-pressed="false">📜 CloudFormation</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+              <li class="central-linha" data-tarefa="sms">
+                <span class="tarefa"><strong>📱 SMS do pagamento aprovado</strong></span>
+                <div class="dz-botoes" role="group" aria-label="Serviço para SMS do pagamento aprovado">
+                  <button type="button" data-motor="sqs" aria-pressed="false">🧾 SQS</button>
+                  <button type="button" data-motor="sns" aria-pressed="false">📢 SNS</button>
+                  <button type="button" data-motor="lex" aria-pressed="false">🤖 Lex</button>
+                  <button type="button" data-motor="polly" aria-pressed="false">🔊 Polly</button>
+                  <button type="button" data-motor="transcribe" aria-pressed="false">📝 Transcribe</button>
+                  <button type="button" data-motor="comprehend" aria-pressed="false">💬 Comprehend</button>
+                  <button type="button" data-motor="athena" aria-pressed="false">🔎 Athena</button>
+                  <button type="button" data-motor="cfn" aria-pressed="false">📜 CloudFormation</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+              <li class="central-linha" data-tarefa="assistente">
+                <span class="tarefa"><strong>🤖 Assistente que tira dúvidas</strong></span>
+                <div class="dz-botoes" role="group" aria-label="Serviço para Assistente que tira dúvidas">
+                  <button type="button" data-motor="sqs" aria-pressed="false">🧾 SQS</button>
+                  <button type="button" data-motor="sns" aria-pressed="false">📢 SNS</button>
+                  <button type="button" data-motor="lex" aria-pressed="false">🤖 Lex</button>
+                  <button type="button" data-motor="polly" aria-pressed="false">🔊 Polly</button>
+                  <button type="button" data-motor="transcribe" aria-pressed="false">📝 Transcribe</button>
+                  <button type="button" data-motor="comprehend" aria-pressed="false">💬 Comprehend</button>
+                  <button type="button" data-motor="athena" aria-pressed="false">🔎 Athena</button>
+                  <button type="button" data-motor="cfn" aria-pressed="false">📜 CloudFormation</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+              <li class="central-linha" data-tarefa="voz">
+                <span class="tarefa"><strong>🔊 Ingresso lido em voz alta</strong></span>
+                <div class="dz-botoes" role="group" aria-label="Serviço para Ingresso lido em voz alta">
+                  <button type="button" data-motor="sqs" aria-pressed="false">🧾 SQS</button>
+                  <button type="button" data-motor="sns" aria-pressed="false">📢 SNS</button>
+                  <button type="button" data-motor="lex" aria-pressed="false">🤖 Lex</button>
+                  <button type="button" data-motor="polly" aria-pressed="false">🔊 Polly</button>
+                  <button type="button" data-motor="transcribe" aria-pressed="false">📝 Transcribe</button>
+                  <button type="button" data-motor="comprehend" aria-pressed="false">💬 Comprehend</button>
+                  <button type="button" data-motor="athena" aria-pressed="false">🔎 Athena</button>
+                  <button type="button" data-motor="cfn" aria-pressed="false">📜 CloudFormation</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+              <li class="central-linha" data-tarefa="legenda">
+                <span class="tarefa"><strong>🎬 Legendas automáticas nos vídeos</strong></span>
+                <div class="dz-botoes" role="group" aria-label="Serviço para Legendas automáticas nos vídeos">
+                  <button type="button" data-motor="sqs" aria-pressed="false">🧾 SQS</button>
+                  <button type="button" data-motor="sns" aria-pressed="false">📢 SNS</button>
+                  <button type="button" data-motor="lex" aria-pressed="false">🤖 Lex</button>
+                  <button type="button" data-motor="polly" aria-pressed="false">🔊 Polly</button>
+                  <button type="button" data-motor="transcribe" aria-pressed="false">📝 Transcribe</button>
+                  <button type="button" data-motor="comprehend" aria-pressed="false">💬 Comprehend</button>
+                  <button type="button" data-motor="athena" aria-pressed="false">🔎 Athena</button>
+                  <button type="button" data-motor="cfn" aria-pressed="false">📜 CloudFormation</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+              <li class="central-linha" data-tarefa="sentimento">
+                <span class="tarefa"><strong>💬 Elogio ou reclamação?</strong></span>
+                <div class="dz-botoes" role="group" aria-label="Serviço para Elogio ou reclamação?">
+                  <button type="button" data-motor="sqs" aria-pressed="false">🧾 SQS</button>
+                  <button type="button" data-motor="sns" aria-pressed="false">📢 SNS</button>
+                  <button type="button" data-motor="lex" aria-pressed="false">🤖 Lex</button>
+                  <button type="button" data-motor="polly" aria-pressed="false">🔊 Polly</button>
+                  <button type="button" data-motor="transcribe" aria-pressed="false">📝 Transcribe</button>
+                  <button type="button" data-motor="comprehend" aria-pressed="false">💬 Comprehend</button>
+                  <button type="button" data-motor="athena" aria-pressed="false">🔎 Athena</button>
+                  <button type="button" data-motor="cfn" aria-pressed="false">📜 CloudFormation</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+              <li class="central-linha" data-tarefa="sql">
+                <span class="tarefa"><strong>🔎 SQL nos arquivos do S3, sem banco</strong></span>
+                <div class="dz-botoes" role="group" aria-label="Serviço para SQL nos arquivos do S3, sem banco">
+                  <button type="button" data-motor="sqs" aria-pressed="false">🧾 SQS</button>
+                  <button type="button" data-motor="sns" aria-pressed="false">📢 SNS</button>
+                  <button type="button" data-motor="lex" aria-pressed="false">🤖 Lex</button>
+                  <button type="button" data-motor="polly" aria-pressed="false">🔊 Polly</button>
+                  <button type="button" data-motor="transcribe" aria-pressed="false">📝 Transcribe</button>
+                  <button type="button" data-motor="comprehend" aria-pressed="false">💬 Comprehend</button>
+                  <button type="button" data-motor="athena" aria-pressed="false">🔎 Athena</button>
+                  <button type="button" data-motor="cfn" aria-pressed="false">📜 CloudFormation</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+              <li class="central-linha" data-tarefa="arquivo">
+                <span class="tarefa"><strong>📜 Infraestrutura a partir de um arquivo</strong></span>
+                <div class="dz-botoes" role="group" aria-label="Serviço para Infraestrutura a partir de um arquivo">
+                  <button type="button" data-motor="sqs" aria-pressed="false">🧾 SQS</button>
+                  <button type="button" data-motor="sns" aria-pressed="false">📢 SNS</button>
+                  <button type="button" data-motor="lex" aria-pressed="false">🤖 Lex</button>
+                  <button type="button" data-motor="polly" aria-pressed="false">🔊 Polly</button>
+                  <button type="button" data-motor="transcribe" aria-pressed="false">📝 Transcribe</button>
+                  <button type="button" data-motor="comprehend" aria-pressed="false">💬 Comprehend</button>
+                  <button type="button" data-motor="athena" aria-pressed="false">🔎 Athena</button>
+                  <button type="button" data-motor="cfn" aria-pressed="false">📜 CloudFormation</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+            </ol>
+            <div class="sim-acoes"><button type="button" class="vai">🔎 Conferir</button><span>placar: <span class="central-placar" data-placar>–</span></span></div>
+            <p class="casa-fala" aria-live="polite"></p>
+          </div>
+          <p class="fonte">Simulação para a aula, com os serviços do C1 ao C4.</p>
+
+          <details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>Precisa treinar um modelo de IA para ler o ingresso em voz alta?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p>Não. O <strong>Polly</strong> já vem pronto: você manda o texto e recebe a voz. O <strong>SageMaker AI</strong> é para quem quer criar e treinar os próprios modelos.</p></div>
+              </details>
         </section>
 
         <!-- ===================== CONCEITOS ===================== -->
@@ -188,6 +351,35 @@
                 <tr><td><strong>Amazon EventBridge</strong></td><td>Liga <strong>eventos</strong> a ações: quando algo acontece, dispara outra coisa, até num horário.</td><td>Quando um show esgota, avisa o sistema de marketing.</td></tr>
                 <tr><td><strong>AWS Step Functions</strong></td><td>Monta <strong>fluxos</strong> de vários passos, em ordem, com os serviços.</td><td>Compra → pagamento → PDF → e-mail, passo a passo.</td></tr>
               </tbody></table></div>
+              <p>Veja a diferença entre a fila e o aviso. A fila é o espeto de comandas da cozinha; o aviso é o alto-falante.</p>
+              <div class="casa" data-fila-sqs>
+                <div class="sqs-lados">
+                  <div class="sqs-lado">
+                    <h4>🧾 SQS · o espeto de comandas<small>os pedidos esperam a vez</small></h4>
+                    <div class="espeto" aria-label="Pedidos esperando"></div>
+                    <div class="sqs-numeros"><span>na fila <strong data-na-fila>0</strong></span><span>atendidos <strong data-feitos>0</strong></span></div>
+                    <div class="dz-botoes">
+                      <button type="button" data-pedido-sqs="1">🛒 Chegou um pedido</button>
+                      <button type="button" data-pedido-sqs="5">🛒×5 Abriu a venda</button>
+                    </div>
+                    <div class="pagar-perguntas"><button type="button" data-cozinheiro aria-pressed="true"><span>👨‍🍳 Cozinheiro (quem processa)</span><span class="sn">trabalhando</span></button></div>
+                  </div>
+                  <div class="sqs-lado">
+                    <h4>📢 SNS · o alto-falante<small>um aviso, todos os assinantes</small></h4>
+                    <div class="assinantes">
+                      <span class="assinante">📱 SMS do cliente</span>
+                      <span class="assinante">✉️ E-mail</span>
+                      <span class="assinante">🖥️ Sistema de ingressos</span>
+                    </div>
+                    <div class="dz-botoes"><button type="button" data-aviso-sns>📢 Pagamento aprovado!</button></div>
+                  </div>
+                </div>
+                <p class="casa-fala" aria-live="polite">Mande pedidos para o espeto, tire o cozinheiro e veja o que acontece. Depois, toque o alto-falante.</p>
+              </div>
+              <details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>Os pedidos não podem se perder, nem se o sistema que processa cair. SQS ou SNS?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p><strong>SQS</strong>: a fila guarda as mensagens até alguém processar. O SNS entrega o aviso na hora para os assinantes, mas não fica guardando a vez de ninguém.</p></div>
+              </details>
             </div>
           </div>
 
@@ -225,6 +417,23 @@
                 <tr><td><strong>Amazon SageMaker AI</strong></td><td>Criar, treinar e publicar os seus próprios modelos de machine learning.</td><td>Prever a venda de cada show.</td></tr>
               </tbody></table></div>
               <p class="fonte">Fontes: <a href="https://docs.aws.amazon.com/aws-certification/latest/cloud-practitioner-02/clf-02-in-scope-services.html">guia da CLF-C02, serviços que caem</a> e <a href="https://aws.amazon.com/q/">Amazon Q</a>, consultados em 04/11/2026.</p>
+              <p>Agora o laboratório: escolha um serviço e veja o que ele faz.</p>
+              <div class="casa" data-ia>
+                <div class="casa-modos ia-servicos" role="group" aria-label="Escolha o serviço de IA">
+                  <button type="button" data-servico="polly" aria-pressed="true"><span class="ico" aria-hidden="true">🔊</span><strong>Polly</strong><small>texto → voz</small></button>
+                  <button type="button" data-servico="transcribe" aria-pressed="false"><span class="ico" aria-hidden="true">📝</span><strong>Transcribe</strong><small>voz → texto</small></button>
+                  <button type="button" data-servico="comprehend" aria-pressed="false"><span class="ico" aria-hidden="true">💬</span><strong>Comprehend</strong><small>sentimento</small></button>
+                  <button type="button" data-servico="translate" aria-pressed="false"><span class="ico" aria-hidden="true">🌎</span><strong>Translate</strong><small>tradução</small></button>
+                  <button type="button" data-servico="lex" aria-pressed="false"><span class="ico" aria-hidden="true">🤖</span><strong>Lex</strong><small>conversa</small></button>
+                </div>
+                <div class="ia-tela">
+                  <p class="ia-titulo"></p>
+                  <p class="ia-entrada"></p>
+                  <div class="sim-acoes"><button type="button" class="vai ia-acao"></button></div>
+                  <p class="ia-saida" aria-live="polite"></p>
+                  <p class="ia-nota"></p>
+                </div>
+              </div>
               <p class="dica"><strong>IA com consciência:</strong> a IA ajuda, mas quem confere é você. Uma legenda automática pode errar nomes de bandas; alguém da equipe revisa antes de publicar.</p>
               <p class="dica"><strong>Como é no Azure:</strong> os serviços prontos ficam no <strong>Azure AI Services</strong> (fala, visão, linguagem, tradução), e a IA generativa no <strong>Azure OpenAI</strong>.</p>
             </div>
@@ -283,26 +492,51 @@
           </div>
         </section>
 
+        <!-- ===================== A RECEITA DE BOLO (vivo.js, parte 37) ===================== -->
+        <section class="parte" id="receita">
+          <div class="cab">
+            <span class="olho">X1 · a receita de bolo</span>
+            <h2>De cabeça ou pela receita?</h2>
+            <p>Fazer um bolo de cabeça três vezes: uma delas sai sem fermento. Seguir a receita: três bolos iguais. A equipe precisa de três ambientes (desenvolvimento, teste e produção). Monte clicando no console e depois com o arquivo.</p>
+          </div>
+          <div class="casa" data-receita>
+            <div class="ambientes">
+              <div class="ambiente"><strong>🧪 Desenvolvimento</strong><ul></ul></div>
+              <div class="ambiente"><strong>🔬 Teste</strong><ul></ul></div>
+              <div class="ambiente"><strong>🚀 Produção</strong><ul></ul></div>
+            </div>
+            <div class="dz-botoes">
+              <button type="button" data-montar="console">🖱️ Montar clicando no console</button>
+              <button type="button" data-montar="arquivo">📜 Montar com o arquivo (CloudFormation)</button>
+            </div>
+            <p class="gav-placar">esforço: <strong data-passos>—</strong></p>
+            <p class="casa-fala" aria-live="polite">Três ambientes vazios. Escolha como montar.</p>
+            <pre class="codigo receita-codigo" aria-label="Trecho de um modelo do CloudFormation que cria um bucket com o acesso público bloqueado"><code><span class="linha"><span class="num">1</span><span class="var">Resources</span>:</span><span class="linha"><span class="num">2</span>  <span class="var">FotosBucket</span>:</span><span class="linha"><span class="num">3</span>    <span class="var">Type</span>: <span class="str">AWS::S3::Bucket</span></span><span class="linha"><span class="num">4</span>    <span class="var">Properties</span>:</span><span class="linha"><span class="num">5</span>      <span class="var">PublicAccessBlockConfiguration</span>:</span><span class="linha"><span class="num">6</span>        <span class="var">BlockPublicAcls</span>: <span class="str">true</span></span></code></pre>
+          </div>
+          <p class="fonte">Trecho de exemplo de um modelo do CloudFormation (em YAML): ele descreve um bucket com o acesso público bloqueado. O mesmo arquivo cria o mesmo bucket em qualquer ambiente.</p>
+        </section>
+
         <!-- ===================== DEMONSTRAÇÃO ===================== -->
         <section class="parte" id="demonstracao">
           <div class="cab">
             <span class="olho">D1 · demonstração</span>
-            <h2>A AWS pela linha de comando</h2>
-            <p>A página do Learner Lab tem um terminal com a AWS CLI pronta.</p>
+            <h2>Faça junto: a AWS pela linha de comando</h2>
+            <p>A página do Learner Lab tem um terminal com a AWS CLI pronta. Abra noutra aba e marque cada passo aqui.</p>
           </div>
 
           <div class="conceito" style="grid-template-columns:1fr">
             <div class="texto">
-              <div class="faca-assim">
-                <strong>Faça assim:</strong>
-                <ol>
-                  <li>Abra o <strong>Learner Lab</strong> e clique em <strong>Start Lab</strong>. Espere a bolinha ao lado de AWS ficar verde.</li>
-                  <li>Clique no terminal da própria página do laboratório e digite <code>aws --version</code>. Apareceu a versão? A CLI está pronta.</li>
-                  <li>Digite <code>aws ec2 describe-regions --output table</code>. Lembra da aula 3? São as regiões, agora pela linha de comando.</li>
-                  <li>Digite <code>aws s3 ls</code>. Lista os seus buckets (vazia, se você apagou o da aula 7).</li>
-                  <li>Abra o console e procure o <strong>Amazon Polly</strong>. Se o laboratório liberar, escreva uma frase em português, escolha uma voz e clique para ouvir.</li>
-                </ol>
+              <div class="progresso-atividade" data-progresso="cli-aula-11">
+                <span class="contagem">0 de 5</span>
+                <span class="barra-progresso"><span></span></span>
               </div>
+              <ol class="checklist" id="cli-aula-11">
+                <li><label><input type="checkbox"><span>Abri o <strong>Learner Lab</strong>, cliquei em <strong>Start Lab</strong> e esperei a bolinha ao lado de AWS ficar verde.</span></label></li>
+                <li><label><input type="checkbox"><span>No terminal da página do laboratório, digitei <code>aws --version</code> e apareceu a versão.</span></label></li>
+                <li><label><input type="checkbox"><span>Digitei <code>aws ec2 describe-regions --output table</code> e vi as regiões da aula 3, pela linha de comando.</span></label></li>
+                <li><label><input type="checkbox"><span>Digitei <code>aws s3 ls</code> para listar os meus buckets.</span></label></li>
+                <li><label><input type="checkbox"><span>Procurei o <strong>Amazon Polly</strong> no console e, se o laboratório liberou, ouvi uma frase em português.</span></label></li>
+              </ol>
               <div class="faca-assim">
                 <strong>Teste:</strong>
                 <ol>
@@ -324,6 +558,10 @@
 
           <div class="conceito" style="grid-template-columns:1fr">
             <div class="texto">
+<details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>Legendas automáticas nos vídeos: Polly ou Transcribe?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p><strong>Transcribe</strong>: voz → texto. O Polly faz o caminho contrário, texto → voz. Teste os dois no laboratório de IA.</p></div>
+              </details>
               <div class="tabela-rola"><table class="metodos"><thead><tr><th>Par que confunde</th><th>A diferença</th></tr></thead><tbody>
                 <tr><td><strong>Polly</strong> e <strong>Transcribe</strong></td><td>Polly: texto → voz. Transcribe: voz → texto.</td></tr>
                 <tr><td><strong>SQS</strong> e <strong>SNS</strong></td><td>SQS: a mensagem espera na fila. SNS: o aviso sai na hora para todos os assinantes.</td></tr>
@@ -419,7 +657,7 @@
 
           <div class="cartao">
             <div class="progresso-atividade" data-progresso="passos-aula-11">
-              <span class="contagem">0 de 8</span>
+              <span class="contagem">0 de 10</span>
               <span class="barra-progresso"><span></span></span>
             </div>
             <ol class="checklist" id="passos-aula-11">
@@ -431,6 +669,8 @@
               <li><label><input type="checkbox"><span>Procurei pelo menos cinco pistas no dicionário. <a href="#c5">Veja o C5</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Usei a AWS CLI no Learner Lab e fiz os três treinos. <a href="#demonstracao">Veja o D1</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Fiz o exame final do Cloud Foundations e comecei o Cloud Practitioner Essentials, e marquei no <a href="../#cursos">Meu progresso</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Resolvi o quadro de ideias, com cada uma no serviço certo. <a href="#simulador">Veja o SIM1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Testei a fila e o alto-falante, o laboratório de IA e a receita de bolo. <a href="#c2">Veja o C2</a>, o <a href="#c4">C4</a> e o <a href="#receita">X1</a>.</span></label></li>
             </ol>
           </div>
         </section>
@@ -521,5 +761,6 @@
   <script src="../assets/js/classifica.js?v=2"></script>
   <script src="../js/dicionario.js?v=1"></script>
   <script src="../assets/js/matrix.js?v=3"></script>
+  <script src="../js/vivo.js?v=12"></script>
 </body>
 </html>

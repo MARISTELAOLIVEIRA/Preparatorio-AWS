@@ -1,6 +1,6 @@
 /*
   vivo.js: as peças interativas das aulas "vivas" do Preparatório AWS. Só deste site.
-  versão 11 · 2026-11-11 · aulas 1 a 10 (conceitos, cobrança, infraestrutura, segurança, redes, computação, armazenamento, bancos, arquitetura e escala)
+  versão 12 · 2026-11-11 · aulas 1 a 11 (conceitos, cobrança, infraestrutura, segurança, redes, computação, armazenamento, bancos, arquitetura, escala e serviços)
 
   1. [data-gancho]  a contagem para a abertura das vendas e a votação "o site aguenta?"
   2. [data-sim]     simulador "A noite da abertura das vendas": salinha com 2, salinha com 20 ou nuvem
@@ -41,6 +41,10 @@
   33. [data-controle] a sala de controle da venda: balanceador, Auto Scaling, escala programada e alarme, das 9h ao meio-dia (aula 10)
   34. [data-fila]   a fila do supermercado: mais caixas (horizontal) ou um caixa mais rápido (vertical) (aula 10)
   (a aula 10 também usa a central data-central="vigias")
+  35. [data-fila-sqs] fila × alto-falante: o espeto de comandas (SQS) e o aviso para todos (SNS) (aula 11)
+  36. [data-ia]     o laboratório de IA: Polly (com a voz do navegador), Transcribe, Comprehend, Translate e Lex (aula 11)
+  37. [data-receita] a receita de bolo: três ambientes clicando no console × com o arquivo do CloudFormation (aula 11)
+  (a aula 11 também usa a central data-central="ideias")
 
   Com as animações pausadas (botão do topo ou "reduzir movimento"), tudo mostra o resultado direto.
 */
@@ -1570,6 +1574,30 @@
       watch: ["falha", "💥 O CloudWatch mede desempenho; quem apagou está no CloudTrail."],
       outro: ["falha", "💥 \"Quem apagou\" é auditoria: CloudTrail."] }
   };
+  CENTRAIS.ideias = {
+    fila: { certo: "sqs", sqs: "Os pedidos esperam na fila até alguém processar: nenhum se perde.",
+      sns: ["meh", "O SNS avisa todo mundo na hora, mas não guarda o pedido esperando. Para não perder nenhum, fila: SQS."],
+      outro: ["falha", "💥 Para guardar os pedidos esperando a vez, o serviço é uma fila: SQS."] },
+    sms: { certo: "sns", sns: "Um aviso publicado e entregue por SMS (e para quem mais assinar).",
+      sqs: ["meh", "A fila guarda mensagens para um sistema processar; para avisar o cliente por SMS, SNS."],
+      outro: ["falha", "💥 Avisos por SMS ou e-mail para assinantes: SNS."] },
+    assistente: { certo: "lex", lex: "Um assistente de conversa, por texto ou voz, pronto para usar.",
+      comprehend: ["meh", "O Comprehend entende textos, mas não conversa. Para o chatbot, Lex."],
+      outro: ["falha", "💥 Assistente que conversa com o cliente: Amazon Lex."] },
+    voz: { certo: "polly", polly: "Texto vira voz: o ingresso lido em voz alta, sem treinar modelo nenhum.",
+      transcribe: ["falha", "💥 É o contrário! Transcribe é voz → texto. Texto → voz é o Polly."],
+      outro: ["falha", "💥 Texto em voz é o Amazon Polly."] },
+    legenda: { certo: "transcribe", transcribe: "Voz vira texto: legendas automáticas nos vídeos.",
+      polly: ["falha", "💥 É o contrário! Polly é texto → voz. Voz → texto é o Transcribe."],
+      outro: ["falha", "💥 Voz em texto, para as legendas: Amazon Transcribe."] },
+    sentimento: { certo: "comprehend", comprehend: "Entende o texto: elogio, reclamação ou neutro, e o assunto.",
+      lex: ["meh", "O Lex conversa; quem entende o sentimento dos comentários é o Comprehend."],
+      outro: ["falha", "💥 Sentimento e assunto de um texto: Amazon Comprehend."] },
+    sql: { certo: "athena", athena: "SQL direto nos arquivos do S3, sem montar banco nem servidor.",
+      outro: ["falha", "💥 Consultar com SQL os arquivos guardados no S3: Amazon Athena."] },
+    arquivo: { certo: "cfn", cfn: "Um arquivo descreve tudo, e a AWS monta igual, quantas vezes quiser.",
+      outro: ["falha", "💥 Infraestrutura criada a partir de um arquivo é o CloudFormation."] }
+  };
   document.querySelectorAll("[data-central]").forEach(function (box) {
     const linhas = box.querySelectorAll("[data-tarefa]");
     const placar = box.querySelector("[data-placar]");
@@ -1613,9 +1641,10 @@
         const ban = box.dataset.central === "bancos";
         const mig = box.dataset.central === "migracao";
         const vig = box.dataset.central === "vigias";
+        const ide = box.dataset.central === "ideias";
         placar.textContent = certos + " de " + n;
         fala.innerHTML = faltam ? `Faltou escolher ${gav ? "a gaveta" : "o motor"} de ${faltam} ${gav ? "pedido" : "tarefa"}${faltam > 1 ? "s" : ""}.` :
-          certos === n ? (vig ? "🏆 <strong>Cada vigia no seu posto!</strong> CloudWatch mede, CloudTrail registra quem fez, Config confere a configuração e o Health Dashboard fala da AWS." : mig ? "🏆 <strong>Mudança planejada!</strong> Cada sistema com o seu R: desativar, manter, levar, realocar, recomprar, ajustar e refazer." : ban ? "🏆 <strong>Um banco para cada dado!</strong> Relacional, NoSQL, cache, análise e migração, cada um no seu lugar." :
+          certos === n ? (ide ? "🏆 <strong>Quadro de ideias resolvido!</strong> Fila, aviso, assistente, voz, legenda, sentimento, SQL no S3 e infraestrutura como código." : vig ? "🏆 <strong>Cada vigia no seu posto!</strong> CloudWatch mede, CloudTrail registra quem fez, Config confere a configuração e o Health Dashboard fala da AWS." : mig ? "🏆 <strong>Mudança planejada!</strong> Cada sistema com o seu R: desativar, manter, levar, realocar, recomprar, ajustar e refazer." : ban ? "🏆 <strong>Um banco para cada dado!</strong> Relacional, NoSQL, cache, análise e migração, cada um no seu lugar." :
             gav ? "🏆 <strong>Gavetas organizadas!</strong> Cada dado no lugar certo: disco, balde, pasta, depósito, temporário e ponte." :
             "🏆 <strong>Central montada!</strong> Cada tarefa no motor certo: servidor, função, contêiner, atalho e spot.") :
           `<strong>${certos} de ${n} ${gav ? "na gaveta certa" : "no motor certo"}.</strong> As amarelas funcionam, mas não são a melhor escolha; as vermelhas quebram. Troque e rode de novo.`;
@@ -2397,5 +2426,159 @@
       fala.textContent = "Trinta clientes, um caixa. Abra mais caixas ou deixe o caixa mais rápido.";
     });
     box.querySelector("[data-recomeca-fila]").click();
+  });
+
+  // ===================== 35. fila × alto-falante =====================
+  document.querySelectorAll("[data-fila-sqs]").forEach(function (box) {
+    const espeto = box.querySelector(".espeto");
+    const naFila = box.querySelector("[data-na-fila]");
+    const feitos = box.querySelector("[data-feitos]");
+    const cozinheiro = box.querySelector("[data-cozinheiro]");
+    const assinantes = box.querySelectorAll(".assinante");
+    const fala = box.querySelector(".casa-fala");
+    let fila = 0, atendidos = 0, n = 0, laco = 0;
+    const ligado = () => cozinheiro.getAttribute("aria-pressed") === "true";
+    function desenha() {
+      espeto.innerHTML = Array.from({ length: fila }, (_, i) => `<span>🧾<small>${atendidos + i + 1}</small></span>`).join("") || "<em>espeto vazio</em>";
+      naFila.textContent = fila;
+      feitos.textContent = atendidos;
+    }
+    function atende() {
+      if (!ligado() || !fila) return;
+      fila--; atendidos++;
+      desenha();
+    }
+    function liga() {
+      clearInterval(laco);
+      if (pausado()) { while (ligado() && fila) atende(); return; }
+      laco = setInterval(atende, 800);
+    }
+    box.querySelectorAll("[data-pedido-sqs]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        fila += Number(b.dataset.pedidoSqs);
+        n += Number(b.dataset.pedidoSqs);
+        desenha();
+        fala.innerHTML = ligado() ? "🧾 Os pedidos entram no espeto e o cozinheiro pega um de cada vez. A fila absorve o pico." :
+          "🧾 O cozinheiro saiu, mas os pedidos <strong>não se perdem</strong>: ficam esperando no espeto. É o SQS.";
+        liga();
+      });
+    });
+    cozinheiro.addEventListener("click", function () {
+      cozinheiro.setAttribute("aria-pressed", String(!ligado()));
+      cozinheiro.querySelector(".sn").textContent = ligado() ? "trabalhando" : "saiu";
+      fala.innerHTML = ligado() ? "👨‍🍳 O cozinheiro voltou e está atendendo o que ficou esperando." : "🚶 O cozinheiro saiu (o sistema que processa caiu). Mande pedidos e veja: nada se perde.";
+      liga();
+    });
+    box.querySelector("[data-aviso-sns]").addEventListener("click", function () {
+      assinantes.forEach(a => { a.classList.remove("tocou"); void a.offsetWidth; a.classList.add("tocou"); });
+      fala.innerHTML = "📢 <strong>Um aviso, três assinantes, ao mesmo tempo:</strong> o SMS do cliente, o e-mail e o sistema de ingressos. Ninguém espera na fila: é o SNS.";
+    });
+    desenha();
+    liga();
+  });
+
+  // ===================== 36. o laboratório de IA =====================
+  const IA = {
+    polly: { titulo: "🔊 Amazon Polly · texto → voz", entrada: "Ingresso: Festival do Cerrado. Sexta-feira, 20 horas. Setor B, fileira 3.", botao: "🔊 Ouvir o ingresso",
+      saida: "", nota: "Quem fala aqui é a voz do seu navegador, para você sentir o que o Polly faz. O Polly de verdade tem muitas vozes, inclusive em português." },
+    transcribe: { titulo: "📝 Amazon Transcribe · voz → texto", entrada: "🎤 〰️〰️〰️ (o áudio do show)", botao: "📝 Gerar a legenda",
+      saida: "Boa noite, Brasília! Que alegria tocar no Festival do Cerrado!", nota: "Legenda automática: alguém da equipe confere antes de publicar, porque nome de banda é fácil de errar." },
+    comprehend: { titulo: "💬 Amazon Comprehend · entender o texto", entrada: "1. \"Melhor show da minha vida!\"\n2. \"A fila do banheiro estava um caos.\"\n3. \"O show começa às 20h.\"", botao: "💬 Ler o sentimento",
+      saida: "1 😊 positivo · 2 😠 negativo · 3 😐 neutro", nota: "Exemplo para a aula: o Comprehend também acha o assunto e o idioma do texto." },
+    translate: { titulo: "🌎 Amazon Translate · traduzir", entrada: "Os ingressos esgotaram em dez minutos!", botao: "🌎 Traduzir para o espanhol",
+      saida: "¡Las entradas se agotaron en diez minutos!", nota: "Para o público do Mercosul. Tradução automática também merece uma revisão humana." },
+    lex: { titulo: "🤖 Amazon Lex · assistente de conversa", entrada: "Cliente: Posso passar o meu ingresso para outra pessoa?", botao: "🤖 Perguntar ao assistente",
+      saida: "Assistente: Pode, sim! Abra Meus ingressos e toque em Transferir. Quer que eu mostre o caminho?", nota: "Conversa de exemplo, com uma regra fictícia da Ingresso Candango." }
+  };
+  document.querySelectorAll("[data-ia]").forEach(function (box) {
+    const titulo = box.querySelector(".ia-titulo");
+    const entrada = box.querySelector(".ia-entrada");
+    const saida = box.querySelector(".ia-saida");
+    const nota = box.querySelector(".ia-nota");
+    const acao = box.querySelector(".ia-acao");
+    let atual = "polly", laco = 0;
+    function escolhe(k) {
+      clearInterval(laco);
+      atual = k;
+      const c = IA[k];
+      box.querySelectorAll("[data-servico]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.servico === k)));
+      titulo.textContent = c.titulo;
+      entrada.textContent = c.entrada;
+      saida.textContent = "";
+      saida.classList.remove("cheia");
+      nota.textContent = c.nota;
+      acao.textContent = c.botao;
+    }
+    function escreve(texto) {
+      clearInterval(laco);
+      saida.classList.add("cheia");
+      if (pausado()) { saida.textContent = texto; return; }
+      let i = 0;
+      saida.textContent = "";
+      laco = setInterval(function () {
+        saida.textContent = texto.slice(0, ++i);
+        if (i >= texto.length) clearInterval(laco);
+      }, 28);
+    }
+    acao.addEventListener("click", function () {
+      const c = IA[atual];
+      if (atual === "polly") {
+        if ("speechSynthesis" in window) {
+          speechSynthesis.cancel();
+          const fala = new SpeechSynthesisUtterance(c.entrada);
+          fala.lang = "pt-BR";
+          speechSynthesis.speak(fala);
+          escreve("🔊 lendo em voz alta…");
+        } else escreve("Este navegador não tem voz. Com o Polly, o ingresso seria lido em voz alta.");
+        return;
+      }
+      escreve(c.saida);
+    });
+    box.querySelectorAll("[data-servico]").forEach(b => b.addEventListener("click", () => escolhe(b.dataset.servico)));
+    escolhe("polly");
+  });
+
+  // ===================== 37. a receita de bolo =====================
+  const ITENS_AMBIENTE = ["🪣 Bucket com bloqueio público", "🧱 VPC em duas zonas", "🔐 Porteiro só com HTTPS", "🏷️ Etiquetas de custo"];
+  document.querySelectorAll("[data-receita]").forEach(function (box) {
+    const ambientes = box.querySelectorAll(".ambiente");
+    const fala = box.querySelector(".casa-fala");
+    const cont = box.querySelector("[data-passos]");
+    let espera = [];
+    function limpa() {
+      espera.forEach(clearTimeout);
+      espera = [];
+      ambientes.forEach(function (a) {
+        a.className = "ambiente";
+        a.querySelector("ul").innerHTML = ITENS_AMBIENTE.map(i => `<li>${i}</li>`).join("");
+      });
+    }
+    function monta(console) {
+      limpa();
+      // no console, um item escapa em algum ambiente (escolhido ao acaso)
+      const erroAmb = Math.floor(Math.random() * 3), erroItem = Math.floor(Math.random() * ITENS_AMBIENTE.length);
+      const passos = [];
+      ambientes.forEach(function (a, ai) {
+        a.querySelectorAll("li").forEach(function (li, ii) {
+          passos.push(function () {
+            const errou = console && ai === erroAmb && ii === erroItem;
+            li.className = errou ? "errou" : "ok";
+          });
+        });
+        passos.push(() => a.classList.add(console && ai === erroAmb ? "diferente" : "igual"));
+      });
+      const fim = function () {
+        cont.textContent = console ? "uns 60 cliques" : "1 comando";
+        fala.innerHTML = console ? `🖱️ <strong>Três ambientes, uns 60 cliques… e um escapou:</strong> no ambiente ${ambientes[erroAmb].querySelector("strong").textContent}, ficou faltando "${ITENS_AMBIENTE[erroItem].replace(/^\S+\s/, "")}". É o erro de clique, que ninguém percebe até dar problema.` :
+          "📜 <strong>Um arquivo, três ambientes idênticos.</strong> O CloudFormation segue a receita sem esquecer nada, quantas vezes você quiser. É a infraestrutura como código.";
+      };
+      if (pausado()) { passos.forEach(f => f()); return fim(); }
+      const dt = console ? 220 : 60;
+      passos.forEach((f, i) => espera.push(setTimeout(f, 100 + i * dt)));
+      espera.push(setTimeout(fim, 100 + passos.length * dt));
+    }
+    box.querySelector("[data-montar='console']").addEventListener("click", () => monta(true));
+    box.querySelector("[data-montar='arquivo']").addEventListener("click", () => monta(false));
+    limpa();
   });
 })();

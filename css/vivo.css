@@ -1,6 +1,6 @@
 /*
   vivo.css: as peças das aulas "vivas" do Preparatório AWS (gancho, simulador, pausa aqui, casa ou hotel, placa).
-  versão 11 · 2026-11-11 · só deste site. Aula 1, aula 2 (conta do susto, taxímetro, transporte, iceberg, pit stop, conta de luz)
+  versão 12 · 2026-11-11 · só deste site. Aula 1, aula 2 (conta do susto, taxímetro, transporte, iceberg, pit stop, conta de luz)
   aula 3 (plantão, derrube um data center, do globo ao prédio, funil da região)
   aula 4 (o vazamento, tranque a conta, a porta abre?, a fechadura com ESP32)
   aula 5 (a planta errada, a viagem do pacote, com e sem memória, a régua de bits)
@@ -1644,6 +1644,59 @@
   .controle-topo { grid-template-columns: 1fr; }
 }
 
+/* ===================== aula 11 · G1 o quadro de ideias ===================== */
+.quadro-ideias { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .5rem; width: min(100%, 34rem); box-sizing: border-box; margin: 1.2rem auto; padding: .8rem; border-radius: 12px; background: #f6f5f1; }
+.quadro-ideias span { padding: .6rem .4rem; border-radius: 3px; background: #ffe86b; color: #2b2410; font: 700 .74rem/1.25 var(--f-texto); box-shadow: 0 4px 8px -4px rgba(0, 0, 0, .4); transform: rotate(var(--r, -2deg)); }
+.quadro-ideias span:nth-child(3n) { background: #9fe6c8; --r: 2deg; }
+.quadro-ideias span:nth-child(4n) { background: #ffb3c7; --r: -1deg; }
+
+/* ===================== aula 11 · C2 fila × alto-falante ===================== */
+.sqs-lados { display: grid; grid-template-columns: 1.3fr 1fr; gap: 1rem; }
+.sqs-lado { padding: 1rem; border-radius: 16px; background: var(--chip); color: #e8e4d8; display: grid; gap: .6rem; align-content: start; }
+.sqs-lado h4 { margin: 0; font: 800 .95rem var(--f-titulo); }
+.sqs-lado h4 small { display: block; font: 500 .74rem var(--f-mono); color: #a3b0a8; }
+.espeto { display: flex; flex-wrap: wrap; gap: .3rem; min-height: 2.6rem; padding: .5rem; border-radius: 10px; background: #18221d; border-top: 4px solid #8a949c; }
+.espeto span { display: grid; justify-items: center; font-size: 1.3rem; animation: nasce .3s ease-out; }
+.espeto small { font: 700 .62rem var(--f-mono); color: #ffb84d; }
+.espeto em { color: #6f7b86; font-size: .85rem; }
+.sqs-numeros { display: flex; gap: 1.2rem; font-size: .85rem; color: #a3b0a8; }
+.sqs-numeros strong { font: 800 1.1rem var(--f-mono); color: #fff; }
+.assinantes { display: grid; gap: .4rem; }
+.assinante { padding: .5rem .8rem; border-radius: 10px; background: #18221d; border: 2px solid #3b4a42; font-weight: 700; transition: border-color .3s; }
+.assinante.tocou { border-color: #39ff9e; animation: toque .7s ease-out; }
+@keyframes toque { 30% { background: #12301f; transform: scale(1.04); } }
+.sqs-lado .pagar-perguntas button, .sqs-lado .dz-botoes button { font-size: .85rem; }
+
+/* ===================== aula 11 · C4 o laboratório de IA ===================== */
+.ia-servicos { grid-template-columns: repeat(5, 1fr); }
+.ia-tela { display: grid; gap: .5rem; padding: 1rem; border-radius: 16px; background: var(--chip); color: #e8e4d8; margin: .6rem 0; }
+.ia-titulo { margin: 0; font: 800 1rem var(--f-titulo); color: #ffb84d; }
+.ia-entrada, .ia-saida { margin: 0; padding: .7rem .9rem; border-radius: 10px; font: 500 .92rem/1.5 var(--f-mono); white-space: pre-line; }
+.ia-entrada { background: #18221d; border: 1px solid #3b4a42; }
+.ia-saida { min-height: 2.6em; background: #12283a; border: 1px dashed #5fd0de; color: #cdeff5; }
+.ia-saida.cheia { border-style: solid; }
+.ia-nota { margin: 0; font-size: .82rem; color: #a3b0a8; }
+
+/* ===================== aula 11 · X1 a receita de bolo ===================== */
+.ambientes { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; margin: .6rem 0; }
+.ambiente { padding: .8rem; border-radius: 14px; background: var(--superficie-2); border: 2px solid var(--borda); transition: border-color .3s; }
+.ambiente strong { display: block; font: 800 .92rem var(--f-titulo); margin-bottom: .3rem; }
+.ambiente ul { margin: 0; padding: 0; list-style: none; display: grid; gap: .25rem; font-size: .82rem; }
+.ambiente li { padding: .2rem .4rem; border-radius: 6px; color: var(--texto-3); }
+.ambiente li.ok { color: var(--texto); background: color-mix(in srgb, var(--vivo-ok) 14%, transparent); }
+.ambiente li.ok::after { content: " ✓"; color: var(--vivo-ok); font-weight: 900; }
+.ambiente li.errou { color: var(--vivo-ruim); background: color-mix(in srgb, var(--vivo-ruim) 14%, transparent); text-decoration: line-through; }
+.ambiente li.errou::after { content: " ✗ esqueceu"; font-weight: 900; text-decoration: none; display: inline-block; }
+.ambiente.igual { border-color: var(--vivo-ok); }
+.ambiente.diferente { border-color: var(--vivo-ruim); animation: treme .35s 2; }
+.receita-codigo { margin: .6rem 0 0; }
+
+@media (max-width: 760px) {
+  .quadro-ideias { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sqs-lados, .ambientes { grid-template-columns: 1fr; }
+  .ia-servicos { grid-template-columns: repeat(2, 1fr); }
+}
+
 /* ===================== pausa: tudo parado ===================== */
 .pausado .gancho.zero::before,
 .pausado .gancho.zero .gancho-relogio,
@@ -1682,7 +1735,8 @@
 .pausado .pb-banco.pesado,
 .pausado .gav-grade span.achou { animation: none !important; }
 .pausado .radar-forma, .pausado .radar-ponto, .pausado .fiscal-lista li { transition: none; }
-.pausado .relogio-grande span, .pausado .controle-feed li, .pausado .fila-caixas span { animation: none !important; }
+.pausado .relogio-grande span, .pausado .controle-feed li, .pausado .fila-caixas span,
+.pausado .espeto span, .pausado .assinante.tocou, .pausado .ambiente.diferente { animation: none !important; }
 .pausado .pb-banco, .pausado .pb-lento i, .pausado .cache-pessoas span, .pausado .cache-nota { transition: none; }
 .pausado .vida-gavetas li, .pausado .dl-maquina { transition: none; }
 .pausado .carta-caminho li, .pausado .carta-porta { transition: none; }
