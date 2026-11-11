@@ -1,6 +1,6 @@
 /*
   vivo.js: as peças interativas das aulas "vivas" do Preparatório AWS. Só deste site.
-  versão 12 · 2026-11-11 · aulas 1 a 11 (conceitos, cobrança, infraestrutura, segurança, redes, computação, armazenamento, bancos, arquitetura, escala e serviços)
+  versão 13 · 2026-11-11 · as 12 aulas do preparatório (da nuvem do zero até o dia da prova)
 
   1. [data-gancho]  a contagem para a abertura das vendas e a votação "o site aguenta?"
   2. [data-sim]     simulador "A noite da abertura das vendas": salinha com 2, salinha com 20 ou nuvem
@@ -45,6 +45,10 @@
   36. [data-ia]     o laboratório de IA: Polly (com a voz do navegador), Transcribe, Comprehend, Translate e Lex (aula 11)
   37. [data-receita] a receita de bolo: três ambientes clicando no console × com o arquivo do CloudFormation (aula 11)
   (a aula 11 também usa a central data-central="ideias")
+  38. [data-questao] desmonte uma questão: última frase, pista, riscar as absurdas e decidir (três questões de exemplo) (aula 12)
+  39. [data-plano]  o plano de revisão: os dias que faltam divididos pelo peso de cada domínio (aula 12)
+  40. [data-mesa]   arrume a mesa da prova on-line: tirar o que não pode ficar (aula 12)
+  41. [data-chute]  a matemática do chute: em branco é zero; chutando, 1 chance em 4 em cada (aula 12)
 
   Com as animações pausadas (botão do topo ou "reduzir movimento"), tudo mostra o resultado direto.
 */
@@ -2580,5 +2584,152 @@
     box.querySelector("[data-montar='console']").addEventListener("click", () => monta(true));
     box.querySelector("[data-montar='arquivo']").addEventListener("click", () => monta(false));
     limpa();
+  });
+
+  // ===================== 38. desmonte uma questão =====================
+  // Questões de exemplo, escritas para a aula (não são da prova). Partes do enunciado: p = pista, u = a última frase.
+  const QUESTOES = [
+    { partes: [["Uma startup processa vídeos em lote, à noite. "], ["O processamento pode ser interrompido e recomeçar", "p"], [". A equipe quer "], ["o menor custo", "p"], [" no Amazon EC2. "], ["Qual opção de compra atende a esses requisitos?", "u"]],
+      opcoes: [["Instâncias sob demanda", 0], ["Instâncias spot", 1], ["Hosts dedicados", -1], ["Savings Plans de 3 anos", -1]], escolha: 1,
+      pede: "uma opção de compra do EC2", pistas: "pode ser interrompido e menor custo", explica: "Pode parar e recomeçar, pelo menor custo: instâncias spot. Sob demanda funciona, mas custa mais." },
+    { partes: [["Na segunda de manhã, um bucket do Amazon S3 com relatórios sumiu. A gerente precisa saber "], ["qual usuário apagou o bucket", "p"], [". "], ["Qual serviço da AWS mostra essa informação?", "u"]],
+      opcoes: [["Amazon CloudWatch", 0], ["AWS CloudTrail", 1], ["AWS Pricing Calculator", -1], ["Amazon Polly", -1]], escolha: 1,
+      pede: "um serviço", pistas: "qual usuário apagou", explica: "\"Qual usuário fez\" é auditoria das ações na conta: CloudTrail. O CloudWatch mede o desempenho." },
+    { partes: [["Uma loja virtual roda numa única instância do EC2 e caiu duas vezes no mês. A equipe quer "], ["aumentar a disponibilidade", "p"], [" da aplicação. "], ["Quais DUAS ações atendem? (Escolha duas.)", "u"]],
+      opcoes: [["Distribuir as instâncias em várias zonas de disponibilidade", 1], ["Trocar por uma única instância maior", 0], ["Colocar um Application Load Balancer na frente das instâncias", 1], ["Guardar as senhas no código-fonte", -1], ["Apagar os snapshots antigos", -1]], escolha: 2,
+      pede: "duas ações (múltipla resposta: marque exatamente duas)", pistas: "aumentar a disponibilidade", explica: "Várias zonas e um balanceador na frente: sem ponto único de falha. Uma máquina maior continua sendo uma só." }
+  ];
+  document.querySelectorAll("[data-questao]").forEach(function (box) {
+    const enunciado = box.querySelector(".q-enunciado");
+    const lista = box.querySelector(".q-opcoes");
+    const passos = box.querySelectorAll("[data-passo-q]");
+    const fala = box.querySelector(".casa-fala");
+    let q = 0, passo = 0, marcadas = [];
+    function monta() {
+      const Q = QUESTOES[q];
+      passo = 0; marcadas = [];
+      box.classList.remove("p1", "p2", "p3", "p4");
+      enunciado.innerHTML = Q.partes.map(pt => pt[1] ? `<span class="${pt[1] === "p" ? "q-pista" : "q-ultima"}">${pt[0]}</span>` : pt[0]).join("");
+      lista.innerHTML = Q.opcoes.map((o, i) => `<li><button type="button" data-op="${i}" class="${o[1] < 0 ? "absurda" : ""}" disabled><b>${"ABCDE"[i]}</b> ${o[0]}</button></li>`).join("");
+      passos.forEach((b, i) => { b.disabled = i > 0; b.classList.remove("feito"); });
+      fala.innerHTML = "Comece pelo passo 1.";
+      lista.querySelectorAll("[data-op]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          const i = Number(b.dataset.op);
+          if (marcadas.includes(i)) { marcadas = marcadas.filter(x => x !== i); b.classList.remove("marcada"); return; }
+          if (marcadas.length >= Q.escolha) return;
+          marcadas.push(i);
+          b.classList.add("marcada");
+          if (marcadas.length < Q.escolha) { fala.innerHTML = `Marque mais ${Q.escolha - marcadas.length}.`; return; }
+          const certo = marcadas.every(x => Q.opcoes[x][1] === 1);
+          lista.querySelectorAll("[data-op]").forEach(x => { const k = Number(x.dataset.op); if (Q.opcoes[k][1] === 1) x.classList.add("certa"); x.disabled = true; });
+          fala.innerHTML = (certo ? "✅ <strong>Acertou!</strong> " : "🔁 <strong>Quase.</strong> As certas estão em verde. ") + Q.explica;
+        });
+      });
+    }
+    passos.forEach(function (b, i) {
+      b.addEventListener("click", function () {
+        const Q = QUESTOES[q];
+        passo = i + 1;
+        box.classList.add("p" + passo);
+        b.classList.add("feito");
+        if (passos[i + 1]) passos[i + 1].disabled = false;
+        if (passo === 1) fala.innerHTML = `👀 A última frase diz o que pedem: <strong>${Q.pede}</strong>.`;
+        if (passo === 2) fala.innerHTML = `🖍️ As pistas: <strong>${Q.pistas}</strong>. Elas vão decidir no fim.`;
+        if (passo === 3) { const sobra = Q.opcoes.filter(o => o[1] >= 0).length; fala.innerHTML = `✂️ Riscamos as absurdas. Sobraram <strong>${sobra}</strong>.`; }
+        if (passo === 4) { lista.querySelectorAll("[data-op]").forEach(x => (x.disabled = x.classList.contains("absurda"))); fala.innerHTML = `✅ Agora escolha ${Q.escolha > 1 ? "as duas" : "a resposta"}, olhando as pistas.`; }
+      });
+    });
+    box.querySelectorAll("[data-q]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        q = Number(b.dataset.q);
+        box.querySelectorAll("[data-q]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+        monta();
+      });
+    });
+    monta();
+  });
+
+  // ===================== 39. o plano de revisão =====================
+  const DOMINIOS = [
+    { nome: "Domínio 3 · Tecnologia e serviços", peso: 34, aulas: "aulas 3, 5, 6, 7, 8, 10 e 11" },
+    { nome: "Domínio 2 · Segurança e conformidade", peso: 30, aulas: "aula 4, e partes da 5 e da 10" },
+    { nome: "Domínio 1 · Conceitos de nuvem", peso: 24, aulas: "aulas 1 e 9" },
+    { nome: "Domínio 4 · Cobrança, preços e suporte", peso: 12, aulas: "aula 2 (atenção aos planos de suporte novos)" }
+  ];
+  document.querySelectorAll("[data-plano]").forEach(function (box) {
+    const barra = box.querySelector("input[type=range]");
+    const diasTxt = box.querySelector("[data-dias]");
+    const lista = box.querySelector(".plano-lista");
+    function monta() {
+      const total = Number(barra.value);
+      const livres = total - 1; // o último dia é do simulado
+      // cada domínio ganha pelo peso; quem sobra no arredondamento vai para os de resto maior
+      const bruto = DOMINIOS.map(d => (d.peso / 100) * livres);
+      const dias = bruto.map(x => Math.max(1, Math.floor(x)));
+      let sobra = livres - dias.reduce((a, b) => a + b, 0);
+      const ordem = bruto.map((x, i) => [x - Math.floor(x), i]).sort((a, b) => b[0] - a[0]);
+      for (let k = 0; sobra > 0; k = (k + 1) % ordem.length) { dias[ordem[k][1]]++; sobra--; }
+      while (sobra < 0) { const i = dias.indexOf(Math.max.apply(null, dias)); dias[i]--; sobra++; }
+      diasTxt.textContent = total + " dias";
+      let dia = 1;
+      lista.innerHTML = DOMINIOS.map(function (d, i) {
+        const de = dia, ate = dia + dias[i] - 1;
+        dia = ate + 1;
+        return `<li style="--p:${d.peso}"><span class="plano-dias">${de === ate ? "dia " + de : "dias " + de + " a " + ate}</span><strong>${d.nome}</strong><small>${d.peso}% da prova · ${d.aulas}</small></li>`;
+      }).join("") + `<li class="simulado"><span class="plano-dias">dia ${total}</span><strong>🏁 Simulado final do preparatório</strong><small>com tempo de prova, e a revisão do que errar</small></li>`;
+    }
+    barra.addEventListener("input", monta);
+    monta();
+  });
+
+  // ===================== 40. arrume a mesa da prova on-line =====================
+  document.querySelectorAll("[data-mesa]").forEach(function (box) {
+    const itens = box.querySelectorAll("[data-item]");
+    const fala = box.querySelector(".casa-fala");
+    const tira = () => [...itens].filter(i => i.dataset.item === "sai");
+    itens.forEach(function (b) {
+      b.addEventListener("click", function () {
+        if (b.dataset.item === "fica") { fala.innerHTML = "💻 Esse fica: é o computador com a câmera, por onde você faz a prova e o fiscal acompanha."; return; }
+        b.classList.add("saiu");
+        b.disabled = true;
+        const faltam = tira().filter(i => !i.classList.contains("saiu")).length;
+        fala.innerHTML = faltam ? `👍 ${b.dataset.nome} fora da mesa. Faltam ${faltam}.` : "✨ <strong>Mesa vazia, pronta para a prova!</strong> Antes do dia, confira as regras no e-mail de confirmação da Pearson VUE: elas mudam de vez em quando.";
+      });
+    });
+    box.querySelector("[data-bagunca]").addEventListener("click", function () {
+      itens.forEach(i => { i.classList.remove("saiu"); i.disabled = false; });
+      fala.textContent = "A mesa está cheia. Clique no que precisa sair antes da prova on-line.";
+    });
+  });
+
+  // ===================== 41. a matemática do chute =====================
+  document.querySelectorAll("[data-chute]").forEach(function (box) {
+    const grade = box.querySelector(".chute-grade");
+    const fala = box.querySelector(".casa-fala");
+    const media = box.querySelector("[data-media]");
+    let provas = [];
+    function mostra(res) {
+      grade.innerHTML = res.map(r => `<span class="${r === null ? "branco" : r ? "acertou" : "errou"}">${r === null ? "⬜" : r ? "✅" : "❌"}</span>`).join("");
+    }
+    function rodada() { return Array.from({ length: 10 }, () => Math.random() < 0.25); }
+    box.querySelector("[data-branco]").addEventListener("click", function () {
+      mostra(Array(10).fill(null));
+      fala.innerHTML = "⬜ <strong>Dez em branco: zero acertos, sempre.</strong> Em branco conta como errada.";
+    });
+    box.querySelector("[data-chutar]").addEventListener("click", function () {
+      const r = rodada();
+      provas.push(r.filter(Boolean).length);
+      mostra(r);
+      media.textContent = (provas.reduce((a, b) => a + b, 0) / provas.length).toFixed(1).replace(".", ",") + " em " + provas.length + (provas.length > 1 ? " provas" : " prova");
+      fala.innerHTML = `🎲 <strong>${r.filter(Boolean).length} acertos</strong> só no chute. Cada questão tem 1 chance em 4; em 10 questões, a média é 10 × ¼ = <strong>2,5</strong>. E chute não tira ponto.`;
+    });
+    box.querySelector("[data-cem]").addEventListener("click", function () {
+      for (let i = 0; i < 100; i++) provas.push(rodada().filter(Boolean).length);
+      const m = provas.reduce((a, b) => a + b, 0) / provas.length;
+      media.textContent = m.toFixed(1).replace(".", ",") + " em " + provas.length + " provas";
+      fala.innerHTML = `📊 Com muitas provas, a média chega perto de <strong>2,5</strong> (deu ${m.toFixed(2).replace(".", ",")}). É a probabilidade aparecendo: quanto mais vezes, mais perto da conta.`;
+    });
+    mostra(Array(10).fill(null));
   });
 })();

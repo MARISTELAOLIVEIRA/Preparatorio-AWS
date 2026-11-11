@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="../assets/css/neon.css?v=5">
   <link rel="stylesheet" href="../css/interativos.css?v=1">
   <link rel="stylesheet" href="../css/aula-aws.css?v=7">
+  <link rel="stylesheet" href="../css/vivo.css?v=13">
 </head>
 <body>
 
@@ -33,7 +34,7 @@
       <button type="button" class="btn-menu" id="btn-menu" aria-expanded="false" aria-controls="menu">Menu</button>
       <nav class="nav" id="menu" aria-label="Partes da aula">
         <a href="../#videos">← Preparatório</a>
-        <a href="#caso">Caso</a>
+        <a href="#simulador">Simulador</a>
         <a href="#conceitos">A prova</a>
         <a href="#demonstracao">Questões práticas</a>
         <a href="#pegadinha">Pistas</a>
@@ -116,15 +117,41 @@
           </div>
           <div class="cartao">
             <ol class="roteiro-video sem-tempo">
+              <li><a href="#gancho">G1 · Chutar tira ponto?</a></li>
               <li><a href="#caso">O caso: a equipe que vai fazer a prova</a></li>
+              <li><a href="#simulador">SIM1 · Desmonte uma questão</a></li>
               <li><a href="#c1">C1 · Como é a prova</a></li>
               <li><a href="#c2">C2 · O peso de cada domínio, e onde ele está nas aulas</a></li>
               <li><a href="#c3">C3 · Como ler uma questão</a></li>
               <li><a href="#c4">C4 · Do voucher ao dia da prova</a></li>
-              <li><a href="#demonstracao">D1 · As questões práticas oficiais</a></li>
+              <li><a href="#chute">X1 · A matemática do chute</a></li>
+              <li><a href="#demonstracao">D1 · Faça junto: as questões práticas oficiais</a></li>
               <li><a href="#pegadinha">P1 · As pistas que mais aparecem</a></li>
               <li><a href="#academy">A reta final</a></li>
             </ol>
+          </div>
+        </section>
+
+        <!-- ===================== GANCHO (vivo.js, parte 10) ===================== -->
+        <section class="parte" id="gancho">
+          <div class="cab">
+            <span class="olho">G1 · gancho</span>
+            <h2>Chutar tira ponto?</h2>
+          </div>
+          <div class="gancho" data-plantao data-link="#chute" data-link-texto="Faça a conta na matemática do chute, mais abaixo">
+            <p class="gancho-evento">📝 Ingresso Candango · a equipe vai fazer a prova</p>
+            <p class="gancho-titulo">Questão 47. Você não faz ideia da resposta.</p>
+            <p class="relogio-grande" aria-label="Faltam três minutos">03<span>:</span>00</p>
+            <button type="button" class="botao" data-abrir>😬 E agora?</button>
+            <div class="gancho-voto" data-revela hidden>
+              <p class="gancho-pergunta" tabindex="-1">É melhor deixar em branco?</p>
+              <div class="gancho-botoes">
+                <button type="button" aria-pressed="false" data-explica="Na Cloud Practitioner, questão em branco conta como errada. Deixar em branco é jogar fora uma chance.">⬜ Melhor em branco</button>
+                <button type="button" aria-pressed="false" data-explica="Isso! Chute não tira ponto, e em branco conta como errada. Elimine as absurdas e marque a mais provável.">🎯 Chutar, sempre</button>
+                <button type="button" aria-pressed="false" data-explica="Não é igual: em branco é zero certo; chutando entre quatro, você tem uma chance em quatro. Entre duas, uma em duas.">🤷 Tanto faz</button>
+              </div>
+              <p class="gancho-resposta" aria-live="polite"></p>
+            </div>
           </div>
         </section>
 
@@ -145,6 +172,39 @@
             </ol>
             <p class="fonte">Empresa e equipe fictícias, criadas para as aulas. As respostas estão no C1 e no C2, com as fontes oficiais.</p>
           </div>
+        </section>
+
+        <!-- ===================== SIMULADOR (vivo.js, parte 38) ===================== -->
+        <section class="parte" id="simulador">
+          <div class="cab">
+            <span class="olho">SIM1 · simulador</span>
+            <h2>Desmonte uma questão</h2>
+            <p>Três questões no estilo da prova. Siga os quatro passos, um de cada vez, e só depois escolha. É o método do C3, na prática.</p>
+          </div>
+          <div class="sim" data-questao>
+            <div class="dz-botoes" role="group" aria-label="Escolha a questão" style="margin-bottom:.8rem">
+              <button type="button" data-q="0" aria-pressed="true">Questão 1</button>
+              <button type="button" data-q="1" aria-pressed="false">Questão 2</button>
+              <button type="button" data-q="2" aria-pressed="false">Questão 3 · múltipla resposta</button>
+            </div>
+            <div class="q-cartao">
+              <p class="q-enunciado"></p>
+              <ol class="q-opcoes"></ol>
+            </div>
+            <div class="q-passos">
+              <button type="button" data-passo-q="1">👀 1. Ler a última frase</button>
+              <button type="button" data-passo-q="2">🖍️ 2. Grifar a pista</button>
+              <button type="button" data-passo-q="3">✂️ 3. Riscar as absurdas</button>
+              <button type="button" data-passo-q="4">✅ 4. Decidir</button>
+            </div>
+            <p class="casa-fala" aria-live="polite"></p>
+          </div>
+          <p class="fonte">Questões escritas para a aula, no formato da prova. Não são questões da prova real: para treinar com o estilo oficial, use as questões práticas do Skill Builder (D1).</p>
+
+          <details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>Por que ler a última frase primeiro?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p>Porque ela diz <strong>o que está sendo pedido</strong>: um serviço, uma opção de compra, duas ações? Com isso na cabeça, você lê o resto procurando a pista certa, e não se perde na história.</p></div>
+              </details>
         </section>
 
         <!-- ===================== CONCEITOS ===================== -->
@@ -183,6 +243,14 @@
                 <li style="--cor:var(--itn); --peso:24%"><span class="rotulo-barra"><span>Domínio 1 · Conceitos de nuvem · aulas 1 e 9</span><b>24%</b></span><span class="trilho"><span></span></span></li>
                 <li style="--cor:var(--srwe); --peso:12%"><span class="rotulo-barra"><span>Domínio 4 · Cobrança, preços e suporte · aula 2</span><b>12%</b></span><span class="trilho"><span></span></span></li>
               </ul>
+              <p>Monte o seu plano: arraste quantos dias faltam para a prova. Os dias se dividem pelo peso de cada domínio, e o último fica para o simulado.</p>
+              <div class="casa" data-plano>
+                <div class="plano-dias-escolha">
+                  <output data-dias>14 dias</output>
+                  <label><span class="visualmente-oculto">Dias até a prova</span><input type="range" min="5" max="30" step="1" value="14"></label>
+                </div>
+                <ol class="plano-lista" aria-live="polite"></ol>
+              </div>
               <p class="dica"><strong>Pouco tempo para revisar?</strong> Comece pelo que pesa mais: o Domínio 3 e o Domínio 2 juntos são quase dois terços da prova. Mas não pule a aula 2: os planos de suporte mudaram, e material antigo engana.</p>
             </div>
           </div>
@@ -220,32 +288,70 @@
                   <li>Escolha o formato: <strong>presencial</strong>, num centro credenciado, ou <strong>on-line</strong>, com câmera, documento com foto e um ambiente silencioso.</li>
                 </ol>
               </div>
+              <p>Treine a última parte: arrume a mesa para a prova on-line.</p>
+              <div class="casa" data-mesa>
+                <div class="mesa">
+                  <button type="button" data-item="sai" data-nome="O celular"><span aria-hidden="true">📱</span>celular</button>
+                  <button type="button" data-item="sai" data-nome="O papel com anotações"><span aria-hidden="true">📝</span>anotações</button>
+                  <button type="button" data-item="fica"><span aria-hidden="true">💻</span>computador e câmera</button>
+                  <button type="button" data-item="sai" data-nome="O fone"><span aria-hidden="true">🎧</span>fone</button>
+                  <button type="button" data-item="sai" data-nome="O livro"><span aria-hidden="true">📚</span>livro</button>
+                  <button type="button" data-item="sai" data-nome="O segundo monitor"><span aria-hidden="true">🖥️</span>2º monitor</button>
+                </div>
+                <div class="dz-botoes" style="margin-top:.6rem"><button type="button" data-bagunca>↺ Bagunçar de novo</button></div>
+                <p class="casa-fala" aria-live="polite">A mesa está cheia. Clique no que precisa sair antes da prova on-line.</p>
+              </div>
               <p class="dica cuidado"><strong>Prova on-line:</strong> teste o computador e a câmera antes, com o sistema da Pearson VUE, e deixe a mesa vazia. Detalhes de prazo e de regras mudam: leia o e-mail de confirmação com calma.</p>
               <p class="dica"><strong>Como é no Azure:</strong> o caminho do <strong>AZ-900</strong> é parecido, e tem o <a href="/Preparatorio-AZ900/">preparatório AZ-900</a> aqui no portal. Com as duas, a sua base de nuvem fica completa.</p>
             </div>
           </div>
         </section>
 
+        <!-- ===================== A MATEMÁTICA DO CHUTE (vivo.js, parte 41) ===================== -->
+        <section class="parte" id="chute">
+          <div class="cab">
+            <span class="olho">X1 · a matemática do chute</span>
+            <h2>Em branco ou no chute?</h2>
+            <p>Imagine dez questões que você não sabe, cada uma com quatro alternativas. Deixe em branco ou chute, e veja a probabilidade trabalhando.</p>
+          </div>
+          <div class="casa" data-chute>
+            <div class="chute-grade" aria-live="polite"></div>
+            <p class="gav-placar">média dos chutes: <strong data-media>—</strong></p>
+            <div class="dz-botoes">
+              <button type="button" data-branco>⬜ Deixar as 10 em branco</button>
+              <button type="button" data-chutar>🎲 Chutar as 10</button>
+              <button type="button" data-cem>🎲×100 Simular 100 provas</button>
+            </div>
+            <p class="casa-fala" aria-live="polite">Dez questões, quatro alternativas cada. O que você faz?</p>
+          </div>
+          <details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>Ficou em dúvida entre duas alternativas e o tempo está acabando. O que fazer?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p>Marque a mais provável, <strong>sinalize para revisar</strong> e siga. Entre duas, o chute tem uma chance em duas; em branco, nenhuma.</p></div>
+              </details>
+          <p class="fonte">Regras da nota: <a href="https://docs.aws.amazon.com/aws-certification/latest/cloud-practitioner-02/cloud-practitioner-02.html">guia da CLF-C02</a>, consultado em 04/11/2026 (questão sem resposta conta como errada; não há desconto por erro). O chute é uma ajuda para o fim: o que aprova é estudar.</p>
+        </section>
+
         <!-- ===================== DEMONSTRAÇÃO ===================== -->
         <section class="parte" id="demonstracao">
           <div class="cab">
             <span class="olho">D1 · demonstração</span>
-            <h2>As questões práticas oficiais</h2>
-            <p>Ficam no AWS Skill Builder, são gratuitas e têm a cara da prova de verdade.</p>
+            <h2>Faça junto: as questões práticas oficiais</h2>
+            <p>Ficam no AWS Skill Builder, são gratuitas e têm a cara da prova de verdade. Abra noutra aba e marque cada passo aqui.</p>
           </div>
 
           <div class="conceito" style="grid-template-columns:1fr">
             <div class="texto">
-              <div class="faca-assim">
-                <strong>Faça assim:</strong>
-                <ol>
-                  <li>Abra o <a href="https://skillbuilder.aws/">AWS Skill Builder</a> e entre com uma conta (dá para criar de graça).</li>
-                  <li>Na busca, procure <strong>Cloud Practitioner Official Practice Question Set</strong> e escolha a versão em português, se houver.</li>
-                  <li>Faça o conjunto inteiro, com tempo, como se fosse a prova.</li>
-                  <li>No fim, leia a explicação de <strong>cada</strong> questão, até das que acertou.</li>
-                  <li>Anote os domínios em que errou mais e volte à aula daquele domínio (C2).</li>
-                </ol>
+              <div class="progresso-atividade" data-progresso="pratica-aula-12">
+                <span class="contagem">0 de 5</span>
+                <span class="barra-progresso"><span></span></span>
               </div>
+              <ol class="checklist" id="pratica-aula-12">
+                <li><label><input type="checkbox"><span>Abri o <a href="https://skillbuilder.aws/">AWS Skill Builder</a> e entrei com uma conta (dá para criar de graça).</span></label></li>
+                <li><label><input type="checkbox"><span>Procurei <strong>Cloud Practitioner Official Practice Question Set</strong> e escolhi a versão em português, se havia.</span></label></li>
+                <li><label><input type="checkbox"><span>Fiz o conjunto inteiro, com tempo, como se fosse a prova.</span></label></li>
+                <li><label><input type="checkbox"><span>Li a explicação de <strong>cada</strong> questão, até das que acertei.</span></label></li>
+                <li><label><input type="checkbox"><span>Anotei os domínios em que errei mais e voltei à aula daquele domínio (C2).</span></label></li>
+              </ol>
               <div class="faca-assim">
                 <strong>Teste:</strong>
                 <ol>
@@ -267,6 +373,10 @@
 
           <div class="conceito" style="grid-template-columns:1fr">
             <div class="texto">
+<details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>“Guardar por anos, acesso raro, o menor preço”: qual é a resposta?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p><strong>S3 Glacier Deep Archive</strong> (aula 7). A pista tem as três coisas: anos, quase nunca abrir e o mais barato.</p></div>
+              </details>
               <p>A cola das doze aulas, numa tabela só. Cada pista costuma levar à mesma resposta:</p>
               <div class="tabela-rola"><table class="metodos"><thead><tr><th>Se a questão diz…</th><th>Pense em…</th><th>Aula</th></tr></thead><tbody>
                 <tr><td>"Pagar só pelo que usar", "sem investimento antecipado"</td><td>Despesa variável, sob demanda</td><td>1 e 2</td></tr>
@@ -355,7 +465,7 @@
 
           <div class="cartao">
             <div class="progresso-atividade" data-progresso="passos-aula-12">
-              <span class="contagem">0 de 8</span>
+              <span class="contagem">0 de 10</span>
               <span class="barra-progresso"><span></span></span>
             </div>
             <ol class="checklist" id="passos-aula-12">
@@ -367,6 +477,8 @@
               <li><label><input type="checkbox"><span>Fiz o <a href="../#treinos">simulado final</a> do preparatório.</span></label></li>
               <li><label><input type="checkbox"><span>Criei a conta de certificação da AWS. <a href="#c4">Veja o C4</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Agendei a prova com o voucher.</span></label></li>
+              <li><label><input type="checkbox"><span>Desmontei as três questões com os quatro passos. <a href="#simulador">Veja o SIM1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Montei o meu plano de revisão, arrumei a mesa e fiz a conta do chute. <a href="#c2">Veja o C2</a>, o <a href="#c4">C4</a> e o <a href="#chute">X1</a>.</span></label></li>
             </ol>
           </div>
         </section>
@@ -457,5 +569,6 @@
   <script src="../assets/js/aulas.js?v=3"></script>
   <script src="../assets/js/classifica.js?v=2"></script>
   <script src="../assets/js/matrix.js?v=3"></script>
+  <script src="../js/vivo.js?v=13"></script>
 </body>
 </html>

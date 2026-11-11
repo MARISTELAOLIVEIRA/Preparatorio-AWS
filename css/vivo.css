@@ -1,6 +1,6 @@
 /*
   vivo.css: as peças das aulas "vivas" do Preparatório AWS (gancho, simulador, pausa aqui, casa ou hotel, placa).
-  versão 12 · 2026-11-11 · só deste site. Aula 1, aula 2 (conta do susto, taxímetro, transporte, iceberg, pit stop, conta de luz)
+  versão 13 · 2026-11-11 · só deste site (as 12 aulas). Aula 1, aula 2 (conta do susto, taxímetro, transporte, iceberg, pit stop, conta de luz)
   aula 3 (plantão, derrube um data center, do globo ao prédio, funil da região)
   aula 4 (o vazamento, tranque a conta, a porta abre?, a fechadura com ESP32)
   aula 5 (a planta errada, a viagem do pacote, com e sem memória, a régua de bits)
@@ -1697,6 +1697,58 @@
   .ia-servicos { grid-template-columns: repeat(2, 1fr); }
 }
 
+/* ===================== aula 12 · SIM1 desmonte uma questão ===================== */
+.q-cartao { padding: 1rem 1.2rem; border-radius: 16px; background: #fbfaf5; color: #121714; }
+.q-enunciado { margin: 0 0 .8rem; font: 500 1rem/1.6 var(--f-texto); }
+.q-pista, .q-ultima { border-radius: 4px; transition: background .4s, box-shadow .4s; }
+.p1 .q-ultima { background: #cdeff5; box-shadow: 0 0 0 2px #5fd0de; font-weight: 700; }
+.p2 .q-pista { background: #ffe86b; box-shadow: 0 0 0 2px #e0b400; }
+.q-opcoes { margin: 0; padding: 0; list-style: none; display: grid; gap: .4rem; }
+.q-opcoes button { width: 100%; display: flex; gap: .6rem; align-items: baseline; padding: .55rem .8rem; border-radius: 10px; border: 2px solid #d9d4c6; background: #fff; color: #121714; font: 500 .95rem var(--f-texto); text-align: left; cursor: pointer; transition: opacity .3s, border-color .2s, background .2s; }
+.q-opcoes button:disabled { cursor: default; }
+.q-opcoes b { font-family: var(--f-mono); color: #8a6614; }
+.p3 .q-opcoes button.absurda { opacity: .4; text-decoration: line-through; }
+.q-opcoes button.marcada { border-color: #b35c00; background: #fff3e0; }
+.q-opcoes button.certa { border-color: #2e7d5b; background: #e3f5ec; }
+.q-passos { display: grid; grid-template-columns: repeat(4, 1fr); gap: .4rem; margin: .8rem 0; }
+.q-passos button { padding: .55rem .4rem; border-radius: 12px; border: 1px solid var(--borda-forte); background: var(--superficie-2); color: var(--texto); font: 700 .85rem var(--f-texto); cursor: pointer; }
+.q-passos button:disabled { opacity: .45; cursor: default; }
+.q-passos button.feito { border-color: var(--vivo-ok); background: color-mix(in srgb, var(--vivo-ok) 18%, var(--superficie-2)); }
+
+/* ===================== aula 12 · C2 o plano de revisão ===================== */
+.plano-dias-escolha { display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: center; }
+.plano-dias-escolha output { font: 800 1.3rem var(--f-mono); color: var(--neon); min-width: 6rem; }
+.plano-dias-escolha input { width: 100%; accent-color: var(--neon); }
+.plano-lista { margin: .8rem 0 0; padding: 0; list-style: none; display: grid; gap: .4rem; }
+.plano-lista li { position: relative; display: grid; grid-template-columns: 8rem 1fr; gap: .1rem 1rem; padding: .6rem .9rem; border-radius: 12px; background: var(--superficie-2); border: 1px solid var(--borda); overflow: hidden; }
+.plano-lista li::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: calc(var(--p, 0) * 1%); background: color-mix(in srgb, var(--neon) 12%, transparent); z-index: 0; }
+.plano-lista li > * { position: relative; }
+.plano-lista .plano-dias { grid-row: span 2; font: 800 .9rem var(--f-mono); color: var(--neon); align-self: center; }
+.plano-lista strong { font: 800 .92rem var(--f-titulo); }
+.plano-lista small { color: var(--texto-2); font-size: .8rem; }
+.plano-lista li.simulado { border-color: var(--vivo-ok); }
+
+/* ===================== aula 12 · C4 a mesa da prova ===================== */
+.mesa { position: relative; display: flex; flex-wrap: wrap; gap: .6rem; justify-content: center; align-items: flex-end; min-height: 9rem; padding: 1.4rem 1rem 1.6rem; border-radius: 14px; background: linear-gradient(180deg, transparent 0 62%, #8a6a44 62% 100%), #e9dcc3; }
+.mesa button { display: grid; justify-items: center; gap: .1rem; padding: .4rem .5rem; border: 0; border-radius: 10px; background: rgba(255, 255, 255, .7); color: #2b1d0e; font: 700 .72rem var(--f-texto); cursor: pointer; transition: transform .35s, opacity .35s; }
+.mesa button span { font-size: 2rem; }
+.mesa button:hover { transform: translateY(-3px); }
+.mesa button.saiu { transform: translateY(-40px) scale(.6); opacity: 0; pointer-events: none; }
+
+/* ===================== aula 12 · X1 a matemática do chute ===================== */
+.chute-grade { display: grid; grid-template-columns: repeat(10, 1fr); gap: .3rem; padding: .8rem; border-radius: 14px; background: var(--chip); }
+.chute-grade span { display: grid; place-items: center; aspect-ratio: 1; border-radius: 8px; background: #18221d; font-size: 1.3rem; animation: nasce .3s ease-out; }
+.chute-grade span.acertou { background: #12301f; }
+.chute-grade span.errou { background: #3a1820; }
+
+@media (max-width: 760px) {
+  .q-passos { grid-template-columns: repeat(2, 1fr); }
+  .plano-dias-escolha { grid-template-columns: 1fr; }
+  .plano-lista li { grid-template-columns: 1fr; }
+  .plano-lista .plano-dias { grid-row: auto; }
+  .chute-grade { grid-template-columns: repeat(5, 1fr); }
+}
+
 /* ===================== pausa: tudo parado ===================== */
 .pausado .gancho.zero::before,
 .pausado .gancho.zero .gancho-relogio,
@@ -1736,7 +1788,8 @@
 .pausado .gav-grade span.achou { animation: none !important; }
 .pausado .radar-forma, .pausado .radar-ponto, .pausado .fiscal-lista li { transition: none; }
 .pausado .relogio-grande span, .pausado .controle-feed li, .pausado .fila-caixas span,
-.pausado .espeto span, .pausado .assinante.tocou, .pausado .ambiente.diferente { animation: none !important; }
+.pausado .espeto span, .pausado .assinante.tocou, .pausado .ambiente.diferente, .pausado .chute-grade span { animation: none !important; }
+.pausado .q-pista, .pausado .q-ultima, .pausado .q-opcoes button, .pausado .mesa button { transition: none; }
 .pausado .pb-banco, .pausado .pb-lento i, .pausado .cache-pessoas span, .pausado .cache-nota { transition: none; }
 .pausado .vida-gavetas li, .pausado .dl-maquina { transition: none; }
 .pausado .carta-caminho li, .pausado .carta-porta { transition: none; }
