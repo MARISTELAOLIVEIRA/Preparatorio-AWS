@@ -1,6 +1,6 @@
 /*
   vivo.js: as peças interativas das aulas "vivas" do Preparatório AWS. Só deste site.
-  versão 8 · 2026-11-10 · aulas 1 (conceitos), 2 (cobrança), 3 (infraestrutura), 4 (segurança), 5 (redes, com o R0), 6 (computação) e 7 (armazenamento)
+  versão 9 · 2026-11-11 · aulas 1 a 8 (conceitos, cobrança, infraestrutura, segurança, redes, computação, armazenamento e bancos de dados)
 
   1. [data-gancho]  a contagem para a abertura das vendas e a votação "o site aguenta?"
   2. [data-sim]     simulador "A noite da abertura das vendas": salinha com 2, salinha com 20 ou nuvem
@@ -30,6 +30,11 @@
   24. [data-vida]   a vida de uma foto: a idade, as regras de ciclo de vida e a gaveta do S3 em que ela está (aula 7)
   25. [data-desliga] desliga e liga: o EBS guarda, o armazenamento de instância perde, o snapshot copia (aula 7)
   26. [data-noves]  a matemática dos 11 noves: quantos objetos, de quantos em quantos anos se perde um (aula 7)
+  (a central também serve à aula 8: data-central="bancos")
+  27. [data-fichas] tabela × fichas: o cliente novo com Instagram no relacional e no NoSQL (aula 8)
+  28. [data-plantao-banco] Multi-AZ × réplica de leitura: a zona que cai e os relatórios que pesam (aula 8)
+  29. [data-cache]  o post-it do cache: dez pessoas abrem a mesma página, com e sem ElastiCache (aula 8)
+  30. [data-gaveteiro] o gaveteiro: procurar gaveta por gaveta ou abrir pela etiqueta (a chave) (aula 8)
 
   Com as animações pausadas (botão do topo ou "reduzir movimento"), tudo mostra o resultado direto.
 */
@@ -1479,6 +1484,35 @@
       inst: ["falha", "💥 Backup em disco temporário? Na primeira parada, some tudo."],
       outro: ["meh", "Os backups podem acabar no S3, mas o pedido era o escritório usar a nuvem como um disco local: Storage Gateway."] }
   };
+  CENTRAIS.bancos = {
+    cli: { certo: "rds",
+      rds: "Tabelas ligadas, SQL e transações: o pedido nunca fica pela metade, e a AWS cuida dos backups.",
+      dynamo: ["meh", "Aguenta muito acesso, mas clientes, pedidos e pagamentos ligados entre si pedem tabelas relacionais e SQL."],
+      cache: ["falha", "💥 Cache é memória rápida, não o lugar oficial dos pagamentos. Reiniciou, sumiu."],
+      redshift: ["falha", "💥 O Redshift é para análise. Atender as compras na hora não é com ele."],
+      dms: ["falha", "💥 O DMS migra bancos; ele não é um banco."] },
+    carrinho: { certo: "dynamo",
+      dynamo: "Milhões de leituras e gravações por segundo, sempre pela chave do cliente, crescendo sozinho.",
+      rds: ["meh", "Funciona, mas na abertura da venda seria preciso muito banco relacional. O DynamoDB cresce sozinho para isso."],
+      cache: ["meh", "Ajuda a ler rápido, mas o carrinho precisa de um banco de verdade por trás: DynamoDB."],
+      redshift: ["falha", "💥 Um banco de análise não segura a fila da meia-noite."],
+      dms: ["falha", "💥 O DMS migra bancos; não guarda carrinho."] },
+    pagina: { certo: "cache",
+      cache: "Todo mundo lê a mesma página: ela fica na memória, e o banco descansa.",
+      rds: ["meh", "Funciona, mas cada visita vai ao banco: milhões de consultas iguais. Um cache na frente resolve."],
+      dynamo: ["meh", "Funciona e é rápido, mas para a mesma página lida por todo mundo, o cache na memória é o certo."],
+      redshift: ["falha", "💥 Banco de análise para servir uma página na hora? Não."],
+      dms: ["falha", "💥 O DMS migra bancos; não serve páginas."] },
+    vendas: { certo: "redshift",
+      redshift: "Anos de vendas analisados com SQL, sem pesar no banco das compras.",
+      rds: ["meh", "Dá para consultar, mas a análise de três anos pesa no mesmo banco que atende as compras."],
+      dynamo: ["falha", "💥 O DynamoDB abre pela chave. \"Que gênero vende mais em cada cidade\" é pergunta de análise: Redshift."],
+      cache: ["falha", "💥 Cache guarda o que é lido toda hora, não três anos de vendas."],
+      dms: ["falha", "💥 O DMS migra bancos; não analisa vendas."] },
+    migrar: { certo: "dms",
+      dms: "Migra o banco para a AWS com o da salinha funcionando: as vendas não param.",
+      outro: ["falha", "💥 Esse é um banco, não a migração. Para levar o banco da salinha sem parar as vendas: DMS."] }
+  };
   document.querySelectorAll("[data-central]").forEach(function (box) {
     const linhas = box.querySelectorAll("[data-tarefa]");
     const placar = box.querySelector("[data-placar]");
@@ -1519,9 +1553,11 @@
       const fim = function () {
         const n = linhas.length;
         const gav = box.dataset.central === "armazenamento";
+        const ban = box.dataset.central === "bancos";
         placar.textContent = certos + " de " + n;
         fala.innerHTML = faltam ? `Faltou escolher ${gav ? "a gaveta" : "o motor"} de ${faltam} ${gav ? "pedido" : "tarefa"}${faltam > 1 ? "s" : ""}.` :
-          certos === n ? (gav ? "🏆 <strong>Gavetas organizadas!</strong> Cada dado no lugar certo: disco, balde, pasta, depósito, temporário e ponte." :
+          certos === n ? (ban ? "🏆 <strong>Um banco para cada dado!</strong> Relacional, NoSQL, cache, análise e migração, cada um no seu lugar." :
+            gav ? "🏆 <strong>Gavetas organizadas!</strong> Cada dado no lugar certo: disco, balde, pasta, depósito, temporário e ponte." :
             "🏆 <strong>Central montada!</strong> Cada tarefa no motor certo: servidor, função, contêiner, atalho e spot.") :
           `<strong>${certos} de ${n} ${gav ? "na gaveta certa" : "no motor certo"}.</strong> As amarelas funcionam, mas não são a melhor escolha; as vermelhas quebram. Troque e rode de novo.`;
       };
@@ -1846,5 +1882,188 @@
     }
     barra.addEventListener("input", mostra);
     mostra();
+  });
+
+  // ===================== 27. tabela × fichas =====================
+  document.querySelectorAll("[data-fichas]").forEach(function (box) {
+    const tabela = box.querySelector(".fichas-tabela");
+    const cartas = box.querySelector(".fichas-cartas");
+    const fala = box.querySelector(".casa-fala");
+    const BASE = [{ nome: "Ana", email: "ana@exemplo.com" }, { nome: "Bruno", email: "bruno@exemplo.com" }];
+    const NOVOS = [
+      { nome: "Carla", email: "carla@exemplo.com", instagram: "@carla.shows" },
+      { nome: "Davi", tiktok: "@davi.musica" }
+    ];
+    let pessoas = [], novas = 0;
+    function desenha(destaque) {
+      const cols = ["nome"];
+      pessoas.forEach(p => Object.keys(p).forEach(k => { if (!cols.includes(k)) cols.push(k); }));
+      tabela.innerHTML = "<thead><tr>" + cols.map(c => `<th class="${destaque && destaque.includes(c) ? "nova" : ""}">${c}</th>`).join("") + "</tr></thead><tbody>" +
+        pessoas.map(p => "<tr>" + cols.map(c => p[c] ? `<td>${p[c]}</td>` : `<td class="vazio">vazio</td>`).join("") + "</tr>").join("") + "</tbody>";
+      cartas.innerHTML = pessoas.map((p, i) => `<li class="${i >= BASE.length && i === pessoas.length - 1 && destaque ? "nova" : ""}">` +
+        Object.keys(p).map(k => `<span><b>${k}:</b> ${p[k]}</span>`).join("") + "</li>").join("");
+    }
+    box.querySelector("[data-novo]").addEventListener("click", function () {
+      if (novas >= NOVOS.length) return;
+      const n = NOVOS[novas++];
+      const colsAntes = new Set();
+      pessoas.forEach(p => Object.keys(p).forEach(k => colsAntes.add(k)));
+      pessoas.push(n);
+      const novasCols = Object.keys(n).filter(k => !colsAntes.has(k));
+      desenha(novasCols);
+      const vazios = tabela.querySelectorAll("td.vazio").length;
+      const semCols = [...colsAntes].filter(k => !(k in n));
+      fala.innerHTML = `➕ <strong>${n.nome}</strong> chegou com <strong>${novasCols.join(" e ")}</strong>${semCols.length ? " e sem <strong>" + semCols.join(" e ") + "</strong>" : ""}. Na tabela, a coluna nova vale para todo mundo: já são <strong>${vazios} buracos vazios</strong>. Nas fichas, só a ficha de ${n.nome} mudou.`;
+      if (novas >= NOVOS.length) box.querySelector("[data-novo]").disabled = true;
+      else box.querySelector("[data-novo]").textContent = "➕ Cliente novo: Davi, com TikTok e sem e-mail";
+    });
+    box.querySelector("[data-recomeca]").addEventListener("click", function () {
+      pessoas = BASE.map(p => Object.assign({}, p));
+      novas = 0;
+      const b = box.querySelector("[data-novo]");
+      b.disabled = false;
+      b.textContent = "➕ Cliente novo: Carla, com Instagram";
+      desenha(null);
+      fala.innerHTML = "Os dois guardam a Ana e o Bruno. Agora chega uma cliente nova.";
+    });
+    box.querySelector("[data-recomeca]").click();
+  });
+
+  // ===================== 28. o plantão do banco =====================
+  document.querySelectorAll("[data-plantao-banco]").forEach(function (box) {
+    const fala = box.querySelector(".casa-fala");
+    const lento = box.querySelector(".pb-lento i");
+    const lentoTxt = box.querySelector("[data-lento]");
+    const pecas = {};
+    box.querySelectorAll("[data-peca-banco]").forEach(el => (pecas[el.dataset.pecaBanco] = el));
+    let evento = "normal";
+    const liga = k => box.querySelector(`[data-chave-banco="${k}"]`).getAttribute("aria-pressed") === "true";
+    function avalia() {
+      const ma = liga("multiaz"), rr = liga("replica");
+      pecas.reserva.hidden = !ma;
+      pecas.replica.hidden = !rr;
+      Object.values(pecas).forEach(p => p.classList.remove("caiu", "assumiu", "trabalhando", "pesado"));
+      let txt, nivel;
+      if (evento === "zona") {
+        pecas.principal.classList.add("caiu");
+        if (ma) { pecas.reserva.classList.add("assumiu"); nivel = 20; txt = "✅ <strong>A reserva na zona b assumiu sozinha</strong> (failover automático). As compras continuam."; }
+        else if (rr) { nivel = 100; pecas.replica.classList.add("trabalhando"); txt = "💥 <strong>Banco fora do ar.</strong> A réplica de leitura não assume sozinha: ela é para desempenho. Para continuar no ar quando a zona cai, Multi-AZ."; }
+        else { nivel = 100; txt = "💥 <strong>Banco fora do ar</strong> até alguém restaurar o backup. As compras pararam."; }
+      } else if (evento === "relatorio") {
+        if (rr) { pecas.replica.classList.add("trabalhando"); nivel = 25; txt = "✅ <strong>Os relatórios foram para a réplica de leitura.</strong> O banco principal continua rápido para as compras."; }
+        else { pecas.principal.classList.add("pesado"); nivel = 90; txt = ma ? "🐢 <strong>Lento!</strong> A reserva do Multi-AZ fica esperando a falha; não divide as consultas. Para desempenho, réplica de leitura." :
+          "🐢 <strong>Lento!</strong> Relatórios e compras disputando o mesmo banco."; }
+      } else { nivel = 15; txt = "🛒 Tudo normal. Ligue as chaves e dispare um problema."; }
+      lento.style.width = nivel + "%";
+      lentoTxt.textContent = nivel >= 90 ? "parado ou muito lento" : nivel >= 50 ? "lento" : "rápido";
+      fala.innerHTML = txt;
+    }
+    box.querySelectorAll("[data-chave-banco]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        b.setAttribute("aria-pressed", String(b.getAttribute("aria-pressed") !== "true"));
+        b.querySelector(".sn").textContent = b.getAttribute("aria-pressed") === "true" ? "ligado" : "desligado";
+        avalia();
+      });
+    });
+    box.querySelectorAll("[data-evento]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        evento = b.dataset.evento;
+        box.querySelectorAll("[data-evento]").forEach(x => x.setAttribute("aria-pressed", String(x === b && evento !== "normal")));
+        avalia();
+      });
+    });
+    avalia();
+  });
+
+  // ===================== 29. o post-it do cache =====================
+  document.querySelectorAll("[data-cache]").forEach(function (box) {
+    const pessoas = box.querySelectorAll(".cache-pessoas span");
+    const banco = box.querySelector("[data-idas]");
+    const postit = box.querySelector("[data-postit]");
+    const nota = box.querySelector(".cache-nota");
+    const fala = box.querySelector(".casa-fala");
+    const vai = box.querySelector(".vai");
+    const chave = box.querySelector("[data-com-cache]");
+    let espera = [];
+    chave.addEventListener("click", function () {
+      chave.setAttribute("aria-pressed", String(chave.getAttribute("aria-pressed") !== "true"));
+      chave.querySelector(".sn").textContent = chave.getAttribute("aria-pressed") === "true" ? "ligado" : "desligado";
+      box.classList.toggle("com-cache", chave.getAttribute("aria-pressed") === "true");
+    });
+    vai.addEventListener("click", function () {
+      espera.forEach(clearTimeout);
+      espera = [];
+      const com = chave.getAttribute("aria-pressed") === "true";
+      let idas = 0, hits = 0;
+      pessoas.forEach(p => (p.className = ""));
+      nota.classList.remove("escrito");
+      banco.textContent = "0";
+      postit.textContent = "0";
+      const uma = function (i) {
+        const vaiAoBanco = !com || i === 0;
+        if (vaiAoBanco) idas++; else hits++;
+        pessoas[i].className = vaiAoBanco ? "banco" : "postit";
+        if (com && i === 0) nota.classList.add("escrito");
+        banco.textContent = idas;
+        postit.textContent = hits;
+        if (i === pessoas.length - 1) {
+          fala.innerHTML = com ? "📝 <strong>Só a primeira pessoa foi ao banco</strong>; a resposta ficou anotada no post-it (o ElastiCache, na memória) e as outras nove leram de lá, muito mais rápido. O banco descansou." :
+            "🗄️ <strong>Dez idas ao banco</strong> para a mesma página, que não mudou. Agora imagine 100 mil pessoas na abertura da venda. Ligue o cache e repita.";
+          vai.disabled = false;
+        }
+      };
+      if (pausado()) { pessoas.forEach((_, i) => uma(i)); return; }
+      vai.disabled = true;
+      pessoas.forEach((_, i) => espera.push(setTimeout(() => uma(i), 150 + i * 220)));
+    });
+  });
+
+  // ===================== 30. o gaveteiro =====================
+  document.querySelectorAll("[data-gaveteiro]").forEach(function (box) {
+    const grade = box.querySelector(".gav-grade");
+    const contador = box.querySelector("[data-abertas]");
+    const fala = box.querySelector(".casa-fala");
+    const ALVO = 73; // a gaveta do resistor de 220 Ω
+    for (let i = 0; i < 100; i++) {
+      const g = document.createElement("span");
+      g.textContent = "";
+      grade.appendChild(g);
+    }
+    const gavetas = grade.querySelectorAll("span");
+    let laco = 0;
+    function limpa() {
+      clearInterval(laco);
+      gavetas.forEach(g => { g.className = ""; g.textContent = ""; });
+      contador.textContent = "0";
+      box.querySelectorAll("[data-busca]").forEach(b => (b.disabled = false));
+    }
+    function achou(n, chave) {
+      gavetas[ALVO].className = "achou";
+      gavetas[ALVO].textContent = "Ω";
+      contador.textContent = n;
+      fala.innerHTML = chave ? "🏷️ <strong>1 gaveta aberta.</strong> Com a etiqueta (a chave), você vai direto ao resistor. Com 100 ou com 1 milhão de gavetas, continua sendo 1. É assim que o DynamoDB responde em milissegundos." :
+        `🔍 <strong>${n} gavetas abertas</strong> até achar o resistor. Sem etiqueta, você procura uma por uma. Com 1 milhão de gavetas, seriam, em média, meio milhão de aberturas.`;
+      box.querySelectorAll("[data-busca]").forEach(b => (b.disabled = false));
+    }
+    box.querySelector("[data-busca='procura']").addEventListener("click", function () {
+      limpa();
+      if (pausado()) { for (let i = 0; i < ALVO; i++) gavetas[i].className = "aberta"; return achou(ALVO + 1, false); }
+      box.querySelectorAll("[data-busca]").forEach(b => (b.disabled = true));
+      let i = 0;
+      laco = setInterval(function () {
+        if (i === ALVO) { clearInterval(laco); return achou(i + 1, false); }
+        gavetas[i].className = "aberta";
+        contador.textContent = i + 1;
+        i++;
+      }, 35);
+    });
+    box.querySelector("[data-busca='etiqueta']").addEventListener("click", function () {
+      limpa();
+      achou(1, true);
+    });
+    box.querySelector("[data-busca='limpa']").addEventListener("click", function () {
+      limpa();
+      fala.textContent = "Cem gavetas fechadas. O resistor de 220 Ω está numa delas.";
+    });
   });
 })();

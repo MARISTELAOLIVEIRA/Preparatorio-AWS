@@ -1,6 +1,6 @@
 /*
   vivo.css: as peças das aulas "vivas" do Preparatório AWS (gancho, simulador, pausa aqui, casa ou hotel, placa).
-  versão 8 · 2026-11-10 · só deste site. Aula 1, aula 2 (conta do susto, taxímetro, transporte, iceberg, pit stop, conta de luz)
+  versão 9 · 2026-11-11 · só deste site. Aula 1, aula 2 (conta do susto, taxímetro, transporte, iceberg, pit stop, conta de luz)
   aula 3 (plantão, derrube um data center, do globo ao prédio, funil da região)
   aula 4 (o vazamento, tranque a conta, a porta abre?, a fechadura com ESP32)
   aula 5 (a planta errada, a viagem do pacote, com e sem memória, a régua de bits)
@@ -1487,6 +1487,71 @@
   .dl-maquina, .noves-placar { grid-template-columns: 1fr; }
 }
 
+/* ===================== aula 8 · G1 uma planilha para tudo ===================== */
+.planilha { width: min(100%, 30rem); margin: 1.2rem auto; border-collapse: collapse; background: #fbfaf5; color: #121714; font: 500 .78rem var(--f-mono); border-radius: 10px; overflow: hidden; }
+.planilha th { background: #217346; color: #fff; padding: .35rem .5rem; font-weight: 700; }
+.planilha td { padding: .35rem .5rem; border: 1px solid #d9d4c6; text-align: left; }
+.planilha td.confuso { background: #fde8ec; color: #c22450; }
+
+/* ===================== aula 8 · C2 tabela × fichas ===================== */
+.fichas-lados { display: grid; grid-template-columns: 1.3fr 1fr; gap: 1rem; margin: .4rem 0 .8rem; }
+.fichas-lado h4 { margin: 0 0 .4rem; font: 800 .95rem var(--f-titulo); }
+.fichas-lado h4 small { display: block; font: 500 .74rem var(--f-mono); color: var(--texto-2); }
+.fichas-rola { overflow-x: auto; }
+.fichas-tabela { width: 100%; border-collapse: collapse; font: 500 .8rem var(--f-mono); }
+.fichas-tabela th, .fichas-tabela td { padding: .4rem .5rem; border: 1px solid var(--borda-forte); text-align: left; white-space: nowrap; }
+.fichas-tabela th { background: var(--superficie-2); }
+.fichas-tabela th.nova { background: color-mix(in srgb, var(--neon) 30%, var(--superficie-2)); animation: nasce .4s ease-out; }
+.fichas-tabela td.vazio { color: var(--vivo-ruim); font-style: italic; background: repeating-linear-gradient(45deg, transparent 0 6px, color-mix(in srgb, var(--vivo-ruim) 12%, transparent) 6px 12px); }
+.fichas-cartas { display: grid; gap: .4rem; margin: 0; padding: 0; list-style: none; }
+.fichas-cartas li { display: grid; gap: .1rem; padding: .5rem .7rem; border-radius: 10px; background: var(--superficie-2); border: 1px solid var(--borda); font: 500 .8rem var(--f-mono); }
+.fichas-cartas li b { color: var(--neon); font-weight: 700; }
+.fichas-cartas li.nova { border-color: var(--neon); box-shadow: 0 0 16px -6px var(--neon); animation: nasce .4s ease-out; }
+
+/* ===================== aula 8 · C2 o plantão do banco ===================== */
+.pb-cena { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; padding: 1rem; border-radius: 16px; background: var(--chip); margin: .6rem 0; }
+.pb-banco { display: grid; justify-items: center; gap: .2rem; padding: .9rem .4rem; border-radius: 14px; background: #121a16; border: 2px solid #3b4a42; color: #e8e4d8; text-align: center; transition: border-color .3s, background .3s, opacity .3s; }
+.pb-banco .ico { font-size: 1.8rem; }
+.pb-banco strong { font: 800 .82rem var(--f-titulo); }
+.pb-banco small { font: 500 .7rem var(--f-mono); color: #a3b0a8; }
+.pb-banco[hidden] { display: grid !important; visibility: hidden; }
+.pb-banco.caiu { border-color: #ff5c7a; background: #3a1820; opacity: .7; }
+.pb-banco.assumiu { border-color: #39ff9e; background: #12301f; box-shadow: 0 0 20px -6px #39ff9e; }
+.pb-banco.trabalhando { border-color: #5fd0de; background: #12283a; }
+.pb-banco.pesado { border-color: #ffd36b; background: #3a3014; animation: treme .5s 2; }
+.pb-lento { height: 12px; border-radius: 6px; background: var(--superficie-2); overflow: hidden; border: 1px solid var(--borda); }
+.pb-lento i { display: block; height: 100%; width: 15%; background: linear-gradient(90deg, var(--vivo-ok), var(--srwe), var(--vivo-ruim)); background-size: 300% 100%; transition: width .5s; }
+
+/* ===================== aula 8 · C4 o post-it do cache ===================== */
+.cache-cena { display: grid; grid-template-columns: 1.2fr auto 1fr; gap: 1rem; align-items: center; padding: 1rem; border-radius: 16px; background: var(--chip); color: #e8e4d8; margin: .6rem 0; }
+.cache-pessoas { display: grid; grid-template-columns: repeat(5, 1fr); gap: .3rem; font-size: 1.4rem; text-align: center; }
+.cache-pessoas span { border-radius: 8px; padding: .2rem; background: #18221d; transition: background .25s, box-shadow .25s; }
+.cache-pessoas span::before { content: "🙂"; }
+.cache-pessoas span.banco { background: #3a3014; box-shadow: inset 0 0 0 2px #ffd36b; }
+.cache-pessoas span.postit { background: #12301f; box-shadow: inset 0 0 0 2px #39ff9e; }
+.cache-nota { display: grid; place-items: center; width: 5.5rem; height: 5.5rem; border-radius: 6px; background: #3b4a42; color: #121714; font: 700 .72rem/1.2 var(--f-texto); text-align: center; padding: .4rem; transform: rotate(-4deg); opacity: .25; transition: opacity .3s, background .3s; }
+.com-cache .cache-nota { opacity: .6; background: #fff3a6; }
+.cache-nota.escrito { opacity: 1; background: #ffe86b; box-shadow: 0 6px 16px -6px rgba(0, 0, 0, .6); }
+.cache-banco { display: grid; justify-items: center; gap: .2rem; font: 700 .8rem var(--f-titulo); text-align: center; }
+.cache-banco span { font-size: 2rem; }
+.cache-numeros { display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-size: .9rem; color: var(--texto-2); }
+.cache-numeros strong { font: 800 1.1rem var(--f-mono); color: var(--texto); }
+
+/* ===================== aula 8 · X1 o gaveteiro ===================== */
+.gav-grade { display: grid; grid-template-columns: repeat(20, 1fr); gap: 3px; padding: .8rem; border-radius: 14px; background: #2b3530; }
+.gav-grade span { aspect-ratio: 1.4; border-radius: 3px; background: #5f6b72; box-shadow: inset 0 -3px 0 #3f484e; display: grid; place-items: center; font: 900 .7rem var(--f-mono); color: #111; transition: background .15s; }
+.gav-grade span.aberta { background: #1f2a2f; box-shadow: none; }
+.gav-grade span.achou { background: #39ff9e; box-shadow: 0 0 12px #39ff9e; animation: nasce .4s ease-out; }
+.gav-placar { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; align-items: center; margin: .6rem 0; font-size: .92rem; color: var(--texto-2); }
+.gav-placar strong { font: 800 1.4rem var(--f-mono); color: var(--neon); }
+
+@media (max-width: 760px) {
+  .fichas-lados, .cache-cena { grid-template-columns: 1fr; }
+  .pb-cena { grid-template-columns: 1fr; }
+  .gav-grade { grid-template-columns: repeat(10, 1fr); }
+  .cache-nota { justify-self: center; }
+}
+
 /* ===================== pausa: tudo parado ===================== */
 .pausado .gancho.zero::before,
 .pausado .gancho.zero .gancho-relogio,
@@ -1519,7 +1584,12 @@
 .pausado .maquina.erro,
 .pausado .carta-caminho li.barrou,
 .pausado .vida-gavetas li.aqui .foto,
-.pausado .dl-snap.nova { animation: none !important; }
+.pausado .dl-snap.nova,
+.pausado .fichas-tabela th.nova,
+.pausado .fichas-cartas li.nova,
+.pausado .pb-banco.pesado,
+.pausado .gav-grade span.achou { animation: none !important; }
+.pausado .pb-banco, .pausado .pb-lento i, .pausado .cache-pessoas span, .pausado .cache-nota { transition: none; }
 .pausado .vida-gavetas li, .pausado .dl-maquina { transition: none; }
 .pausado .carta-caminho li, .pausado .carta-porta { transition: none; }
 .pausado .central-linha.rodando::after, .pausado .lb-rel i, .pausado .regua-lista .trilho i, .pausado .maquina .app { transition: none; }

@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="../assets/css/neon.css?v=5">
   <link rel="stylesheet" href="../css/interativos.css?v=1">
   <link rel="stylesheet" href="../css/aula-aws.css?v=7">
+  <link rel="stylesheet" href="../css/vivo.css?v=9">
 </head>
 <body>
 
@@ -33,7 +34,7 @@
       <button type="button" class="btn-menu" id="btn-menu" aria-expanded="false" aria-controls="menu">Menu</button>
       <nav class="nav" id="menu" aria-label="Partes da aula">
         <a href="../#videos">← Preparatório</a>
-        <a href="#caso">Caso</a>
+        <a href="#simulador">Simulador</a>
         <a href="#conceitos">Conceitos</a>
         <a href="#demonstracao">Console</a>
         <a href="#pegadinha">Pegadinha</a>
@@ -116,16 +117,51 @@
           </div>
           <div class="cartao">
             <ol class="roteiro-video sem-tempo">
+              <li><a href="#gancho">G1 · Uma planilha para tudo?</a></li>
               <li><a href="#caso">O caso: um banco para cada dado</a></li>
+              <li><a href="#simulador">SIM1 · Um banco para cada dado</a></li>
               <li><a href="#c1">C1 · Banco no EC2 ou banco gerenciado?</a></li>
               <li><a href="#c2">C2 · Relacional: RDS e Aurora</a></li>
               <li><a href="#c3">C3 · NoSQL: o DynamoDB</a></li>
               <li><a href="#c4">C4 · Em memória, para análise e para migrar</a></li>
-              <li><a href="#demonstracao">D1 · Uma tabela no DynamoDB e as opções do RDS</a></li>
+              <li><a href="#gaveteiro">X1 · O gaveteiro de componentes</a></li>
+              <li><a href="#demonstracao">D1 · Faça junto: uma tabela no DynamoDB e as opções do RDS</a></li>
               <li><a href="#pegadinha">P1 · A pegadinha: Multi-AZ não é réplica de leitura</a></li>
               <li><a href="#academy">Agora é na AWS Academy</a></li>
             </ol>
           </div>
+        </section>
+
+        <!-- ===================== GANCHO (vivo.js, parte 10) ===================== -->
+        <section class="parte" id="gancho">
+          <div class="cab">
+            <span class="olho">G1 · gancho</span>
+            <h2>Uma planilha para tudo?</h2>
+          </div>
+          <div class="gancho" data-plantao data-link="#simulador" data-link-texto="Escolha os bancos logo abaixo">
+            <p class="gancho-evento">📋 Ingresso Candango · a ideia do estagiário</p>
+            <p class="gancho-titulo">"Bota tudo numa planilha só!"</p>
+            <table class="planilha" aria-label="A planilha do estagiário, com tudo misturado">
+              <thead><tr><th>A</th><th>B</th><th>C</th></tr></thead>
+              <tbody>
+                <tr><td>cliente: Ana</td><td>pedido 881</td><td>pago ✔</td></tr>
+                <tr><td>carrinho de 50 mil pessoas</td><td class="confuso">⏳ carregando…</td><td class="confuso">#ERRO</td></tr>
+                <tr><td>página do show</td><td>aberta 1 milhão de vezes</td><td class="confuso">travou</td></tr>
+                <tr><td>vendas de 2023 a 2026</td><td class="confuso">não coube</td><td>?</td></tr>
+              </tbody>
+            </table>
+            <button type="button" class="botao" data-abrir>🤔 E aí?</button>
+            <div class="gancho-voto" data-revela hidden>
+              <p class="gancho-pergunta" tabindex="-1">Uma planilha serve para guardar tudo isso?</p>
+              <div class="gancho-botoes">
+                <button type="button" aria-pressed="false" data-explica="Até a primeira abertura de venda: 50 mil pessoas no carrinho ao mesmo tempo derrubam qualquer planilha.">📋 Serve</button>
+                <button type="button" aria-pressed="false" data-explica="Um banco gigante para tudo vira o mesmo problema, só que maior: cada tipo de dado tem um jeito de ser guardado e lido.">🏋️ Um banco gigante</button>
+                <button type="button" aria-pressed="false" data-explica="Isso! Pedidos ligados entre si, carrinho com milhões de acessos, página lida por todo mundo e anos de vendas para analisar: cada um tem o seu banco.">🧩 Um banco para cada dado</button>
+              </div>
+              <p class="gancho-resposta" aria-live="polite"></p>
+            </div>
+          </div>
+          <p class="fonte">Planilha fictícia, criada para a aula.</p>
         </section>
 
         <!-- ===================== ESTUDO DE CASO ===================== -->
@@ -151,6 +187,82 @@
             </ol>
             <p class="fonte">Empresa e pedidos fictícios, criados para as aulas.</p>
           </div>
+        </section>
+
+        <!-- ===================== SIMULADOR (vivo.js, parte 19) ===================== -->
+        <section class="parte" id="simulador">
+          <div class="cab">
+            <span class="olho">SIM1 · simulador</span>
+            <h2>Um banco para cada dado</h2>
+            <p>Os cinco pedidos do caso precisam de um banco (ou de uma ferramenta). Escolha e aperte <strong>Guardar tudo</strong>. Verde é o certo, amarelo funciona mas não é o melhor, vermelho dá errado.</p>
+          </div>
+          <div class="sim" data-central="bancos">
+            <ol class="central">
+              <li class="central-linha" data-tarefa="cli">
+                <span class="tarefa"><strong>🧾 Clientes, pedidos e pagamentos</strong><small>ligados entre si; o pedido não pode ficar pela metade</small></span>
+                <div class="dz-botoes" role="group" aria-label="Banco para Clientes, pedidos e pagamentos">
+                  <button type="button" data-motor="rds" aria-pressed="false">🧮 RDS ou Aurora</button>
+                  <button type="button" data-motor="dynamo" aria-pressed="false">⚡ DynamoDB</button>
+                  <button type="button" data-motor="cache" aria-pressed="false">📝 ElastiCache</button>
+                  <button type="button" data-motor="redshift" aria-pressed="false">📊 Redshift</button>
+                  <button type="button" data-motor="dms" aria-pressed="false">🚚 DMS</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+              <li class="central-linha" data-tarefa="carrinho">
+                <span class="tarefa"><strong>🛒 O carrinho e a fila da venda</strong><small>milhões de acessos por segundo, sempre pelo código do cliente</small></span>
+                <div class="dz-botoes" role="group" aria-label="Banco para O carrinho e a fila da venda">
+                  <button type="button" data-motor="rds" aria-pressed="false">🧮 RDS ou Aurora</button>
+                  <button type="button" data-motor="dynamo" aria-pressed="false">⚡ DynamoDB</button>
+                  <button type="button" data-motor="cache" aria-pressed="false">📝 ElastiCache</button>
+                  <button type="button" data-motor="redshift" aria-pressed="false">📊 Redshift</button>
+                  <button type="button" data-motor="dms" aria-pressed="false">🚚 DMS</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+              <li class="central-linha" data-tarefa="pagina">
+                <span class="tarefa"><strong>🎤 A página do show mais procurado</strong><small>todo mundo abre ao mesmo tempo; não muda a cada segundo</small></span>
+                <div class="dz-botoes" role="group" aria-label="Banco para A página do show mais procurado">
+                  <button type="button" data-motor="rds" aria-pressed="false">🧮 RDS ou Aurora</button>
+                  <button type="button" data-motor="dynamo" aria-pressed="false">⚡ DynamoDB</button>
+                  <button type="button" data-motor="cache" aria-pressed="false">📝 ElastiCache</button>
+                  <button type="button" data-motor="redshift" aria-pressed="false">📊 Redshift</button>
+                  <button type="button" data-motor="dms" aria-pressed="false">🚚 DMS</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+              <li class="central-linha" data-tarefa="vendas">
+                <span class="tarefa"><strong>📈 Três anos de vendas</strong><small>descobrir que gênero de show vende mais em cada cidade</small></span>
+                <div class="dz-botoes" role="group" aria-label="Banco para Três anos de vendas">
+                  <button type="button" data-motor="rds" aria-pressed="false">🧮 RDS ou Aurora</button>
+                  <button type="button" data-motor="dynamo" aria-pressed="false">⚡ DynamoDB</button>
+                  <button type="button" data-motor="cache" aria-pressed="false">📝 ElastiCache</button>
+                  <button type="button" data-motor="redshift" aria-pressed="false">📊 Redshift</button>
+                  <button type="button" data-motor="dms" aria-pressed="false">🚚 DMS</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+              <li class="central-linha" data-tarefa="migrar">
+                <span class="tarefa"><strong>🏢 O banco antigo da salinha</strong><small>ir para a AWS sem parar as vendas</small></span>
+                <div class="dz-botoes" role="group" aria-label="Banco para O banco antigo da salinha">
+                  <button type="button" data-motor="rds" aria-pressed="false">🧮 RDS ou Aurora</button>
+                  <button type="button" data-motor="dynamo" aria-pressed="false">⚡ DynamoDB</button>
+                  <button type="button" data-motor="cache" aria-pressed="false">📝 ElastiCache</button>
+                  <button type="button" data-motor="redshift" aria-pressed="false">📊 Redshift</button>
+                  <button type="button" data-motor="dms" aria-pressed="false">🚚 DMS</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+            </ol>
+            <div class="sim-acoes"><button type="button" class="vai">🗄️ Guardar tudo</button><span>placar: <span class="central-placar" data-placar>–</span></span></div>
+            <p class="casa-fala" aria-live="polite"></p>
+          </div>
+          <p class="fonte">Simulação para a aula, com os serviços do C1 ao C4.</p>
+
+          <details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>Por que a análise de três anos não roda no mesmo banco das compras?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p>Porque pesa. Consultas enormes disputariam com as compras, e o site ficaria lento justo na venda. O <strong>Redshift</strong> é feito para análise; o RDS atende as compras.</p></div>
+              </details>
         </section>
 
         <!-- ===================== CONCEITOS ===================== -->
@@ -191,6 +303,25 @@
                 <tr><td><strong>Réplica de leitura</strong><span class="termo-en">read replica</span></td><td>Uma cópia que só responde a leituras.</td><td><strong>Desempenho</strong>: tira as consultas do banco principal.</td></tr>
               </tbody></table></div>
               <p class="fonte">Fontes: <a href="https://aws.amazon.com/rds/">Amazon RDS</a> e <a href="https://aws.amazon.com/rds/aurora/">Amazon Aurora</a>, consultados em 04/11/2026.</p>
+              <p>Agora o plantão do banco. Ligue as chaves, dispare um problema e veja quem resolve o quê.</p>
+              <div class="casa" data-plantao-banco>
+                <div class="pagar-perguntas">
+                  <button type="button" data-chave-banco="multiaz" aria-pressed="false"><span>🛟 Multi-AZ (reserva em outra zona)</span><span class="sn">desligado</span></button>
+                  <button type="button" data-chave-banco="replica" aria-pressed="false"><span>📖 Réplica de leitura</span><span class="sn">desligado</span></button>
+                </div>
+                <div class="pb-cena">
+                  <div class="pb-banco" data-peca-banco="principal"><span class="ico" aria-hidden="true">🗄️</span><strong>Banco principal</strong><small>zona a · compras</small></div>
+                  <div class="pb-banco" data-peca-banco="reserva" hidden><span class="ico" aria-hidden="true">🛟</span><strong>Reserva (Multi-AZ)</strong><small>zona b · esperando a falha</small></div>
+                  <div class="pb-banco" data-peca-banco="replica" hidden><span class="ico" aria-hidden="true">📖</span><strong>Réplica de leitura</strong><small>só responde consultas</small></div>
+                </div>
+                <div class="dz-botoes golpes">
+                  <button type="button" data-evento="zona" aria-pressed="false">⚡ A zona do banco caiu</button>
+                  <button type="button" data-evento="relatorio" aria-pressed="false">📊 Relatórios pesados</button>
+                  <button type="button" data-evento="normal" aria-pressed="false">🛒 Tudo normal</button>
+                </div>
+                <div class="tr-medidor"><span>velocidade</span><span class="pb-lento" aria-hidden="true"><i></i></span><strong data-lento>rápido</strong></div>
+                <p class="casa-fala" aria-live="polite"></p>
+              </div>
             </div>
           </div>
 
@@ -201,6 +332,22 @@
               <p>O <strong>Amazon DynamoDB</strong> é um banco <strong>NoSQL</strong>, sem servidor e totalmente gerenciado, com respostas em <strong>poucos milissegundos em qualquer escala</strong>. Você não escolhe máquina nem tamanho: ele cresce sozinho, e dá para pagar por requisição.</p>
               <p>Pense num gaveteiro de componentes de eletrônica: cada gaveta tem uma <strong>etiqueta</strong> (a chave), e você abre direto a gaveta que quer, sem procurar nas outras. Dentro, cada gaveta pode ter coisas diferentes: não precisa de colunas fixas.</p>
               <p class="fonte">Fonte: <a href="https://aws.amazon.com/dynamodb/">Amazon DynamoDB</a>, consultado em 04/11/2026.</p>
+              <p>Veja a diferença na prática: os mesmos clientes guardados numa tabela relacional e em fichas do NoSQL. Agora chega uma cliente nova…</p>
+              <div class="casa" data-fichas>
+                <div class="fichas-lados">
+                  <div class="fichas-lado"><h4>🧮 Relacional (RDS)<small>tabela com colunas fixas</small></h4><div class="fichas-rola"><table class="fichas-tabela"></table></div></div>
+                  <div class="fichas-lado"><h4>⚡ NoSQL (DynamoDB)<small>uma ficha por cliente</small></h4><ul class="fichas-cartas"></ul></div>
+                </div>
+                <div class="dz-botoes">
+                  <button type="button" data-novo>➕ Cliente novo: Carla, com Instagram</button>
+                  <button type="button" data-recomeca>↺ Recomeçar</button>
+                </div>
+                <p class="casa-fala" aria-live="polite"></p>
+              </div>
+              <details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>Qual dos dois combina com clientes, pedidos e pagamentos ligados entre si?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p>O <strong>relacional</strong> (RDS ou Aurora): tabelas com colunas fixas, ligadas umas às outras, e transações que não deixam o pedido pela metade. O NoSQL brilha quando cada item pode ser diferente e o acesso é sempre pela chave.</p></div>
+              </details>
               <p class="dica"><strong>Na Ingresso Candango:</strong> o carrinho e a fila da abertura da venda (pedido 2) vão para o DynamoDB: milhões de acessos por segundo, sempre pela chave do cliente.</p>
             </div>
           </div>
@@ -215,6 +362,17 @@
                 <tr><td><strong>AWS DMS</strong><span class="termo-en">Database Migration Service</span></td><td>Migra um banco para a AWS com o banco de origem funcionando.</td><td>"Migrar sem parar", "replicação contínua".</td></tr>
                 <tr><td><strong>AWS SCT</strong><span class="termo-en">Schema Conversion Tool</span></td><td>Converte a estrutura do banco de um motor para outro.</td><td>"Do Oracle para o PostgreSQL", "trocar de motor".</td></tr>
               </tbody></table></div>
+              <div class="casa" data-cache>
+                <div class="pagar-perguntas"><button type="button" data-com-cache aria-pressed="false"><span>📝 ElastiCache na frente do banco</span><span class="sn">desligado</span></button></div>
+                <div class="cache-cena">
+                  <div class="cache-pessoas" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                  <div class="cache-nota" aria-hidden="true">📝 página do show</div>
+                  <div class="cache-banco" aria-hidden="true"><span>🗄️</span>banco</div>
+                </div>
+                <div class="cache-numeros"><span>idas ao banco <strong data-idas>0</strong></span><span>respostas do post-it <strong data-postit>0</strong></span></div>
+                <div class="sim-acoes"><button type="button" class="vai">👥 10 pessoas abrem a página</button></div>
+                <p class="casa-fala" aria-live="polite">O cache é o post-it na mesa: a resposta mais pedida fica anotada perto, e ninguém precisa ir ao arquivo.</p>
+              </div>
               <p class="fonte">Fontes: <a href="https://aws.amazon.com/elasticache/">Amazon ElastiCache</a> e <a href="https://docs.aws.amazon.com/aws-certification/latest/cloud-practitioner-02/cloud-practitioner-02-domain3.html">guia da CLF-C02, Domínio 3</a>, consultados em 04/11/2026.</p>
               <p class="dica"><strong>Na Ingresso Candango:</strong> a página do show mais procurado (pedido 3) fica no ElastiCache; os três anos de vendas (pedido 4), no Redshift; e o banco da salinha (pedido 5) vai pelo DMS.</p>
               <p class="dica"><strong>Como é no Azure:</strong> o RDS lembra o <strong>Banco de Dados SQL do Azure</strong> e o <strong>Banco de Dados do Azure para MySQL e PostgreSQL</strong>, e o DynamoDB lembra o <strong>Azure Cosmos DB</strong>.</p>
@@ -222,26 +380,47 @@
           </div>
         </section>
 
+        <!-- ===================== O GAVETEIRO (vivo.js, parte 30) ===================== -->
+        <section class="parte" id="gaveteiro">
+          <div class="cab">
+            <span class="olho">X1 · o gaveteiro de componentes</span>
+            <h2>Procurar ou abrir pela etiqueta?</h2>
+            <p>Quem mexe com eletrônica tem um gaveteiro cheio de componentes. O resistor de 220 Ω está numa das cem gavetas. Sem etiqueta, você procura uma por uma; com a etiqueta (a chave), vai direto. É a ideia da chave do DynamoDB.</p>
+          </div>
+          <div class="casa" data-gaveteiro>
+            <div class="gav-grade" aria-hidden="true"></div>
+            <div class="gav-placar"><span>gavetas abertas: <strong data-abertas>0</strong></span></div>
+            <div class="dz-botoes">
+              <button type="button" data-busca="procura">🔍 Procurar gaveta por gaveta</button>
+              <button type="button" data-busca="etiqueta">🏷️ Abrir pela etiqueta</button>
+              <button type="button" data-busca="limpa">↺ Fechar tudo</button>
+            </div>
+            <p class="casa-fala" aria-live="polite">Cem gavetas fechadas. O resistor de 220 Ω está numa delas.</p>
+          </div>
+          <p class="fonte">Analogia para a aula. Na busca uma por uma, a média é abrir metade das gavetas; com a chave, é sempre uma.</p>
+        </section>
+
         <!-- ===================== DEMONSTRAÇÃO ===================== -->
         <section class="parte" id="demonstracao">
           <div class="cab">
             <span class="olho">D1 · demonstração</span>
-            <h2>Uma tabela no DynamoDB e as opções do RDS</h2>
-            <p>O DynamoDB cria a tabela em segundos; o RDS a gente só olha, porque o laboratório do Módulo 8 cria um banco de verdade.</p>
+            <h2>Faça junto: uma tabela no DynamoDB e as opções do RDS</h2>
+            <p>O DynamoDB cria a tabela em segundos; o RDS a gente só olha, porque o laboratório do Módulo 8 cria um banco de verdade. Abra o Learner Lab noutra aba e marque cada passo aqui.</p>
           </div>
 
           <div class="conceito" style="grid-template-columns:1fr">
             <div class="texto">
-              <div class="faca-assim">
-                <strong>Faça assim:</strong>
-                <ol>
-                  <li>Abra o <strong>Learner Lab</strong>, clique em <strong>Start Lab</strong> e, com a bolinha verde, clique em <strong>AWS</strong>.</li>
-                  <li>Abra o <strong>DynamoDB</strong> pela busca e clique em <strong>Create table</strong>.</li>
-                  <li>Em <strong>Table name</strong>, escreva <code>carrinho</code>; em <strong>Partition key</strong> (a etiqueta da gaveta), <code>cliente_id</code>. Clique em <strong>Create table</strong>.</li>
-                  <li>Com a tabela pronta, abra <strong>Explore table items</strong> e crie um item com <code>cliente_id</code> = <code>123</code> e um atributo novo, <code>show</code> = <code>Festival do Cerrado</code>.</li>
-                  <li>Agora abra o <strong>RDS</strong> e clique em <strong>Create database</strong>. Só olhe: os motores, os modelos e a opção de implantação <strong>Multi-AZ</strong>. Clique em <strong>Cancel</strong>.</li>
-                </ol>
+              <div class="progresso-atividade" data-progresso="console-aula-08">
+                <span class="contagem">0 de 5</span>
+                <span class="barra-progresso"><span></span></span>
               </div>
+              <ol class="checklist" id="console-aula-08">
+                <li><label><input type="checkbox"><span>Abri o <strong>Learner Lab</strong>, cliquei em <strong>Start Lab</strong> e, com a bolinha verde, cliquei em <strong>AWS</strong>.</span></label></li>
+                <li><label><input type="checkbox"><span>Abri o <strong>DynamoDB</strong> pela busca e cliquei em <strong>Create table</strong>.</span></label></li>
+                <li><label><input type="checkbox"><span>Em <strong>Table name</strong>, escrevi <code>carrinho</code>; em <strong>Partition key</strong> (a etiqueta da gaveta), <code>cliente_id</code>. Cliquei em <strong>Create table</strong>.</span></label></li>
+                <li><label><input type="checkbox"><span>Com a tabela pronta, abri <strong>Explore table items</strong> e criei um item com <code>cliente_id</code> = <code>123</code> e um atributo novo, <code>show</code> = <code>Festival do Cerrado</code>.</span></label></li>
+                <li><label><input type="checkbox"><span>Abri o <strong>RDS</strong> e cliquei em <strong>Create database</strong>. Só olhei os motores, os modelos e a opção <strong>Multi-AZ</strong>, e cliquei em <strong>Cancel</strong>.</span></label></li>
+              </ol>
               <div class="faca-assim">
                 <strong>Teste:</strong>
                 <ol>
@@ -272,6 +451,10 @@
                   <li>"Consultas repetidas, resposta mais rápida sem mexer no banco": <strong>ElastiCache</strong> na frente dele.</li>
                 </ol>
               </div>
+<details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>O banco está lento com tantos relatórios. Ligar o Multi-AZ resolve?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p>Não. A reserva do Multi-AZ fica esperando a falha; ela é para <strong>disponibilidade</strong>. Para tirar os relatórios do banco principal, <strong>réplica de leitura</strong>. Teste no plantão do banco, lá no C2.</p></div>
+              </details>
               <p class="dica cuidado"><strong>E as outras trocas que mais aparecem:</strong> o DynamoDB é NoSQL, não relacional; o Redshift é para análise, não para atender as compras; e no RDS quem atualiza o sistema e o banco é a AWS, mas os dados e quem acessa continuam com você.</p>
             </div>
           </div>
@@ -358,7 +541,7 @@
 
           <div class="cartao">
             <div class="progresso-atividade" data-progresso="passos-aula-08">
-              <span class="contagem">0 de 8</span>
+              <span class="contagem">0 de 10</span>
               <span class="barra-progresso"><span></span></span>
             </div>
             <ol class="checklist" id="passos-aula-08">
@@ -370,6 +553,8 @@
               <li><label><input type="checkbox"><span>Criei e apaguei uma tabela no DynamoDB e vi as opções do RDS. <a href="#demonstracao">Veja o D1</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Fiz os três treinos Classifique!. <a href="#treino">Veja o treino</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Fiz o Módulo 8 e o laboratório do RDS na AWS Academy e marquei no <a href="../#cursos">Meu progresso</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Escolhi um banco para cada dado, com tudo no verde. <a href="#simulador">Veja o SIM1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Testei o plantão do banco, a tabela e as fichas, o post-it do cache e o gaveteiro. <a href="#c2">Veja o C2</a>, o <a href="#c4">C4</a> e o <a href="#gaveteiro">X1</a>.</span></label></li>
             </ol>
           </div>
         </section>
@@ -460,5 +645,6 @@
   <script src="../assets/js/aulas.js?v=3"></script>
   <script src="../assets/js/classifica.js?v=2"></script>
   <script src="../assets/js/matrix.js?v=3"></script>
+  <script src="../js/vivo.js?v=9"></script>
 </body>
 </html>
