@@ -1,6 +1,6 @@
 /*
   vivo.css: as peças das aulas "vivas" do Preparatório AWS (gancho, simulador, pausa aqui, casa ou hotel, placa).
-  versão 6 · 2026-11-10 · só deste site. Aula 1, aula 2 (conta do susto, taxímetro, transporte, iceberg, pit stop, conta de luz)
+  versão 7 · 2026-11-10 · só deste site. Aula 1, aula 2 (conta do susto, taxímetro, transporte, iceberg, pit stop, conta de luz)
   aula 3 (plantão, derrube um data center, do globo ao prédio, funil da região)
   aula 4 (o vazamento, tranque a conta, a porta abre?, a fechadura com ESP32)
   aula 5 (a planta errada, a viagem do pacote, com e sem memória, a régua de bits)
@@ -1366,6 +1366,67 @@
   .regua-lista .trilho, .regua-lista button { grid-column: 1 / -1; }
 }
 
+/* ===================== aula 5 · R0 redes do zero ===================== */
+.zero-cartoes { display: grid; grid-template-columns: repeat(4, 1fr); gap: .6rem; margin: 0 0 1rem; padding: 0; list-style: none; }
+.zero-cartoes li { padding: .9rem; border-radius: 16px; background: var(--superficie-2); border: 1px solid var(--borda); }
+.zero-cartoes .ico { font-size: 1.8rem; }
+.zero-cartoes li > strong { display: block; margin: .2rem 0; font: 800 1rem var(--f-titulo); }
+.zero-cartoes em { display: block; font: 700 .8rem var(--f-mono); font-style: normal; color: var(--neon); margin-bottom: .3rem; }
+.zero-cartoes p { margin: 0; font-size: .88rem; color: var(--texto-2); }
+.carta-envelope {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  width: fit-content;
+  max-width: 100%;
+  margin: .6rem 0;
+  padding: .6rem 1rem;
+  border-radius: 10px;
+  background: #fbfaf5;
+  color: #121714;
+  box-shadow: 0 6px 18px -8px rgba(0, 0, 0, .5);
+  font: 500 .9rem var(--f-mono);
+}
+.carta-caminho {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: .5rem;
+  margin: .6rem 0;
+  padding: 1rem;
+  list-style: none;
+  border-radius: 16px;
+  background: var(--chip);
+  position: relative;
+}
+.carta-caminho li {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: .2rem;
+  padding: .7rem .4rem;
+  border-radius: 12px;
+  background: #121a16;
+  border: 2px solid #2b3530;
+  color: #e8e4d8;
+  text-align: center;
+  transition: border-color .3s, background .3s, opacity .3s;
+}
+.carta-caminho .ico { font-size: 1.6rem; }
+.carta-caminho strong { font: 700 .8rem var(--f-titulo); }
+.carta-caminho small { font: 500 .7rem/1.25 var(--f-mono); color: #a3b0a8; }
+.carta-caminho li.passou { border-color: #39ff9e; background: #12301f; }
+.carta-caminho li.pulou { opacity: .4; }
+.carta-caminho li.barrou { border-color: #ff5c7a; background: #3a1820; animation: treme .35s 2; }
+.carta-portas { display: flex; gap: .3rem; margin-top: .3rem; }
+.carta-porta { padding: .15rem .45rem; border-radius: 6px; background: #2b3530; font: 800 .72rem var(--f-mono); color: #e8e4d8; transition: background .3s; }
+.carta-porta.chegou { background: #39ff9e; color: #111; }
+.carta-porta.barrou { background: #ff5c7a; color: #111; }
+
+@media (max-width: 760px) {
+  .zero-cartoes { grid-template-columns: repeat(2, 1fr); }
+  .carta-caminho { grid-template-columns: repeat(2, 1fr); }
+}
+
 /* ===================== pausa: tudo parado ===================== */
 .pausado .gancho.zero::before,
 .pausado .gancho.zero .gancho-relogio,
@@ -1395,7 +1456,9 @@
 .pausado .mem-carro,
 .pausado .dia-barra i,
 .pausado .central-linha.falha,
-.pausado .maquina.erro { animation: none !important; }
+.pausado .maquina.erro,
+.pausado .carta-caminho li.barrou { animation: none !important; }
+.pausado .carta-caminho li, .pausado .carta-porta { transition: none; }
 .pausado .central-linha.rodando::after, .pausado .lb-rel i, .pausado .regua-lista .trilho i, .pausado .maquina .app { transition: none; }
 .pausado .mem-carro, .pausado .bit { transition: none; }
 .pausado .porta-passos li, .pausado .porta-led, .pausado .tr-risco i { transition: none; }

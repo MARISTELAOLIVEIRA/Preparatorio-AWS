@@ -1,6 +1,6 @@
 /*
   vivo.js: as peças interativas das aulas "vivas" do Preparatório AWS. Só deste site.
-  versão 6 · 2026-11-10 · aulas 1 (conceitos), 2 (cobrança), 3 (infraestrutura), 4 (segurança), 5 (redes) e 6 (computação)
+  versão 7 · 2026-11-10 · aulas 1 (conceitos), 2 (cobrança), 3 (infraestrutura), 4 (segurança), 5 (redes, com o reforço R0) e 6 (computação)
 
   1. [data-gancho]  a contagem para a abertura das vendas e a votação "o site aguenta?"
   2. [data-sim]     simulador "A noite da abertura das vendas": salinha com 2, salinha com 20 ou nuvem
@@ -25,6 +25,7 @@
   20. [data-conteiner] "na minha máquina funciona!": o app sem e com contêiner (aula 6)
   21. [data-lambda] o botão que acorda o Lambda: uma compra, mil compras e o relatório que bate nos 15 minutos (aula 6)
   22. [data-regua]  do ESP32 ao monstro da AWS: a memória de cada máquina, em escala normal e logarítmica (aula 6)
+  23. [data-carta]  redes do zero: a carta com endereço (IP ou nome), porta e caminho (aula 5, reforço R0)
 
   Com as animações pausadas (botão do topo ou "reduzir movimento"), tudo mostra o resultado direto.
 */
@@ -1171,6 +1172,7 @@
   const QUEM = { ana: "Ana (usuária, grupo Monitores)", visitante: "o visitante (função temporária)", bia: "Bia (usuária, sem grupo)" };
   document.querySelectorAll("[data-porta]").forEach(function (box) {
     const passos = box.querySelectorAll(".porta-passos li");
+    if (!passos.length) return; // não é a fechadura da aula 4
     const led = box.querySelector(".porta-led");
     const resultado = box.querySelector(".porta-resultado");
     const pedidoTxt = box.querySelector("[data-pedido-txt]");
@@ -1615,5 +1617,82 @@
         `🔌 Na memória de <strong>${m.nome}</strong> cabe a memória de <strong>${num(n)} ESP32</strong>. A conta: ${m.mem >= GB ? num(m.mem / GB) + " GiB" : ""} ÷ 520 KB.`;
     });
     desenha();
+  });
+
+  // ===================== 23. redes do zero: a carta =====================
+  const DESTINOS_CARTA = {
+    nome: { txt: "ingressocandango.com.br", ip: "203.0.113.10", dns: true },
+    ip: { txt: "203.0.113.10", ip: "203.0.113.10", dns: false },
+    errado: { txt: "203.0.113.99", ip: null, dns: false }
+  };
+  const PORTAS_CARTA = {
+    443: "✅ <strong>Chegou!</strong> A porta 443 é a da loja (HTTPS, o site seguro). O site abre.",
+    22: "🔒 A porta 22 (SSH, para entrar na máquina) existe, mas está <strong>fechada para a internet</strong>: só a equipe entra, e de um endereço conhecido.",
+    3306: "🔒 A porta 3306 é a do cofre (o banco MySQL) e <strong>não abre para a rua</strong>: só o site conversa com o banco. É isso que a aula inteira vai montar."
+  };
+  document.querySelectorAll("[data-carta]").forEach(function (box) {
+    const passos = box.querySelectorAll(".carta-caminho li");
+    const portas = box.querySelectorAll(".carta-porta");
+    const envelope = box.querySelector(".carta-envelope");
+    const fala = box.querySelector(".casa-fala");
+    const vai = box.querySelector(".vai");
+    let para = "nome", porta = "443", espera = [];
+    function rotulo() {
+      const d = DESTINOS_CARTA[para];
+      envelope.innerHTML = `✉️ <span>para <strong>${d.txt}</strong> · porta <strong>${porta}</strong></span>`;
+    }
+    function limpa() {
+      espera.forEach(clearTimeout);
+      espera = [];
+      passos.forEach(li => li.className = "");
+      portas.forEach(p => p.classList.remove("chegou", "barrou"));
+      box.querySelector("[data-passo='dns'] small").textContent = "a agenda: troca o nome pelo número";
+      rotulo();
+    }
+    function envia() {
+      limpa();
+      const d = DESTINOS_CARTA[para];
+      const etapas = [];
+      etapas.push(() => { passos[0].className = "passou"; });
+      etapas.push(function () {
+        const li = box.querySelector("[data-passo='dns']");
+        if (d.dns) { li.className = "passou"; li.querySelector("small").textContent = `${d.txt} → ${d.ip}`; }
+        else li.className = "pulou";
+      });
+      etapas.push(() => { box.querySelector("[data-passo='rota']").className = "passou"; });
+      etapas.push(function () {
+        const li = box.querySelector("[data-passo='predio']");
+        if (!d.ip) {
+          li.className = "barrou";
+          fala.innerHTML = "📭 <strong>Endereço não existe:</strong> nenhuma casa tem o número 203.0.113.99. A carta voltou. Sem o IP certo, nada chega.";
+          return;
+        }
+        li.className = "passou";
+        const pt = box.querySelector(`.carta-porta[data-nporta="${porta}"]`);
+        pt.classList.add(porta === "443" ? "chegou" : "barrou");
+        fala.innerHTML = (d.dns ? "📖 A agenda (o DNS) trocou o nome pelo número. Na AWS, quem faz isso é o Route 53. " : "") + PORTAS_CARTA[porta];
+      });
+      const fim = () => (vai.disabled = false);
+      if (pausado()) { etapas.forEach(f => f()); return fim(); }
+      vai.disabled = true;
+      etapas.forEach((f, i) => espera.push(setTimeout(f, 250 + i * 650)));
+      espera.push(setTimeout(fim, 250 + etapas.length * 650));
+    }
+    box.querySelectorAll("[data-para]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        para = b.dataset.para;
+        box.querySelectorAll("[data-para]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+        limpa();
+      });
+    });
+    box.querySelectorAll("[data-qual-porta]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        porta = b.dataset.qualPorta;
+        box.querySelectorAll("[data-qual-porta]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+        limpa();
+      });
+    });
+    vai.addEventListener("click", envia);
+    limpa();
   });
 })();

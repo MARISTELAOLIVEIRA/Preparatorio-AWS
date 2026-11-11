@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="../assets/css/neon.css?v=5">
   <link rel="stylesheet" href="../css/interativos.css?v=1">
   <link rel="stylesheet" href="../css/aula-aws.css?v=7">
-  <link rel="stylesheet" href="../css/vivo.css?v=6">
+  <link rel="stylesheet" href="../css/vivo.css?v=7">
 </head>
 <body>
 
@@ -119,6 +119,7 @@
             <ol class="roteiro-video sem-tempo">
               <li><a href="#gancho">G1 · A planta errada</a></li>
               <li><a href="#caso">O caso: o banco de dados que não pode aparecer</a></li>
+              <li><a href="#zero">R0 · Redes do zero: endereço, porta, caminho e nome</a></li>
               <li><a href="#simulador">SIM1 · A viagem do pacote</a></li>
               <li><a href="#c1">C1 · A VPC é uma superquadra</a></li>
               <li><a href="#c2">C2 · Gateways e tabelas de rotas</a></li>
@@ -186,6 +187,52 @@
             </ol>
             <p class="fonte">Empresa e pedidos fictícios, criados para as aulas.</p>
           </div>
+        </section>
+
+        <!-- ===================== REDES DO ZERO (vivo.js, parte 23) ===================== -->
+        <section class="parte" id="zero">
+          <div class="cab">
+            <span class="olho">R0 · redes do zero</span>
+            <h2>Toda conversa na internet é uma carta</h2>
+            <p>Antes da VPC, quatro ideias. Uma carta só chega se tiver o endereço certo, a porta certa e um caminho. E, se você só sabe o nome, alguém precisa achar o número.</p>
+          </div>
+          <ul class="zero-cartoes">
+            <li><span class="ico" aria-hidden="true">🏠</span><strong>Endereço IP</strong><em>203.0.113.10</em><p>O endereço da casa. Todo aparelho ligado na rede tem um. Na rede interna da empresa, como na VPC, eles costumam começar com <code>10.</code>, como os apartamentos de um condomínio.</p></li>
+            <li><span class="ico" aria-hidden="true">🚪</span><strong>Porta</strong><em>443 · 22 · 3306</em><p>A porta certa dentro da casa. Um servidor atende várias coisas: a <strong>443</strong> é a do site seguro (HTTPS), a <strong>22</strong> é a de entrar na máquina (SSH), a <strong>3306</strong> é a do banco MySQL.</p></li>
+            <li><span class="ico" aria-hidden="true">🪧</span><strong>Rota</strong><em>as placas</em><p>As placas da rua: dizem por onde a carta vai para chegar ao endereço. Na VPC, ficam na <strong>tabela de rotas</strong>.</p></li>
+            <li><span class="ico" aria-hidden="true">📖</span><strong>DNS</strong><em>nome → número</em><p>A agenda que troca o nome pelo número: <code>ingressocandango.com.br</code> vira <code>203.0.113.10</code>. Na AWS, é o <strong>Route 53</strong>.</p></li>
+          </ul>
+          <div class="casa" data-carta>
+            <div class="porta-grupo"><span>1. Para quem vai a carta?</span>
+              <div class="dz-botoes">
+                <button type="button" data-para="nome" aria-pressed="true">🌐 ingressocandango.com.br</button>
+                <button type="button" data-para="ip" aria-pressed="false">🔢 203.0.113.10</button>
+                <button type="button" data-para="errado" aria-pressed="false">❓ 203.0.113.99</button>
+              </div>
+            </div>
+            <div class="porta-grupo"><span>2. Qual porta?</span>
+              <div class="dz-botoes">
+                <button type="button" data-qual-porta="443" aria-pressed="true">443 · o site</button>
+                <button type="button" data-qual-porta="22" aria-pressed="false">22 · entrar na máquina</button>
+                <button type="button" data-qual-porta="3306" aria-pressed="false">3306 · o banco</button>
+              </div>
+            </div>
+            <div class="carta-envelope" aria-live="polite"></div>
+            <ol class="carta-caminho" aria-label="O caminho da carta">
+              <li data-passo="casa"><span class="ico" aria-hidden="true">🏠</span><strong>A sua casa</strong><small>o seu celular ou computador</small></li>
+              <li data-passo="dns"><span class="ico" aria-hidden="true">📖</span><strong>DNS</strong><small>a agenda: troca o nome pelo número</small></li>
+              <li data-passo="rota"><span class="ico" aria-hidden="true">🪧</span><strong>Rotas</strong><small>as placas da internet</small></li>
+              <li data-passo="predio"><span class="ico" aria-hidden="true">🏢</span><strong>203.0.113.10</strong><small>o servidor da Ingresso Candango</small><span class="carta-portas" aria-hidden="true"><span class="carta-porta" data-nporta="443">443</span><span class="carta-porta" data-nporta="22">22</span><span class="carta-porta" data-nporta="3306">3306</span></span></li>
+            </ol>
+            <div class="sim-acoes"><button type="button" class="vai">✉️ Enviar a carta</button></div>
+            <p class="casa-fala" aria-live="polite">Escolha o destino e a porta, e envie.</p>
+          </div>
+          <p class="fonte">Os endereços 203.0.113.x são de exemplo, reservados para documentação. Portas: <a href="https://www.iana.org/assignments/service-names-port-numbers/">IANA, Service Name and Transport Protocol Port Number Registry</a>, consultado em 10/11/2026.</p>
+
+          <details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>E se você acertar o endereço, mas errar a porta?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p>A carta chega ao prédio, mas bate numa porta fechada ou na porta errada. Por isso as regras do porteiro (o grupo de segurança) falam de <strong>porta</strong>: "aceito a 443 de qualquer um; a 3306, só do site".</p></div>
+              </details>
         </section>
 
         <!-- ===================== SIMULADOR (vivo.js, parte 16) ===================== -->
@@ -534,7 +581,7 @@
 
           <div class="cartao">
             <div class="progresso-atividade" data-progresso="passos-aula-05">
-              <span class="contagem">0 de 10</span>
+              <span class="contagem">0 de 11</span>
               <span class="barra-progresso"><span></span></span>
             </div>
             <ol class="checklist" id="passos-aula-05">
@@ -548,6 +595,7 @@
               <li><label><input type="checkbox"><span>Fiz o Módulo 5 na AWS Academy e marquei no <a href="../#cursos">Meu progresso</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Mandei pacotes nas cinco viagens e descobri a combinação perigosa das chaves. <a href="#simulador">Veja o SIM1</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Testei o porteiro e a cancela na volta, e fiz a conta dos endereços na régua de bits. <a href="#c3">Veja o C3</a> e o <a href="#bits">X1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Mandei cartas no R0 e sei explicar endereço IP, porta, rota e DNS. <a href="#zero">Veja o R0</a>.</span></label></li>
             </ol>
           </div>
         </section>
@@ -638,6 +686,6 @@
   <script src="../assets/js/aulas.js?v=3"></script>
   <script src="../assets/js/classifica.js?v=2"></script>
   <script src="../assets/js/matrix.js?v=3"></script>
-  <script src="../js/vivo.js?v=6"></script>
+  <script src="../js/vivo.js?v=7"></script>
 </body>
 </html>
