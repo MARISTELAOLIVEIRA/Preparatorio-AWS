@@ -1,6 +1,6 @@
 /*
   vivo.js: as peças interativas das aulas "vivas" do Preparatório AWS. Só deste site.
-  versão 9 · 2026-11-11 · aulas 1 a 8 (conceitos, cobrança, infraestrutura, segurança, redes, computação, armazenamento e bancos de dados)
+  versão 10 · 2026-11-11 · aulas 1 a 9 (conceitos, cobrança, infraestrutura, segurança, redes, computação, armazenamento, bancos e arquitetura)
 
   1. [data-gancho]  a contagem para a abertura das vendas e a votação "o site aguenta?"
   2. [data-sim]     simulador "A noite da abertura das vendas": salinha com 2, salinha com 20 ou nuvem
@@ -35,6 +35,9 @@
   28. [data-plantao-banco] Multi-AZ × réplica de leitura: a zona que cai e os relatórios que pesam (aula 8)
   29. [data-cache]  o post-it do cache: dez pessoas abrem a mesma página, com e sem ElastiCache (aula 8)
   30. [data-gaveteiro] o gaveteiro: procurar gaveta por gaveta ou abrir pela etiqueta (a chave) (aula 8)
+  31. [data-pilares] o raio-x dos seis pilares: cada problema no seu pilar, e o hexágono cresce (aula 9)
+  32. [data-fiscal] o fiscal da conta: a verificação do Trusted Advisor, achado por achado (aula 9)
+  (a aula 9 também usa a central data-central="migracao" e a placa data-placa="mudanca")
 
   Com as animações pausadas (botão do topo ou "reduzir movimento"), tudo mostra o resultado direto.
 */
@@ -496,6 +499,17 @@
     mestra: { nome: "Chave mestra de emergência", aws: "Conta raiz", texto: "Abre tudo, sem perguntar nada. Fica no cofre e só sai em emergência. Igual à conta raiz: protegida com MFA e quase nunca usada." },
     _fim: "<strong>🔐 Fechadura desmontada!</strong> Autenticação, usuários, políticas, registro e a chave mestra: o IAM inteiro cabe num ESP32.",
     _unidade: "peças"
+  };
+  PECAS.mudanca = {
+    retire: { nome: "🗑️ Doar ou jogar fora", aws: "Desativar (retire)", texto: "O que ninguém usa mais não vai no caminhão. Na migração, desligue o sistema e economize." },
+    retain: { nome: "🏠 Deixar na casa antiga", aws: "Manter (retain)", texto: "Algumas coisas ficam onde estão, por enquanto. Um sistema preso a um equipamento especial espera a hora certa." },
+    rehost: { nome: "📦 Levar como está", aws: "Rehospedar (rehost, lift and shift)", texto: "O móvel vai do jeito que é, sem mudar nada. O servidor vira uma instância do EC2." },
+    relocate: { nome: "🚚 O guarda-roupa montado", aws: "Realocar (relocate)", texto: "Vai inteiro, de uma vez, sem desmontar. A plataforma de máquinas virtuais muda para a versão dela na nuvem." },
+    repurchase: { nome: "🛒 Vender e comprar novo", aws: "Recomprar (repurchase)", texto: "O sofá velho fica, e chega um novo na casa nova. O sistema antigo é trocado por um produto pronto, quase sempre um SaaS." },
+    replatform: { nome: "🔧 Levar com ajustes", aws: "Replataformar (replatform)", texto: "Vai, mas troca os pés da mesa para caber melhor. O banco vai para o RDS, sem reescrever a aplicação." },
+    refactor: { nome: "🏗️ Refazer sob medida", aws: "Refatorar (refactor)", texto: "O marceneiro faz um móvel novo, sob medida para a casa nova. A aplicação é redesenhada para a nuvem: o mais caro e o que mais aproveita." },
+    _fim: "<strong>📦 Mudança completa!</strong> Sete caixas, sete jeitos de levar (ou não levar) cada sistema para a nuvem.",
+    _unidade: "caixas"
   };
   PECAS.fatura = {
     consumo: { nome: "Consumo em kWh", aws: "Uso medido (pay-as-you-go)", texto: "A luz cobra o que o relógio mediu. A AWS também: horas de servidor, GB guardados, GB que saíram. Desligou, parou de contar." },
@@ -1513,6 +1527,28 @@
       dms: "Migra o banco para a AWS com o da salinha funcionando: as vendas não param.",
       outro: ["falha", "💥 Esse é um banco, não a migração. Para levar o banco da salinha sem parar as vendas: DMS."] }
   };
+  CENTRAIS.migracao = {
+    fax: { certo: "retire", retire: "Ninguém usa mais: desliga e economiza. É doar o que não serve antes da mudança.",
+      outro: ["meh", "Gastar esforço para levar algo que ninguém usa? Melhor desativar."] },
+    palco: { certo: "retain", retain: "Preso a uma máquina especial do palco: fica onde está, por enquanto.",
+      outro: ["falha", "💥 Ele depende de uma máquina especial do palco. Por enquanto, o caminho é manter."] },
+    site: { certo: "rehost", rehost: "Do jeito que está, para uma instância do EC2: levar o móvel como ele é.",
+      refactor: ["meh", "Daria para redesenhar, mas o pedido era levar rápido, sem mudar nada: rehost."],
+      replatform: ["meh", "Ajustes são bem-vindos depois; para levar sem mudar nada, rehost."],
+      outro: ["meh", "O servidor do site pode ir como está, para uma instância do EC2: rehost."] },
+    vms: { certo: "relocate", relocate: "A plataforma de máquinas virtuais inteira, de uma vez, sem mexer nos sistemas: o guarda-roupa montado no caminhão.",
+      rehost: ["meh", "Quase: rehost leva servidor por servidor. Mover a plataforma inteira de uma vez é relocate."],
+      outro: ["meh", "Muitas máquinas virtuais de uma vez, sem mudar a aplicação: relocate."] },
+    sql: { certo: "replatform", replatform: "Leva com um ajuste: o SQL Server vai para o RDS, e a AWS cuida do banco.",
+      rehost: ["meh", "Levar o banco numa máquina do EC2 funciona, mas trocar para o RDS é um ajuste que vale: replatform."],
+      refactor: ["meh", "Não precisa redesenhar tudo: só trocar para um banco gerenciado já é replatform."],
+      outro: ["meh", "Levar com um ajuste, como ir para um banco gerenciado, é replatform."] },
+    rh: { certo: "repurchase", repurchase: "Troca o sistema velho por um SaaS de RH: vender o móvel velho e comprar um novo.",
+      outro: ["meh", "Existe pronto como SaaS: o caminho é recomprar (repurchase)."] },
+    vendas: { certo: "refactor", refactor: "Redesenhado para a nuvem, com contêineres e Lambda. É o mais caro e complexo, e o que mais aproveita a nuvem.",
+      rehost: ["meh", "Leva, mas sem aproveitar a nuvem. O pedido era redesenhar: refactor."],
+      outro: ["meh", "Redesenhar para a nuvem, com contêineres e Lambda, é refactor."] }
+  };
   document.querySelectorAll("[data-central]").forEach(function (box) {
     const linhas = box.querySelectorAll("[data-tarefa]");
     const placar = box.querySelector("[data-placar]");
@@ -1554,9 +1590,10 @@
         const n = linhas.length;
         const gav = box.dataset.central === "armazenamento";
         const ban = box.dataset.central === "bancos";
+        const mig = box.dataset.central === "migracao";
         placar.textContent = certos + " de " + n;
         fala.innerHTML = faltam ? `Faltou escolher ${gav ? "a gaveta" : "o motor"} de ${faltam} ${gav ? "pedido" : "tarefa"}${faltam > 1 ? "s" : ""}.` :
-          certos === n ? (ban ? "🏆 <strong>Um banco para cada dado!</strong> Relacional, NoSQL, cache, análise e migração, cada um no seu lugar." :
+          certos === n ? (mig ? "🏆 <strong>Mudança planejada!</strong> Cada sistema com o seu R: desativar, manter, levar, realocar, recomprar, ajustar e refazer." : ban ? "🏆 <strong>Um banco para cada dado!</strong> Relacional, NoSQL, cache, análise e migração, cada um no seu lugar." :
             gav ? "🏆 <strong>Gavetas organizadas!</strong> Cada dado no lugar certo: disco, balde, pasta, depósito, temporário e ponte." :
             "🏆 <strong>Central montada!</strong> Cada tarefa no motor certo: servidor, função, contêiner, atalho e spot.") :
           `<strong>${certos} de ${n} ${gav ? "na gaveta certa" : "no motor certo"}.</strong> As amarelas funcionam, mas não são a melhor escolha; as vermelhas quebram. Troque e rode de novo.`;
@@ -2064,6 +2101,106 @@
     box.querySelector("[data-busca='limpa']").addEventListener("click", function () {
       limpa();
       fala.textContent = "Cem gavetas fechadas. O resistor de 220 Ω está numa delas.";
+    });
+  });
+
+  // ===================== 31. o raio-x dos seis pilares =====================
+  const PILARES = [
+    { id: "ope", nome: "Excelência operacional", curto: "Excelência op.", pergunta: "você roda bem, enxerga o que acontece e melhora os processos?" },
+    { id: "seg", nome: "Segurança", curto: "Segurança", pergunta: "os dados, os sistemas e os acessos estão protegidos?" },
+    { id: "con", nome: "Confiabilidade", curto: "Confiabilidade", pergunta: "o sistema se recupera de falhas e continua no ar?" },
+    { id: "des", nome: "Eficiência de desempenho", curto: "Desempenho", pergunta: "você usa os recursos certos quando a demanda muda?" },
+    { id: "cus", nome: "Otimização de custos", curto: "Custos", pergunta: "você entrega o resultado pelo menor preço?" },
+    { id: "sus", nome: "Sustentabilidade", curto: "Sustentabilidade", pergunta: "você reduz o consumo de energia e usa só o necessário?" }
+  ];
+  const CONSERTOS = {
+    p1: { pilar: "con", fix: "🔧 Duas ou mais máquinas em zonas diferentes, atrás de um balanceador: uma falha não derruba o site." },
+    p2: { pilar: "cus", fix: "🔧 Cost Explorer para achar o vilão, Budgets para avisar e máquinas do tamanho certo." },
+    p3: { pilar: "ope", fix: "🔧 CloudTrail para saber quem mudou o quê, e mudanças pequenas, frequentes e automatizadas." },
+    p4: { pilar: "des", fix: "🔧 CloudFront e cache na frente, e Auto Scaling quando muita gente entra." },
+    p5: { pilar: "seg", fix: "🔧 Criptografia em repouso, com chaves do KMS, em todas as cópias do banco." },
+    p6: { pilar: "sus", fix: "🔧 Desligar ou diminuir as máquinas à noite: menos energia, só o necessário." }
+  };
+  document.querySelectorAll("[data-pilares]").forEach(function (box) {
+    const palco = box.querySelector(".radar");
+    const fala = box.querySelector(".casa-fala");
+    const nivel = {};
+    PILARES.forEach(p => (nivel[p.id] = 0.3));
+    const C = 170, R = 115;
+    const cena = svg("svg", { viewBox: "0 0 340 340", role: "img", "aria-label": "Radar dos seis pilares do Well-Architected" }, palco);
+    const ponto = (i, v) => { const a = (-90 + i * 60) * Math.PI / 180; return [C + Math.cos(a) * R * v, C + Math.sin(a) * R * v]; };
+    [0.25, 0.5, 0.75, 1].forEach(v => svg("polygon", { points: PILARES.map((_, i) => ponto(i, v).join(",")).join(" "), class: "radar-grade" }, cena));
+    PILARES.forEach(function (p, i) {
+      const [x, y] = ponto(i, 1);
+      svg("line", { x1: C, y1: C, x2: x, y2: y, class: "radar-grade" }, cena);
+      const [lx, ly] = ponto(i, 1.22);
+      const el = svg("text", { x: lx, y: ly + 4, class: "radar-rotulo", "text-anchor": "middle" }, cena);
+      el.textContent = p.curto;
+    });
+    const forma = svg("polygon", { class: "radar-forma" }, cena);
+    const bolas = PILARES.map(() => svg("circle", { r: 5, class: "radar-ponto" }, cena));
+    function desenha() {
+      const pts = PILARES.map((p, i) => ponto(i, nivel[p.id]));
+      forma.setAttribute("points", pts.map(q => q.join(",")).join(" "));
+      bolas.forEach((b, i) => { b.setAttribute("cx", pts[i][0]); b.setAttribute("cy", pts[i][1]); b.classList.toggle("cheio", nivel[PILARES[i].id] >= 1); });
+      const feitos = PILARES.filter(p => nivel[p.id] >= 1).length;
+      box.classList.toggle("completo", feitos === 6);
+      if (feitos === 6) fala.innerHTML = "🏆 <strong>Hexágono cheio: pronta para o investidor!</strong> Seis problemas, seis pilares, seis consertos.";
+    }
+    box.querySelectorAll("[data-problema]").forEach(function (linha) {
+      const c = CONSERTOS[linha.dataset.problema];
+      linha.querySelectorAll("[data-pilar]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          const saida = linha.querySelector(".central-saida");
+          const escolhido = PILARES.find(p => p.id === b.dataset.pilar);
+          linha.classList.remove("falha");
+          if (b.dataset.pilar === c.pilar) {
+            linha.className = "central-linha rodando certo";
+            linha.querySelectorAll("[data-pilar]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+            saida.textContent = "✅ " + escolhido.nome + ". " + c.fix;
+            nivel[c.pilar] = 1;
+            desenha();
+            if (!box.classList.contains("completo")) fala.innerHTML = `O pilar <strong>${escolhido.nome}</strong> encheu. Faltam ${PILARES.filter(p => nivel[p.id] < 1).length}.`;
+          } else {
+            void linha.offsetWidth;
+            linha.classList.add("falha");
+            saida.textContent = `Não é bem esse. ${escolhido.nome} pergunta: ${escolhido.pergunta}`;
+          }
+        });
+      });
+    });
+    box.querySelector(".de-novo").addEventListener("click", function () {
+      PILARES.forEach(p => (nivel[p.id] = 0.3));
+      box.querySelectorAll("[data-problema]").forEach(function (l) {
+        l.className = "central-linha";
+        l.querySelector(".central-saida").textContent = "";
+        l.querySelectorAll("[data-pilar]").forEach(x => x.setAttribute("aria-pressed", "false"));
+      });
+      fala.innerHTML = "Os seis pilares estão murchos. Escolha o pilar de cada problema.";
+      desenha();
+    });
+    desenha();
+  });
+
+  // ===================== 32. o fiscal da conta =====================
+  document.querySelectorAll("[data-fiscal]").forEach(function (box) {
+    const itens = box.querySelectorAll(".fiscal-lista li");
+    const fala = box.querySelector(".casa-fala");
+    const vai = box.querySelector(".vai");
+    let espera = [];
+    vai.addEventListener("click", function () {
+      espera.forEach(clearTimeout);
+      espera = [];
+      itens.forEach(li => li.classList.remove("visto"));
+      const fim = function () {
+        fala.innerHTML = "🔎 <strong>Seis categorias conferidas.</strong> O Trusted Advisor <strong>aponta e recomenda</strong>; quem decide e conserta é a equipe. Comece pelo vermelho.";
+        vai.disabled = false;
+      };
+      if (pausado()) { itens.forEach(li => li.classList.add("visto")); return fim(); }
+      vai.disabled = true;
+      fala.textContent = "Conferindo a conta…";
+      itens.forEach((li, i) => espera.push(setTimeout(() => li.classList.add("visto"), 300 + i * 450)));
+      espera.push(setTimeout(fim, 300 + itens.length * 450));
     });
   });
 })();

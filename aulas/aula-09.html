@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="../assets/css/neon.css?v=5">
   <link rel="stylesheet" href="../css/interativos.css?v=1">
   <link rel="stylesheet" href="../css/aula-aws.css?v=7">
+  <link rel="stylesheet" href="../css/vivo.css?v=10">
 </head>
 <body>
 
@@ -33,7 +34,7 @@
       <button type="button" class="btn-menu" id="btn-menu" aria-expanded="false" aria-controls="menu">Menu</button>
       <nav class="nav" id="menu" aria-label="Partes da aula">
         <a href="../#videos">← Preparatório</a>
-        <a href="#caso">Caso</a>
+        <a href="#simulador">Simulador</a>
         <a href="#conceitos">Conceitos</a>
         <a href="#demonstracao">Arquitetura</a>
         <a href="#pegadinha">Pegadinha</a>
@@ -116,16 +117,49 @@
           </div>
           <div class="cartao">
             <ol class="roteiro-video sem-tempo">
+              <li><a href="#gancho">G1 · A lista do investidor</a></li>
               <li><a href="#caso">O caso: a revisão antes do investimento</a></li>
+              <li><a href="#simulador">SIM1 · O raio-x dos seis pilares</a></li>
               <li><a href="#c1">C1 · Os seis pilares do Well-Architected</a></li>
               <li><a href="#c2">C2 · Projetar para falhar: alta disponibilidade</a></li>
               <li><a href="#c3">C3 · O Trusted Advisor, o fiscal da conta</a></li>
               <li><a href="#c4">C4 · O CAF: a mudança é também de pessoas</a></li>
               <li><a href="#c5">C5 · Os 7 Rs da migração</a></li>
-              <li><a href="#demonstracao">D1 · Lendo uma arquitetura de referência</a></li>
+              <li><a href="#mudanca">X1 · As caixas da mudança</a></li>
+              <li><a href="#demonstracao">D1 · Faça junto: lendo uma arquitetura de referência</a></li>
               <li><a href="#pegadinha">P1 · A pegadinha: pilares parecidos</a></li>
               <li><a href="#academy">Agora é na AWS Academy</a></li>
             </ol>
+          </div>
+        </section>
+
+        <!-- ===================== GANCHO (vivo.js, parte 10) ===================== -->
+        <section class="parte" id="gancho">
+          <div class="cab">
+            <span class="olho">G1 · gancho</span>
+            <h2>A lista do investidor</h2>
+          </div>
+          <div class="gancho" data-plantao data-link="#simulador" data-link-texto="Monte o raio-x logo abaixo">
+            <p class="gancho-evento">💼 Ingresso Candango · o investidor chega amanhã</p>
+            <p class="gancho-titulo">A equipe listou seis problemas.</p>
+            <ul class="lista-investidor">
+              <li>O site caiu duas vezes quando uma máquina travou</li>
+              <li>A conta da AWS dobrou, e ninguém sabe por quê</li>
+              <li>Ninguém sabe quem mudou a configuração do pagamento</li>
+              <li>A página do show demora quando muita gente entra</li>
+              <li>Uma cópia do banco ficou sem criptografia</li>
+              <li>Máquinas grandes ligadas à toa a noite toda</li>
+            </ul>
+            <button type="button" class="botao" data-abrir>🤔 E aí?</button>
+            <div class="gancho-voto" data-revela hidden>
+              <p class="gancho-pergunta" tabindex="-1">Os seis problemas são do mesmo tipo?</p>
+              <div class="gancho-botoes">
+                <button type="button" aria-pressed="false" data-explica="Olhe de perto: um é queda, outro é conta, outro é segurança… cada um mora num pilar diferente.">🟰 Todos do mesmo tipo</button>
+                <button type="button" aria-pressed="false" data-explica="Isso! Seis problemas, seis pilares do Well-Architected. Cada um pede um tipo de conserto.">🧩 Cada um de uma área</button>
+                <button type="button" aria-pressed="false" data-explica="Só um é de custo. Os outros são de queda, segurança, lentidão, controle das mudanças e energia.">💰 Tudo é dinheiro</button>
+              </div>
+              <p class="gancho-resposta" aria-live="polite"></p>
+            </div>
           </div>
         </section>
 
@@ -153,6 +187,102 @@
             </ol>
             <p class="fonte">Empresa, investidor e problemas fictícios, criados para as aulas.</p>
           </div>
+        </section>
+
+        <!-- ===================== SIMULADOR (vivo.js, parte 31) ===================== -->
+        <section class="parte" id="simulador">
+          <div class="cab">
+            <span class="olho">SIM1 · simulador</span>
+            <h2>O raio-x dos seis pilares</h2>
+            <p>O radar mostra os seis pilares, todos murchos. Escolha o pilar de cada problema: acertou, o pilar enche e aparece o conserto.</p>
+          </div>
+          <div class="sim" data-pilares>
+            <div class="pilares-cena">
+              <div class="radar"></div>
+              <ol class="central">
+                <li class="central-linha" data-problema="p1">
+                  <span class="tarefa"><strong>💥 O site caiu quando uma máquina travou</strong></span>
+                  <div class="dz-botoes" role="group" aria-label="Pilar do problema">
+                    <button type="button" data-pilar="ope" aria-pressed="false">⚙️ Excelência op.</button>
+                    <button type="button" data-pilar="seg" aria-pressed="false">🔐 Segurança</button>
+                    <button type="button" data-pilar="con" aria-pressed="false">🛟 Confiabilidade</button>
+                    <button type="button" data-pilar="des" aria-pressed="false">⚡ Desempenho</button>
+                    <button type="button" data-pilar="cus" aria-pressed="false">💰 Custos</button>
+                    <button type="button" data-pilar="sus" aria-pressed="false">🌱 Sustentabilidade</button>
+                  </div>
+                  <p class="central-saida" aria-live="polite"></p>
+                </li>
+                <li class="central-linha" data-problema="p2">
+                  <span class="tarefa"><strong>💸 A conta dobrou, e ninguém sabe por quê</strong></span>
+                  <div class="dz-botoes" role="group" aria-label="Pilar do problema">
+                    <button type="button" data-pilar="ope" aria-pressed="false">⚙️ Excelência op.</button>
+                    <button type="button" data-pilar="seg" aria-pressed="false">🔐 Segurança</button>
+                    <button type="button" data-pilar="con" aria-pressed="false">🛟 Confiabilidade</button>
+                    <button type="button" data-pilar="des" aria-pressed="false">⚡ Desempenho</button>
+                    <button type="button" data-pilar="cus" aria-pressed="false">💰 Custos</button>
+                    <button type="button" data-pilar="sus" aria-pressed="false">🌱 Sustentabilidade</button>
+                  </div>
+                  <p class="central-saida" aria-live="polite"></p>
+                </li>
+                <li class="central-linha" data-problema="p3">
+                  <span class="tarefa"><strong>🕵️ Ninguém sabe quem mudou a configuração</strong></span>
+                  <div class="dz-botoes" role="group" aria-label="Pilar do problema">
+                    <button type="button" data-pilar="ope" aria-pressed="false">⚙️ Excelência op.</button>
+                    <button type="button" data-pilar="seg" aria-pressed="false">🔐 Segurança</button>
+                    <button type="button" data-pilar="con" aria-pressed="false">🛟 Confiabilidade</button>
+                    <button type="button" data-pilar="des" aria-pressed="false">⚡ Desempenho</button>
+                    <button type="button" data-pilar="cus" aria-pressed="false">💰 Custos</button>
+                    <button type="button" data-pilar="sus" aria-pressed="false">🌱 Sustentabilidade</button>
+                  </div>
+                  <p class="central-saida" aria-live="polite"></p>
+                </li>
+                <li class="central-linha" data-problema="p4">
+                  <span class="tarefa"><strong>🐢 A página demora com muita gente</strong></span>
+                  <div class="dz-botoes" role="group" aria-label="Pilar do problema">
+                    <button type="button" data-pilar="ope" aria-pressed="false">⚙️ Excelência op.</button>
+                    <button type="button" data-pilar="seg" aria-pressed="false">🔐 Segurança</button>
+                    <button type="button" data-pilar="con" aria-pressed="false">🛟 Confiabilidade</button>
+                    <button type="button" data-pilar="des" aria-pressed="false">⚡ Desempenho</button>
+                    <button type="button" data-pilar="cus" aria-pressed="false">💰 Custos</button>
+                    <button type="button" data-pilar="sus" aria-pressed="false">🌱 Sustentabilidade</button>
+                  </div>
+                  <p class="central-saida" aria-live="polite"></p>
+                </li>
+                <li class="central-linha" data-problema="p5">
+                  <span class="tarefa"><strong>🔓 Uma cópia do banco sem criptografia</strong></span>
+                  <div class="dz-botoes" role="group" aria-label="Pilar do problema">
+                    <button type="button" data-pilar="ope" aria-pressed="false">⚙️ Excelência op.</button>
+                    <button type="button" data-pilar="seg" aria-pressed="false">🔐 Segurança</button>
+                    <button type="button" data-pilar="con" aria-pressed="false">🛟 Confiabilidade</button>
+                    <button type="button" data-pilar="des" aria-pressed="false">⚡ Desempenho</button>
+                    <button type="button" data-pilar="cus" aria-pressed="false">💰 Custos</button>
+                    <button type="button" data-pilar="sus" aria-pressed="false">🌱 Sustentabilidade</button>
+                  </div>
+                  <p class="central-saida" aria-live="polite"></p>
+                </li>
+                <li class="central-linha" data-problema="p6">
+                  <span class="tarefa"><strong>🌙 Máquinas grandes ligadas à toa a noite toda</strong></span>
+                  <div class="dz-botoes" role="group" aria-label="Pilar do problema">
+                    <button type="button" data-pilar="ope" aria-pressed="false">⚙️ Excelência op.</button>
+                    <button type="button" data-pilar="seg" aria-pressed="false">🔐 Segurança</button>
+                    <button type="button" data-pilar="con" aria-pressed="false">🛟 Confiabilidade</button>
+                    <button type="button" data-pilar="des" aria-pressed="false">⚡ Desempenho</button>
+                    <button type="button" data-pilar="cus" aria-pressed="false">💰 Custos</button>
+                    <button type="button" data-pilar="sus" aria-pressed="false">🌱 Sustentabilidade</button>
+                  </div>
+                  <p class="central-saida" aria-live="polite"></p>
+                </li>
+              </ol>
+            </div>
+            <div class="sim-acoes"><button type="button" class="de-novo">↺ Murchar tudo de novo</button></div>
+            <p class="casa-fala" aria-live="polite">Os seis pilares estão murchos. Escolha o pilar de cada problema.</p>
+          </div>
+          <p class="fonte">Simulação para a aula, com os pilares do C1 e os serviços das aulas anteriores.</p>
+
+          <details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>Máquinas grandes ligadas à toa: é custo ou sustentabilidade?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p>Os dois sofrem, e é aí que mora a pegadinha. Se a pergunta fala em <strong>energia e impacto ambiental</strong>, é sustentabilidade; se fala em <strong>preço</strong>, é otimização de custos.</p></div>
+              </details>
         </section>
 
         <!-- ===================== CONCEITOS ===================== -->
@@ -201,6 +331,23 @@
               <h3>O Trusted Advisor, o fiscal da conta</h3>
               <p>O <strong>AWS Trusted Advisor</strong> confere a sua conta o tempo todo com as boas práticas da AWS e dá recomendações em seis categorias: <strong>otimização de custos</strong>, <strong>desempenho</strong>, <strong>resiliência</strong>, <strong>segurança</strong>, <strong>excelência operacional</strong> e <strong>limites de serviço</strong>.</p>
               <p class="fonte">Fonte: <a href="https://aws.amazon.com/premiumsupport/technology/trusted-advisor/">AWS Trusted Advisor</a>, consultado em 04/11/2026.</p>
+              <div class="casa" data-fiscal>
+                <ul class="fiscal-lista">
+                  <li><span class="ico" aria-hidden="true">💰</span><span><strong>Otimização de custos</strong><small>3 máquinas quase paradas a noite toda</small></span><span class="sinal amarelo" aria-label="atenção"></span></li>
+                  <li><span class="ico" aria-hidden="true">⚡</span><span><strong>Desempenho</strong><small>um disco trabalhando no limite</small></span><span class="sinal amarelo" aria-label="atenção"></span></li>
+                  <li><span class="ico" aria-hidden="true">🛟</span><span><strong>Resiliência</strong><small>banco de dados sem Multi-AZ</small></span><span class="sinal amarelo" aria-label="atenção"></span></li>
+                  <li><span class="ico" aria-hidden="true">🔐</span><span><strong>Segurança</strong><small>porta 22 aberta para o mundo inteiro</small></span><span class="sinal vermelho" aria-label="problema"></span></li>
+                  <li><span class="ico" aria-hidden="true">⚙️</span><span><strong>Excelência operacional</strong><small>registros de acesso desligados num bucket</small></span><span class="sinal amarelo" aria-label="atenção"></span></li>
+                  <li><span class="ico" aria-hidden="true">📏</span><span><strong>Limites de serviço</strong><small>tudo longe dos limites da conta</small></span><span class="sinal verde" aria-label="tudo certo"></span></li>
+                </ul>
+                <div class="sim-acoes"><button type="button" class="vai">🔎 Rodar a verificação</button></div>
+                <p class="casa-fala" aria-live="polite">Aperte o botão e veja o fiscal conferir a conta da Ingresso Candango.</p>
+              </div>
+              <p class="fonte">Achados de exemplo, para a aula.</p>
+              <details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>O Trusted Advisor conserta os problemas sozinho?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p>Não. Ele <strong>confere e recomenda</strong>, categoria por categoria. Quem decide e conserta é a equipe.</p></div>
+              </details>
               <p class="dica">Lembra da aula 2? O plano <strong>Basic</strong> dá as verificações principais; o <strong>Business Support+</strong> e os planos acima dão todas.</p>
             </div>
           </div>
@@ -238,7 +385,131 @@
                 <tr><td><strong>Refatorar</strong><span class="termo-en">refactor, re-architect</span></td><td>Redesenha para a nuvem. É o mais complexo e caro.</td><td>O sistema de vendas vira contêineres e Lambda.</td></tr>
               </tbody></table></div>
               <p class="fonte">Fonte: <a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/large-migration-guide/migration-strategies.html">AWS Prescriptive Guidance, migration strategies</a>, consultado em 04/11/2026.</p>
+              <p>Agora planeje a mudança da rede de casas de show: um R para cada sistema. Pense numa mudança de casa.</p>
+              <div class="sim" data-central="migracao">
+                <ol class="central">
+                  <li class="central-linha" data-tarefa="fax">
+                <span class="tarefa"><strong>📠 O sistema de fax de 2010</strong><small>ninguém usa mais</small></span>
+                <div class="dz-botoes" role="group" aria-label="Estratégia para O sistema de fax de 2010">
+                  <button type="button" data-motor="retire" aria-pressed="false">🗑️ Desativar</button>
+                  <button type="button" data-motor="retain" aria-pressed="false">🏠 Manter</button>
+                  <button type="button" data-motor="rehost" aria-pressed="false">📦 Rehospedar</button>
+                  <button type="button" data-motor="relocate" aria-pressed="false">🚚 Realocar</button>
+                  <button type="button" data-motor="repurchase" aria-pressed="false">🛒 Recomprar</button>
+                  <button type="button" data-motor="replatform" aria-pressed="false">🔧 Replataformar</button>
+                  <button type="button" data-motor="refactor" aria-pressed="false">🏗️ Refatorar</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+                  <li class="central-linha" data-tarefa="palco">
+                <span class="tarefa"><strong>🎛️ O sistema do palco</strong><small>preso a uma máquina especial</small></span>
+                <div class="dz-botoes" role="group" aria-label="Estratégia para O sistema do palco">
+                  <button type="button" data-motor="retire" aria-pressed="false">🗑️ Desativar</button>
+                  <button type="button" data-motor="retain" aria-pressed="false">🏠 Manter</button>
+                  <button type="button" data-motor="rehost" aria-pressed="false">📦 Rehospedar</button>
+                  <button type="button" data-motor="relocate" aria-pressed="false">🚚 Realocar</button>
+                  <button type="button" data-motor="repurchase" aria-pressed="false">🛒 Recomprar</button>
+                  <button type="button" data-motor="replatform" aria-pressed="false">🔧 Replataformar</button>
+                  <button type="button" data-motor="refactor" aria-pressed="false">🏗️ Refatorar</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+                  <li class="central-linha" data-tarefa="site">
+                <span class="tarefa"><strong>🌐 O servidor do site</strong><small>levar rápido, sem mudar nada</small></span>
+                <div class="dz-botoes" role="group" aria-label="Estratégia para O servidor do site">
+                  <button type="button" data-motor="retire" aria-pressed="false">🗑️ Desativar</button>
+                  <button type="button" data-motor="retain" aria-pressed="false">🏠 Manter</button>
+                  <button type="button" data-motor="rehost" aria-pressed="false">📦 Rehospedar</button>
+                  <button type="button" data-motor="relocate" aria-pressed="false">🚚 Realocar</button>
+                  <button type="button" data-motor="repurchase" aria-pressed="false">🛒 Recomprar</button>
+                  <button type="button" data-motor="replatform" aria-pressed="false">🔧 Replataformar</button>
+                  <button type="button" data-motor="refactor" aria-pressed="false">🏗️ Refatorar</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+                  <li class="central-linha" data-tarefa="vms">
+                <span class="tarefa"><strong>🖥️ Dezenas de máquinas virtuais</strong><small>a plataforma inteira, de uma vez, sem mexer nos sistemas</small></span>
+                <div class="dz-botoes" role="group" aria-label="Estratégia para Dezenas de máquinas virtuais">
+                  <button type="button" data-motor="retire" aria-pressed="false">🗑️ Desativar</button>
+                  <button type="button" data-motor="retain" aria-pressed="false">🏠 Manter</button>
+                  <button type="button" data-motor="rehost" aria-pressed="false">📦 Rehospedar</button>
+                  <button type="button" data-motor="relocate" aria-pressed="false">🚚 Realocar</button>
+                  <button type="button" data-motor="repurchase" aria-pressed="false">🛒 Recomprar</button>
+                  <button type="button" data-motor="replatform" aria-pressed="false">🔧 Replataformar</button>
+                  <button type="button" data-motor="refactor" aria-pressed="false">🏗️ Refatorar</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+                  <li class="central-linha" data-tarefa="sql">
+                <span class="tarefa"><strong>🗄️ O banco SQL Server</strong><small>levar, mas parar de cuidar do banco</small></span>
+                <div class="dz-botoes" role="group" aria-label="Estratégia para O banco SQL Server">
+                  <button type="button" data-motor="retire" aria-pressed="false">🗑️ Desativar</button>
+                  <button type="button" data-motor="retain" aria-pressed="false">🏠 Manter</button>
+                  <button type="button" data-motor="rehost" aria-pressed="false">📦 Rehospedar</button>
+                  <button type="button" data-motor="relocate" aria-pressed="false">🚚 Realocar</button>
+                  <button type="button" data-motor="repurchase" aria-pressed="false">🛒 Recomprar</button>
+                  <button type="button" data-motor="replatform" aria-pressed="false">🔧 Replataformar</button>
+                  <button type="button" data-motor="refactor" aria-pressed="false">🏗️ Refatorar</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+                  <li class="central-linha" data-tarefa="rh">
+                <span class="tarefa"><strong>👥 O sistema de RH antigo</strong><small>existe pronto como SaaS</small></span>
+                <div class="dz-botoes" role="group" aria-label="Estratégia para O sistema de RH antigo">
+                  <button type="button" data-motor="retire" aria-pressed="false">🗑️ Desativar</button>
+                  <button type="button" data-motor="retain" aria-pressed="false">🏠 Manter</button>
+                  <button type="button" data-motor="rehost" aria-pressed="false">📦 Rehospedar</button>
+                  <button type="button" data-motor="relocate" aria-pressed="false">🚚 Realocar</button>
+                  <button type="button" data-motor="repurchase" aria-pressed="false">🛒 Recomprar</button>
+                  <button type="button" data-motor="replatform" aria-pressed="false">🔧 Replataformar</button>
+                  <button type="button" data-motor="refactor" aria-pressed="false">🏗️ Refatorar</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+                  <li class="central-linha" data-tarefa="vendas">
+                <span class="tarefa"><strong>🛒 O sistema de vendas</strong><small>redesenhar para a nuvem, com contêineres e Lambda</small></span>
+                <div class="dz-botoes" role="group" aria-label="Estratégia para O sistema de vendas">
+                  <button type="button" data-motor="retire" aria-pressed="false">🗑️ Desativar</button>
+                  <button type="button" data-motor="retain" aria-pressed="false">🏠 Manter</button>
+                  <button type="button" data-motor="rehost" aria-pressed="false">📦 Rehospedar</button>
+                  <button type="button" data-motor="relocate" aria-pressed="false">🚚 Realocar</button>
+                  <button type="button" data-motor="repurchase" aria-pressed="false">🛒 Recomprar</button>
+                  <button type="button" data-motor="replatform" aria-pressed="false">🔧 Replataformar</button>
+                  <button type="button" data-motor="refactor" aria-pressed="false">🏗️ Refatorar</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+                </ol>
+                <div class="sim-acoes"><button type="button" class="vai">🚚 Planejar a mudança</button><span>placar: <span class="central-placar" data-placar>–</span></span></div>
+                <p class="casa-fala" aria-live="polite"></p>
+              </div>
               <p class="dica"><strong>Como é no Azure:</strong> a Microsoft também tem um <strong>Cloud Adoption Framework</strong> e um <strong>Well-Architected Framework</strong>, com pilares parecidos.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================== AS CAIXAS DA MUDANÇA (vivo.js, parte 4) ===================== -->
+        <section class="parte" id="mudanca">
+          <div class="cab">
+            <span class="olho">X1 · as caixas da mudança</span>
+            <h2>Sete caixas, sete jeitos de mudar</h2>
+            <p>Migrar para a nuvem é como mudar de casa: nem tudo vai do mesmo jeito. Abra cada caixa e veja o que ela é na casa e na AWS. Já fez uma mudança? Pense no que você levou, vendeu e deixou para trás.</p>
+          </div>
+          <div class="placa-nuvem" data-placa="mudanca">
+            <div class="caixas-mudanca">
+              <button type="button" data-peca="retire" aria-pressed="false"><span aria-hidden="true">🗑️</span>Desativar</button>
+              <button type="button" data-peca="retain" aria-pressed="false"><span aria-hidden="true">🏠</span>Manter</button>
+              <button type="button" data-peca="rehost" aria-pressed="false"><span aria-hidden="true">📦</span>Rehospedar</button>
+              <button type="button" data-peca="relocate" aria-pressed="false"><span aria-hidden="true">🚚</span>Realocar</button>
+              <button type="button" data-peca="repurchase" aria-pressed="false"><span aria-hidden="true">🛒</span>Recomprar</button>
+              <button type="button" data-peca="replatform" aria-pressed="false"><span aria-hidden="true">🔧</span>Replataformar</button>
+              <button type="button" data-peca="refactor" aria-pressed="false"><span aria-hidden="true">🏗️</span>Refatorar</button>
+            </div>
+            <div class="placa-ficha" aria-live="polite">
+              <span class="olho">caixas de mudança</span>
+              <h4>Abra uma caixa</h4>
+              <p>Cada caixa é uma das sete estratégias de migração, os 7 Rs.</p>
+              <p class="placa-contagem">0 de 7 caixas</p>
             </div>
           </div>
         </section>
@@ -247,21 +518,22 @@
         <section class="parte" id="demonstracao">
           <div class="cab">
             <span class="olho">D1 · demonstração</span>
-            <h2>Lendo uma arquitetura de referência</h2>
-            <p>Hoje não precisa do Learner Lab: a página da AWS é aberta.</p>
+            <h2>Faça junto: lendo uma arquitetura de referência</h2>
+            <p>Hoje não precisa do Learner Lab: a página da AWS é aberta. Abra noutra aba e marque cada passo aqui.</p>
           </div>
 
           <div class="conceito" style="grid-template-columns:1fr">
             <div class="texto">
-              <div class="faca-assim">
-                <strong>Faça assim:</strong>
-                <ol>
-                  <li>Abra o <a href="https://aws.amazon.com/architecture/">AWS Architecture Center</a>, a central de arquiteturas da AWS.</li>
-                  <li>Procure uma arquitetura de referência de um <strong>site</strong> ou <strong>aplicação web</strong> e abra o diagrama.</li>
-                  <li>Ache no desenho as peças das aulas anteriores: regiões e zonas, VPC, EC2 ou contêineres, S3, banco de dados e CloudFront.</li>
-                  <li>Para cada peça, pergunte: ela ajuda em qual pilar? Duas zonas, por exemplo, ajudam na <strong>confiabilidade</strong>.</li>
-                </ol>
+              <div class="progresso-atividade" data-progresso="arquitetura-aula-09">
+                <span class="contagem">0 de 4</span>
+                <span class="barra-progresso"><span></span></span>
               </div>
+              <ol class="checklist" id="arquitetura-aula-09">
+                <li><label><input type="checkbox"><span>Abri o <a href="https://aws.amazon.com/architecture/">AWS Architecture Center</a>, a central de arquiteturas da AWS.</span></label></li>
+                <li><label><input type="checkbox"><span>Procurei uma arquitetura de referência de um <strong>site</strong> ou <strong>aplicação web</strong> e abri o diagrama.</span></label></li>
+                <li><label><input type="checkbox"><span>Achei no desenho as peças das aulas anteriores: regiões e zonas, VPC, EC2 ou contêineres, S3, banco de dados e CloudFront.</span></label></li>
+                <li><label><input type="checkbox"><span>Para cada peça, perguntei: ela ajuda em qual pilar? Duas zonas, por exemplo, ajudam na <strong>confiabilidade</strong>.</span></label></li>
+              </ol>
               <div class="faca-assim">
                 <strong>Teste:</strong>
                 <ol>
@@ -289,6 +561,10 @@
                 <tr><td>Processos, mudanças pequenas e frequentes, aprender com os erros.</td><td><strong>Excelência operacional</strong></td><td>Confiabilidade.</td></tr>
                 <tr><td>Energia, impacto ambiental, usar menos recursos.</td><td><strong>Sustentabilidade</strong></td><td>Otimização de custos, que é sobre o preço.</td></tr>
               </tbody></table></div>
+<details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>O banco SQL Server vai para o RDS, sem reescrever a aplicação. É rehost ou replatform?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p><strong>Replatform</strong>: leva com um ajuste (trocar para um banco gerenciado). Rehost seria levar o banco do jeito que está, numa máquina do EC2.</p></div>
+              </details>
               <p class="dica cuidado"><strong>E na migração:</strong> "sem mudar nada" é rehost; "com alguns ajustes, como ir para um banco gerenciado" é replatform; "redesenhar para a nuvem" é refactor. Trocar por um SaaS é repurchase.</p>
             </div>
           </div>
@@ -379,7 +655,7 @@
 
           <div class="cartao">
             <div class="progresso-atividade" data-progresso="passos-aula-09">
-              <span class="contagem">0 de 8</span>
+              <span class="contagem">0 de 10</span>
               <span class="barra-progresso"><span></span></span>
             </div>
             <ol class="checklist" id="passos-aula-09">
@@ -391,6 +667,8 @@
               <li><label><input type="checkbox"><span>Li uma arquitetura de referência e achei os pilares nela. <a href="#demonstracao">Veja o D1</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Fiz os três treinos Classifique!. <a href="#treino">Veja o treino</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Fiz o Módulo 9 na AWS Academy e marquei no <a href="../#cursos">Meu progresso</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Enchi o hexágono dos seis pilares, com cada problema no pilar certo. <a href="#simulador">Veja o SIM1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Rodei o fiscal da conta, planejei a mudança com os 7 Rs e abri as sete caixas. <a href="#c3">Veja o C3</a>, o <a href="#c5">C5</a> e o <a href="#mudanca">X1</a>.</span></label></li>
             </ol>
           </div>
         </section>
@@ -481,5 +759,6 @@
   <script src="../assets/js/aulas.js?v=3"></script>
   <script src="../assets/js/classifica.js?v=2"></script>
   <script src="../assets/js/matrix.js?v=3"></script>
+  <script src="../js/vivo.js?v=10"></script>
 </body>
 </html>

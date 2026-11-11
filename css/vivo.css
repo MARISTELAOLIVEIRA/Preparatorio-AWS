@@ -1,6 +1,6 @@
 /*
   vivo.css: as peças das aulas "vivas" do Preparatório AWS (gancho, simulador, pausa aqui, casa ou hotel, placa).
-  versão 9 · 2026-11-11 · só deste site. Aula 1, aula 2 (conta do susto, taxímetro, transporte, iceberg, pit stop, conta de luz)
+  versão 10 · 2026-11-11 · só deste site. Aula 1, aula 2 (conta do susto, taxímetro, transporte, iceberg, pit stop, conta de luz)
   aula 3 (plantão, derrube um data center, do globo ao prédio, funil da região)
   aula 4 (o vazamento, tranque a conta, a porta abre?, a fechadura com ESP32)
   aula 5 (a planta errada, a viagem do pacote, com e sem memória, a régua de bits)
@@ -1552,6 +1552,72 @@
   .cache-nota { justify-self: center; }
 }
 
+/* ===================== aula 9 · G1 a lista do investidor ===================== */
+.lista-investidor { width: min(100%, 30rem); margin: 1.2rem auto; padding: 1rem 1.2rem; border-radius: 12px; background: #fbfaf5; color: #121714; text-align: left; font: 500 .88rem var(--f-texto); list-style: none; display: grid; gap: .35rem; }
+.lista-investidor li::before { content: "☐ "; color: #c22450; font-weight: 900; }
+
+/* ===================== aula 9 · SIM1 o raio-x dos pilares ===================== */
+.pilares-cena { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 1rem; align-items: start; }
+.radar { position: sticky; top: 5rem; padding: .6rem; border-radius: 18px; background: var(--chip); }
+.radar svg { display: block; width: 100%; height: auto; }
+.radar-grade { fill: none; stroke: #3b4a42; stroke-width: 1; }
+.radar-rotulo { fill: #e8e4d8; font: 700 11px var(--f-titulo); }
+.radar-forma { fill: rgba(255, 153, 0, .25); stroke: #ff9900; stroke-width: 2.5; transition: all .6s cubic-bezier(.3, 1.4, .5, 1); }
+.completo .radar-forma { fill: rgba(57, 255, 158, .25); stroke: #39ff9e; }
+.radar-ponto { fill: #ff9900; transition: cx .6s cubic-bezier(.3, 1.4, .5, 1), cy .6s cubic-bezier(.3, 1.4, .5, 1); }
+.radar-ponto.cheio { fill: #39ff9e; }
+.pilares-cena .central-linha { grid-template-columns: 1fr; }
+.pilares-cena .dz-botoes button { padding: .3rem .6rem; font-size: .78rem; }
+
+/* ===================== aula 9 · C3 o fiscal da conta ===================== */
+.fiscal-lista { display: grid; gap: .4rem; margin: .6rem 0; padding: 0; list-style: none; }
+.fiscal-lista li {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: .7rem;
+  align-items: center;
+  padding: .6rem .9rem;
+  border-radius: 12px;
+  background: var(--superficie-2);
+  border: 1px solid var(--borda);
+  opacity: .2;
+  transform: translateX(-8px);
+  transition: opacity .35s, transform .35s;
+}
+.fiscal-lista li.visto { opacity: 1; transform: none; }
+.fiscal-lista .ico { font-size: 1.4rem; }
+.fiscal-lista strong { display: block; font: 800 .9rem var(--f-titulo); }
+.fiscal-lista small { color: var(--texto-2); font-size: .85rem; }
+.fiscal-lista .sinal { width: 1rem; height: 1rem; border-radius: 50%; }
+.fiscal-lista .sinal.vermelho { background: var(--vivo-ruim); box-shadow: 0 0 10px var(--vivo-ruim); }
+.fiscal-lista .sinal.amarelo { background: #ffd36b; box-shadow: 0 0 10px #ffd36b; }
+.fiscal-lista .sinal.verde { background: var(--vivo-ok); box-shadow: 0 0 10px var(--vivo-ok); }
+
+/* ===================== aula 9 · X1 as caixas da mudança ===================== */
+.caixas-mudanca { display: grid; grid-template-columns: repeat(4, 1fr); gap: .6rem; padding: 1rem; border-radius: 18px; background: #e9dcc3; }
+.caixas-mudanca button {
+  display: grid;
+  justify-items: center;
+  gap: .2rem;
+  padding: .9rem .3rem .7rem;
+  border: 0;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #c8a06a 0 18%, #b88a52 18% 22%, #c8a06a 22%);
+  box-shadow: inset 0 -4px 0 #9b7240, 0 4px 10px -4px rgba(0, 0, 0, .4);
+  color: #2b1d0e;
+  font: 800 .78rem/1.15 var(--f-titulo);
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s;
+}
+.caixas-mudanca button span { font-size: 1.6rem; }
+.caixas-mudanca button:hover, .caixas-mudanca button[aria-pressed="true"] { transform: translateY(-4px) rotate(-2deg); box-shadow: inset 0 -4px 0 #9b7240, 0 0 0 3px #ff9900, 0 10px 18px -6px rgba(0, 0, 0, .5); }
+
+@media (max-width: 760px) {
+  .pilares-cena { grid-template-columns: 1fr; }
+  .radar { position: static; }
+  .caixas-mudanca { grid-template-columns: repeat(2, 1fr); }
+}
+
 /* ===================== pausa: tudo parado ===================== */
 .pausado .gancho.zero::before,
 .pausado .gancho.zero .gancho-relogio,
@@ -1589,6 +1655,7 @@
 .pausado .fichas-cartas li.nova,
 .pausado .pb-banco.pesado,
 .pausado .gav-grade span.achou { animation: none !important; }
+.pausado .radar-forma, .pausado .radar-ponto, .pausado .fiscal-lista li { transition: none; }
 .pausado .pb-banco, .pausado .pb-lento i, .pausado .cache-pessoas span, .pausado .cache-nota { transition: none; }
 .pausado .vida-gavetas li, .pausado .dl-maquina { transition: none; }
 .pausado .carta-caminho li, .pausado .carta-porta { transition: none; }
