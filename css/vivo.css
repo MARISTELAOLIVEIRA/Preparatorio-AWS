@@ -1,6 +1,6 @@
 /*
   vivo.css: as peças das aulas "vivas" do Preparatório AWS (gancho, simulador, pausa aqui, casa ou hotel, placa).
-  versão 7 · 2026-11-10 · só deste site. Aula 1, aula 2 (conta do susto, taxímetro, transporte, iceberg, pit stop, conta de luz)
+  versão 8 · 2026-11-10 · só deste site. Aula 1, aula 2 (conta do susto, taxímetro, transporte, iceberg, pit stop, conta de luz)
   aula 3 (plantão, derrube um data center, do globo ao prédio, funil da região)
   aula 4 (o vazamento, tranque a conta, a porta abre?, a fechadura com ESP32)
   aula 5 (a planta errada, a viagem do pacote, com e sem memória, a régua de bits)
@@ -1427,6 +1427,66 @@
   .carta-caminho { grid-template-columns: repeat(2, 1fr); }
 }
 
+/* ===================== aula 7 · G1 mesmo preço? ===================== */
+.par-itens { display: grid; grid-template-columns: 1fr auto 1fr; gap: .8rem; align-items: center; width: min(100%, 30rem); margin: 1.2rem auto; }
+.par-itens .item { padding: 1rem .6rem; border-radius: 16px; background: rgba(255, 255, 255, .07); border: 1px solid rgba(255, 153, 0, .35); }
+.par-itens .item span { display: block; font-size: 2.2rem; }
+.par-itens .item strong { display: block; font: 800 .95rem var(--f-titulo); }
+.par-itens .item small { color: #d8d4c8; font-size: .78rem; }
+.par-itens .vs { font: 900 1.4rem var(--f-titulo); color: #ff9900; }
+
+/* ===================== aula 7 · C2 a vida de uma foto ===================== */
+.vida-gavetas { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; margin: .8rem 0; padding: 0; list-style: none; }
+.vida-gavetas li {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: .2rem;
+  padding: 1rem .6rem;
+  border-radius: 16px;
+  background: var(--superficie-2);
+  border: 2px solid var(--borda);
+  text-align: center;
+  transition: border-color .3s, box-shadow .3s, transform .3s;
+}
+.vida-gavetas .ico { font-size: 2rem; }
+.vida-gavetas strong { font: 800 .9rem var(--f-titulo); }
+.vida-gavetas small { font-size: .78rem; color: var(--texto-2); }
+.vida-gavetas .custo { font-size: .85rem; }
+.vida-gavetas .foto { position: absolute; top: -.9rem; right: .4rem; font-size: 1.8rem; }
+.vida-gavetas li.aqui { border-color: var(--neon); box-shadow: 0 0 22px -6px var(--neon); transform: translateY(-4px); }
+.vida-gavetas li.aqui .foto { animation: nasce .4s ease-out; }
+.vida-idade { display: grid; grid-template-columns: auto 1fr; gap: .4rem 1rem; align-items: center; }
+.vida-idade output { font: 800 1.2rem var(--f-mono); color: var(--neon); min-width: 6rem; }
+.vida-idade input { width: 100%; accent-color: var(--neon); }
+.vida-marcas { display: flex; justify-content: space-between; font: 500 .72rem var(--f-mono); color: var(--texto-3); grid-column: 2; }
+
+/* ===================== aula 7 · C3 desliga e liga ===================== */
+.dl-maquina { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; padding: 1rem; border-radius: 18px; background: var(--chip); transition: filter .4s; }
+.desligada .dl-maquina { filter: brightness(.35) grayscale(.6); }
+.dl-disco { display: grid; justify-items: center; gap: .3rem; padding: 1rem .6rem; border-radius: 14px; background: #121a16; border: 2px solid #3b4a42; color: #e8e4d8; text-align: center; }
+.dl-disco .ico { font-size: 2rem; }
+.dl-disco strong { font: 800 .92rem var(--f-titulo); }
+.dl-disco small { font: 500 .72rem var(--f-mono); color: #a3b0a8; }
+.dl-disco .arquivos { min-height: 1.6em; font-size: 1.4rem; letter-spacing: .2rem; }
+.dl-snap { margin: .6rem 0 0; padding: .5rem .9rem; border-radius: 12px; background: color-mix(in srgb, var(--itn) 18%, var(--superficie-2)); border: 1px dashed var(--itn); font-size: .9rem; width: fit-content; }
+.dl-snap.nova { animation: nasce .45s ease-out; }
+
+/* ===================== aula 7 · X1 os 11 noves ===================== */
+.noves-placar { display: grid; grid-template-columns: repeat(2, 1fr); gap: .6rem; margin: .8rem 0; }
+.noves-placar div { padding: .9rem 1rem; border-radius: 14px; background: var(--chip); color: #e8e4d8; }
+.noves-placar small { display: block; font: 500 .74rem var(--f-mono); color: #a3b0a8; text-transform: uppercase; letter-spacing: .05em; }
+.noves-placar strong { font: 800 clamp(1.1rem, 3.4vw, 1.5rem)/1.2 var(--f-titulo); color: #39ff9e; }
+.noves-conta { font: 500 .95rem var(--f-mono); }
+.noves-numero { font: 900 clamp(1.4rem, 5vw, 2.4rem) var(--f-mono); color: var(--neon); letter-spacing: .02em; text-align: center; margin: .2rem 0 .6rem; overflow-wrap: anywhere; }
+
+@media (max-width: 760px) {
+  .vida-gavetas { grid-template-columns: 1fr; }
+  .vida-idade { grid-template-columns: 1fr; }
+  .vida-marcas { grid-column: 1; }
+  .dl-maquina, .noves-placar { grid-template-columns: 1fr; }
+}
+
 /* ===================== pausa: tudo parado ===================== */
 .pausado .gancho.zero::before,
 .pausado .gancho.zero .gancho-relogio,
@@ -1457,7 +1517,10 @@
 .pausado .dia-barra i,
 .pausado .central-linha.falha,
 .pausado .maquina.erro,
-.pausado .carta-caminho li.barrou { animation: none !important; }
+.pausado .carta-caminho li.barrou,
+.pausado .vida-gavetas li.aqui .foto,
+.pausado .dl-snap.nova { animation: none !important; }
+.pausado .vida-gavetas li, .pausado .dl-maquina { transition: none; }
 .pausado .carta-caminho li, .pausado .carta-porta { transition: none; }
 .pausado .central-linha.rodando::after, .pausado .lb-rel i, .pausado .regua-lista .trilho i, .pausado .maquina .app { transition: none; }
 .pausado .mem-carro, .pausado .bit { transition: none; }

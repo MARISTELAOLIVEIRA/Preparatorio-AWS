@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="../assets/css/neon.css?v=5">
   <link rel="stylesheet" href="../css/interativos.css?v=1">
   <link rel="stylesheet" href="../css/aula-aws.css?v=7">
+  <link rel="stylesheet" href="../css/vivo.css?v=8">
 </head>
 <body>
 
@@ -33,7 +34,7 @@
       <button type="button" class="btn-menu" id="btn-menu" aria-expanded="false" aria-controls="menu">Menu</button>
       <nav class="nav" id="menu" aria-label="Partes da aula">
         <a href="../#videos">← Preparatório</a>
-        <a href="#caso">Caso</a>
+        <a href="#simulador">Simulador</a>
         <a href="#conceitos">Conceitos</a>
         <a href="#demonstracao">Console</a>
         <a href="#pegadinha">Pegadinha</a>
@@ -116,15 +117,45 @@
           </div>
           <div class="cartao">
             <ol class="roteiro-video sem-tempo">
+              <li><a href="#gancho">G1 · Mesmo preço?</a></li>
               <li><a href="#caso">O caso: seis tipos de dado, seis gavetas</a></li>
+              <li><a href="#simulador">SIM1 · Organize as gavetas</a></li>
               <li><a href="#c1">C1 · Bloco, arquivo e objeto</a></li>
               <li><a href="#c2">C2 · O Amazon S3 e as classes de armazenamento</a></li>
               <li><a href="#c3">C3 · O disco da máquina: EBS e armazenamento de instância</a></li>
               <li><a href="#c4">C4 · Pastas compartilhadas, nuvem híbrida e backup</a></li>
-              <li><a href="#demonstracao">D1 · Criando um bucket e enviando um arquivo</a></li>
+              <li><a href="#noves">X1 · A matemática dos 11 noves</a></li>
+              <li><a href="#demonstracao">D1 · Faça junto: criando um bucket e enviando um arquivo</a></li>
               <li><a href="#pegadinha">P1 · A pegadinha: a classe mais barata</a></li>
               <li><a href="#academy">Agora é na AWS Academy</a></li>
             </ol>
+          </div>
+        </section>
+
+        <!-- ===================== GANCHO (vivo.js, parte 10) ===================== -->
+        <section class="parte" id="gancho">
+          <div class="cab">
+            <span class="olho">G1 · gancho</span>
+            <h2>Mesmo preço?</h2>
+          </div>
+          <div class="gancho" data-plantao data-link="#simulador" data-link-texto="Organize as gavetas logo abaixo">
+            <p class="gancho-evento">🗄️ Ingresso Candango · onde guardar</p>
+            <p class="gancho-titulo">Dois arquivos, do mesmo tamanho.</p>
+            <div class="par-itens">
+              <div class="item"><span aria-hidden="true">🖼️</span><strong>A foto do show de hoje</strong><small>todo mundo abre agora</small></div>
+              <span class="vs" aria-hidden="true">×</span>
+              <div class="item"><span aria-hidden="true">🎟️</span><strong>Um ingresso de 2021</strong><small>o contador mandou guardar; ninguém abre</small></div>
+            </div>
+            <button type="button" class="botao" data-abrir>🤔 E então?</button>
+            <div class="gancho-voto" data-revela hidden>
+              <p class="gancho-pergunta" tabindex="-1">Os dois devem pagar o mesmo para ficar guardados?</p>
+              <div class="gancho-botoes">
+                <button type="button" aria-pressed="false" data-explica="Dá para pagar bem menos pelo ingresso antigo: ele pode ir para uma gaveta mais barata e mais lenta, porque ninguém tem pressa de abrir.">🟰 O mesmo preço</button>
+                <button type="button" aria-pressed="false" data-explica="Isso! O ingresso vai para uma gaveta mais barata e mais lenta; a foto fica na mesa, pronta para abrir. Na nuvem, cada gaveta tem o seu preço.">🎟️ O ingresso, mais barato</button>
+                <button type="button" aria-pressed="false" data-explica="É o contrário: quem é aberto o tempo todo fica na gaveta rápida, que custa mais. O que ninguém abre pode ir para a mais barata.">🖼️ A foto, mais barata</button>
+              </div>
+              <p class="gancho-resposta" aria-live="polite"></p>
+            </div>
           </div>
         </section>
 
@@ -152,6 +183,99 @@
             </ol>
             <p class="fonte">Empresa e pedidos fictícios, criados para as aulas.</p>
           </div>
+        </section>
+
+        <!-- ===================== SIMULADOR (vivo.js, parte 19) ===================== -->
+        <section class="parte" id="simulador">
+          <div class="cab">
+            <span class="olho">SIM1 · simulador</span>
+            <h2>Organize as gavetas</h2>
+            <p>Os seis pedidos do caso precisam de uma gaveta. Escolha uma para cada e aperte <strong>Guardar tudo</strong>. Verde é a gaveta certa, amarelo funciona mas não é o melhor, vermelho dá errado.</p>
+          </div>
+          <div class="sim" data-central="armazenamento">
+            <ol class="central">
+              <li class="central-linha" data-tarefa="sistema">
+                <span class="tarefa"><strong>💻 O sistema do site</strong><small>o sistema e os programas do servidor</small></span>
+                <div class="dz-botoes" role="group" aria-label="Gaveta para O sistema do site">
+                  <button type="button" data-motor="ebs" aria-pressed="false">💽 EBS</button>
+                  <button type="button" data-motor="s3" aria-pressed="false">🪣 S3 Standard</button>
+                  <button type="button" data-motor="efs" aria-pressed="false">📁 EFS</button>
+                  <button type="button" data-motor="glacier" aria-pressed="false">🧊 Glacier Deep Archive</button>
+                  <button type="button" data-motor="inst" aria-pressed="false">⚡ Armazenamento de instância</button>
+                  <button type="button" data-motor="gw" aria-pressed="false">🌉 Storage Gateway</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+              <li class="central-linha" data-tarefa="fotos">
+                <span class="tarefa"><strong>🖼️ As fotos e os PDFs</strong><small>milhões de arquivos, abertos pela internet</small></span>
+                <div class="dz-botoes" role="group" aria-label="Gaveta para As fotos e os PDFs">
+                  <button type="button" data-motor="ebs" aria-pressed="false">💽 EBS</button>
+                  <button type="button" data-motor="s3" aria-pressed="false">🪣 S3 Standard</button>
+                  <button type="button" data-motor="efs" aria-pressed="false">📁 EFS</button>
+                  <button type="button" data-motor="glacier" aria-pressed="false">🧊 Glacier Deep Archive</button>
+                  <button type="button" data-motor="inst" aria-pressed="false">⚡ Armazenamento de instância</button>
+                  <button type="button" data-motor="gw" aria-pressed="false">🌉 Storage Gateway</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+              <li class="central-linha" data-tarefa="pasta">
+                <span class="tarefa"><strong>📂 A pasta compartilhada</strong><small>várias máquinas Linux leem e gravam ao mesmo tempo</small></span>
+                <div class="dz-botoes" role="group" aria-label="Gaveta para A pasta compartilhada">
+                  <button type="button" data-motor="ebs" aria-pressed="false">💽 EBS</button>
+                  <button type="button" data-motor="s3" aria-pressed="false">🪣 S3 Standard</button>
+                  <button type="button" data-motor="efs" aria-pressed="false">📁 EFS</button>
+                  <button type="button" data-motor="glacier" aria-pressed="false">🧊 Glacier Deep Archive</button>
+                  <button type="button" data-motor="inst" aria-pressed="false">⚡ Armazenamento de instância</button>
+                  <button type="button" data-motor="gw" aria-pressed="false">🌉 Storage Gateway</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+              <li class="central-linha" data-tarefa="antigos">
+                <span class="tarefa"><strong>🎟️ Os ingressos antigos</strong><small>guardar por cinco anos; quase ninguém abre</small></span>
+                <div class="dz-botoes" role="group" aria-label="Gaveta para Os ingressos antigos">
+                  <button type="button" data-motor="ebs" aria-pressed="false">💽 EBS</button>
+                  <button type="button" data-motor="s3" aria-pressed="false">🪣 S3 Standard</button>
+                  <button type="button" data-motor="efs" aria-pressed="false">📁 EFS</button>
+                  <button type="button" data-motor="glacier" aria-pressed="false">🧊 Glacier Deep Archive</button>
+                  <button type="button" data-motor="inst" aria-pressed="false">⚡ Armazenamento de instância</button>
+                  <button type="button" data-motor="gw" aria-pressed="false">🌉 Storage Gateway</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+              <li class="central-linha" data-tarefa="temp">
+                <span class="tarefa"><strong>🧪 Os arquivos temporários</strong><small>podem sumir sem problema</small></span>
+                <div class="dz-botoes" role="group" aria-label="Gaveta para Os arquivos temporários">
+                  <button type="button" data-motor="ebs" aria-pressed="false">💽 EBS</button>
+                  <button type="button" data-motor="s3" aria-pressed="false">🪣 S3 Standard</button>
+                  <button type="button" data-motor="efs" aria-pressed="false">📁 EFS</button>
+                  <button type="button" data-motor="glacier" aria-pressed="false">🧊 Glacier Deep Archive</button>
+                  <button type="button" data-motor="inst" aria-pressed="false">⚡ Armazenamento de instância</button>
+                  <button type="button" data-motor="gw" aria-pressed="false">🌉 Storage Gateway</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+              <li class="central-linha" data-tarefa="backups">
+                <span class="tarefa"><strong>🏢 Os backups da salinha</strong><small>o escritório usa a nuvem como um disco local</small></span>
+                <div class="dz-botoes" role="group" aria-label="Gaveta para Os backups da salinha">
+                  <button type="button" data-motor="ebs" aria-pressed="false">💽 EBS</button>
+                  <button type="button" data-motor="s3" aria-pressed="false">🪣 S3 Standard</button>
+                  <button type="button" data-motor="efs" aria-pressed="false">📁 EFS</button>
+                  <button type="button" data-motor="glacier" aria-pressed="false">🧊 Glacier Deep Archive</button>
+                  <button type="button" data-motor="inst" aria-pressed="false">⚡ Armazenamento de instância</button>
+                  <button type="button" data-motor="gw" aria-pressed="false">🌉 Storage Gateway</button>
+                </div>
+                <p class="central-saida" aria-live="polite"></p>
+              </li>
+            </ol>
+            <div class="sim-acoes"><button type="button" class="vai">🗄️ Guardar tudo</button><span>placar: <span class="central-placar" data-placar>–</span></span></div>
+            <p class="casa-fala" aria-live="polite"></p>
+          </div>
+          <p class="fonte">Simulação para a aula, com as gavetas do C1 ao C4.</p>
+
+          <details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>Por que os arquivos temporários podem ir para o armazenamento de instância, e o sistema não?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p>Porque o armazenamento de instância <strong>perde tudo</strong> quando a máquina para. Para o temporário, tudo bem; para o sistema, seria um desastre. O sistema vai no EBS, que continua existindo.</p></div>
+              </details>
         </section>
 
         <!-- ===================== CONCEITOS ===================== -->
@@ -192,6 +316,30 @@
               </tbody></table></div>
               <p class="fonte">Fonte: <a href="https://aws.amazon.com/s3/storage-classes/">AWS, Amazon S3 storage classes</a>, consultado em 04/11/2026.</p>
               <p>E uma <strong>regra de ciclo de vida</strong> (<em>lifecycle</em>) muda os objetos de classe sozinha com o tempo: por exemplo, para o Standard-IA depois de 30 dias e para o Deep Archive depois de um ano.</p>
+              <p>Veja a vida de uma foto do show. Arraste a idade dela e ligue as regras.</p>
+              <div class="casa" data-vida>
+                <div class="vida-idade">
+                  <output data-idade>hoje</output>
+                  <label><span class="visualmente-oculto">Idade da foto</span><input type="range" min="0" max="5" step="1" value="0"></label>
+                  <div class="vida-marcas" aria-hidden="true"><span>hoje</span><span>1 sem.</span><span>30 d</span><span>90 d</span><span>1 ano</span><span>5 anos</span></div>
+                </div>
+                <div class="pagar-perguntas" style="margin-top:.8rem">
+                  <button type="button" data-regra="ia" aria-pressed="false"><span>📅 Regra: Standard-IA depois de 30 dias</span><span class="sn">desligada</span></button>
+                  <button type="button" data-regra="deep" aria-pressed="false"><span>📅 Regra: Deep Archive depois de 1 ano</span><span class="sn">desligada</span></button>
+                </div>
+                <ul class="vida-gavetas">
+                  <li data-gaveta="std"><span class="foto" aria-hidden="true"></span><span class="ico" aria-hidden="true">🗂️</span><strong>S3 Standard</strong><small>em cima da mesa</small><span class="custo">💰💰💰💰</span></li>
+                  <li data-gaveta="ia"><span class="foto" aria-hidden="true"></span><span class="ico" aria-hidden="true">🗄️</span><strong>S3 Standard-IA</strong><small>na gaveta do armário</small><span class="custo">💰💰</span></li>
+                  <li data-gaveta="deep"><span class="foto" aria-hidden="true"></span><span class="ico" aria-hidden="true">🚚</span><strong>Glacier Deep Archive</strong><small>no depósito em outra cidade</small><span class="custo">💰</span></li>
+                </ul>
+                <div class="sim-acoes"><button type="button" class="vai" data-pedido-foto>📨 O contador pediu a foto</button></div>
+                <p class="casa-fala" aria-live="polite"></p>
+              </div>
+              <p class="fonte">As moedinhas comparam o preço de guardar, da mais cara para a mais barata, sem valores. Os preços de verdade estão na página de preços do S3.</p>
+              <details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>Por que não guardar tudo no Deep Archive, que é o mais barato?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p>Porque ele leva até <strong>12 horas</strong> para devolver o arquivo. A foto do show de hoje precisa abrir na hora. A gaveta certa é a mais barata <strong>que ainda atende ao tempo de acesso</strong>.</p></div>
+              </details>
               <p class="dica"><strong>Na Ingresso Candango:</strong> as fotos e os PDFs (pedido 2) ficam no S3 Standard. Os ingressos antigos (pedido 4) vão para o Glacier Deep Archive, com uma regra de ciclo de vida.</p>
             </div>
           </div>
@@ -208,6 +356,19 @@
               </ul>
               <p>Já o <strong>armazenamento de instância</strong> (<em>instance store</em>) é um disco físico preso ao servidor onde a máquina roda. É muito rápido, mas <strong>temporário</strong>: os dados se perdem quando a máquina é parada ou encerrada.</p>
               <p class="fonte">Fonte: <a href="https://docs.aws.amazon.com/ebs/latest/userguide/what-is-ebs.html">AWS, What is Amazon EBS?</a>, consultado em 04/11/2026.</p>
+              <div class="casa" data-desliga>
+                <div class="dl-maquina">
+                  <div class="dl-disco" data-disco="ebs"><span class="ico" aria-hidden="true">💽</span><strong>Disco EBS</strong><small>continua existindo</small><span class="arquivos" aria-label="arquivos no disco"></span></div>
+                  <div class="dl-disco" data-disco="inst"><span class="ico" aria-hidden="true">⚡</span><strong>Armazenamento de instância</strong><small>preso ao servidor, temporário</small><span class="arquivos" aria-label="arquivos no disco"></span></div>
+                </div>
+                <p class="dl-snap" hidden>📸 Snapshot do EBS guardado: uma cópia do disco neste momento.</p>
+                <div class="dz-botoes" style="margin-top:.8rem">
+                  <button type="button" data-reinicia>⏻ Parar e ligar de novo</button>
+                  <button type="button" data-snapshot>📸 Tirar snapshot do EBS</button>
+                  <button type="button" data-enche>📄 Pôr os arquivos de volta</button>
+                </div>
+                <p class="casa-fala" aria-live="polite">Os dois discos têm três arquivos. Pare a máquina e ligue de novo.</p>
+              </div>
               <p class="dica"><strong>Na Ingresso Candango:</strong> o sistema do site (pedido 1) fica no EBS. Os arquivos temporários (pedido 5) podem ir para o armazenamento de instância.</p>
             </div>
           </div>
@@ -228,28 +389,49 @@
           </div>
         </section>
 
+        <!-- ===================== OS 11 NOVES (vivo.js, parte 26) ===================== -->
+        <section class="parte" id="noves">
+          <div class="cab">
+            <span class="olho">X1 · a matemática dos 11 noves</span>
+            <h2>Quantos noves tem um pendrive?</h2>
+            <p>O S3 é projetado para guardar os objetos com 99,999999999% de durabilidade num ano. Parece só um número cheio de noves, mas dá para fazer a conta. Arraste e veja.</p>
+          </div>
+          <div class="casa" data-noves>
+            <p class="noves-numero">99,999999999%</p>
+            <label><span class="visualmente-oculto">Quantos objetos guardados</span><input type="range" min="0" max="6" step="1" value="4" style="width:100%;accent-color:var(--neon)"></label>
+            <div class="noves-placar">
+              <div><small>você guarda</small><strong data-qtd></strong></div>
+              <div><small>expectativa de perder um objeto</small><strong data-anos></strong></div>
+            </div>
+            <p class="noves-conta" data-conta-noves></p>
+            <p class="casa-fala" aria-live="polite"></p>
+          </div>
+          <p class="fonte">Fonte: <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/DataDurability.html">AWS, Data protection in Amazon S3</a>, consultado em 10/11/2026 ("99,999999999% de durabilidade dos objetos num ano"). A conta: a chance de perder um objeto num ano é 1 − 0,99999999999 = 0,00000000001; com N objetos, a espera média é 1 ÷ (N × 0,00000000001) anos. É uma expectativa, não uma garantia: backup continua importante.</p>
+        </section>
+
         <!-- ===================== DEMONSTRAÇÃO ===================== -->
         <section class="parte" id="demonstracao">
           <div class="cab">
             <span class="olho">D1 · demonstração</span>
-            <h2>Criando um bucket e enviando um arquivo</h2>
-            <p>Faça no seu Learner Lab, um passo de cada vez, e apague tudo no fim.</p>
+            <h2>Faça junto: criando um bucket e enviando um arquivo</h2>
+            <p>Abra o Learner Lab noutra aba, siga um passo de cada vez, marque cada um aqui e apague tudo no fim.</p>
           </div>
 
           <div class="conceito" style="grid-template-columns:1fr">
             <div class="texto">
-              <div class="faca-assim">
-                <strong>Faça assim:</strong>
-                <ol>
-                  <li>Abra o <strong>Learner Lab</strong>, clique em <strong>Start Lab</strong> e, com a bolinha verde, clique em <strong>AWS</strong>.</li>
-                  <li>Abra o <strong>S3</strong> pela busca e clique em <strong>Create bucket</strong>.</li>
-                  <li>Dê um nome único, só com letras minúsculas, números e hífens, como <code>candango-fotos-seunome-2026</code>.</li>
-                  <li>Deixe marcado <strong>Block all Public Access</strong> (bloquear todo o acesso público). É a lição da aula 4.</li>
-                  <li>Clique em <strong>Create bucket</strong> e abra o bucket criado.</li>
-                  <li>Clique em <strong>Upload</strong>, escolha uma imagem do seu computador e envie.</li>
-                  <li>Abra o objeto e veja a <strong>Storage class</strong> (classe) e o endereço dele.</li>
-                </ol>
+              <div class="progresso-atividade" data-progresso="console-aula-07">
+                <span class="contagem">0 de 7</span>
+                <span class="barra-progresso"><span></span></span>
               </div>
+              <ol class="checklist" id="console-aula-07">
+                <li><label><input type="checkbox"><span>Abri o <strong>Learner Lab</strong>, cliquei em <strong>Start Lab</strong> e, com a bolinha verde, cliquei em <strong>AWS</strong>.</span></label></li>
+                <li><label><input type="checkbox"><span>Abri o <strong>S3</strong> pela busca e cliquei em <strong>Create bucket</strong>.</span></label></li>
+                <li><label><input type="checkbox"><span>Dei um nome único, só com letras minúsculas, números e hífens, como <code>candango-fotos-seunome-2026</code>.</span></label></li>
+                <li><label><input type="checkbox"><span>Deixei marcado <strong>Block all Public Access</strong> (bloquear todo o acesso público). É a lição da aula 4.</span></label></li>
+                <li><label><input type="checkbox"><span>Cliquei em <strong>Create bucket</strong> e abri o bucket criado.</span></label></li>
+                <li><label><input type="checkbox"><span>Cliquei em <strong>Upload</strong>, escolhi uma imagem do meu computador e enviei.</span></label></li>
+                <li><label><input type="checkbox"><span>Abri o objeto e vi a <strong>Storage class</strong> (classe) e o endereço dele.</span></label></li>
+              </ol>
               <div class="faca-assim">
                 <strong>Teste:</strong>
                 <ol>
@@ -283,6 +465,10 @@
                   <li><strong>Pode esperar até 12 horas, e é para guardar por anos?</strong> Glacier Deep Archive.</li>
                 </ol>
               </div>
+<details class="pausa-aqui">
+                <summary><span class="pausa-icone" aria-hidden="true">⏸</span><span><span class="olho">Pausa aqui</span><strong>Os ingressos antigos podem esperar algumas horas, mas a lei manda guardar por anos. Qual é a classe mais barata?</strong></span><span class="pausa-ver">ver a resposta</span></summary>
+                <div class="pausa-resposta"><p>O <strong>S3 Glacier Deep Archive</strong>: o mais barato, para guardar por anos, com até 12 horas para devolver. Se precisasse abrir na hora, seria o Glacier Instant Retrieval.</p></div>
+              </details>
               <p class="dica cuidado"><strong>E as outras pegadinhas do módulo:</strong> o EBS fica numa zona só; o armazenamento de instância perde os dados quando a máquina para; e "várias máquinas Linux na mesma pasta" é EFS, não EBS.</p>
             </div>
           </div>
@@ -370,7 +556,7 @@
 
           <div class="cartao">
             <div class="progresso-atividade" data-progresso="passos-aula-07">
-              <span class="contagem">0 de 8</span>
+              <span class="contagem">0 de 10</span>
               <span class="barra-progresso"><span></span></span>
             </div>
             <ol class="checklist" id="passos-aula-07">
@@ -382,6 +568,8 @@
               <li><label><input type="checkbox"><span>Criei um bucket, enviei um arquivo e apaguei tudo. <a href="#demonstracao">Veja o D1</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Fiz os três treinos Classifique!. <a href="#treino">Veja o treino</a>.</span></label></li>
               <li><label><input type="checkbox"><span>Fiz o Módulo 7 e os laboratórios na AWS Academy e marquei no <a href="../#cursos">Meu progresso</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Organizei as seis gavetas com tudo no lugar certo. <a href="#simulador">Veja o SIM1</a>.</span></label></li>
+              <li><label><input type="checkbox"><span>Acompanhei a vida da foto, desliguei a máquina com os dois discos e fiz a conta dos 11 noves. <a href="#c2">Veja o C2</a>, o <a href="#c3">C3</a> e o <a href="#noves">X1</a>.</span></label></li>
             </ol>
           </div>
         </section>
@@ -472,5 +660,6 @@
   <script src="../assets/js/aulas.js?v=3"></script>
   <script src="../assets/js/classifica.js?v=2"></script>
   <script src="../assets/js/matrix.js?v=3"></script>
+  <script src="../js/vivo.js?v=8"></script>
 </body>
 </html>

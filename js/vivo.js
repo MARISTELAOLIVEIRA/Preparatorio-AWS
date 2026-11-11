@@ -1,6 +1,6 @@
 /*
   vivo.js: as peças interativas das aulas "vivas" do Preparatório AWS. Só deste site.
-  versão 7 · 2026-11-10 · aulas 1 (conceitos), 2 (cobrança), 3 (infraestrutura), 4 (segurança), 5 (redes, com o reforço R0) e 6 (computação)
+  versão 8 · 2026-11-10 · aulas 1 (conceitos), 2 (cobrança), 3 (infraestrutura), 4 (segurança), 5 (redes, com o R0), 6 (computação) e 7 (armazenamento)
 
   1. [data-gancho]  a contagem para a abertura das vendas e a votação "o site aguenta?"
   2. [data-sim]     simulador "A noite da abertura das vendas": salinha com 2, salinha com 20 ou nuvem
@@ -26,6 +26,10 @@
   21. [data-lambda] o botão que acorda o Lambda: uma compra, mil compras e o relatório que bate nos 15 minutos (aula 6)
   22. [data-regua]  do ESP32 ao monstro da AWS: a memória de cada máquina, em escala normal e logarítmica (aula 6)
   23. [data-carta]  redes do zero: a carta com endereço (IP ou nome), porta e caminho (aula 5, reforço R0)
+  (a central [data-central] também serve à aula 7: data-central="armazenamento", as gavetas)
+  24. [data-vida]   a vida de uma foto: a idade, as regras de ciclo de vida e a gaveta do S3 em que ela está (aula 7)
+  25. [data-desliga] desliga e liga: o EBS guarda, o armazenamento de instância perde, o snapshot copia (aula 7)
+  26. [data-noves]  a matemática dos 11 noves: quantos objetos, de quantos em quantos anos se perde um (aula 7)
 
   Com as animações pausadas (botão do topo ou "reduzir movimento"), tudo mostra o resultado direto.
 */
@@ -1439,6 +1443,42 @@
       lambda: ["falha", "⏱️ Parou aos 15 minutos! O relatório leva horas."],
       beanstalk: ["meh", "Funciona, mas é para sites. Para horas de cálculo que podem parar, spot."] }
   };
+  const CENTRAIS = { computacao: CENTRAL };
+  CENTRAIS.armazenamento = {
+    sistema: { certo: "ebs",
+      ebs: "O disco da máquina: o sistema fica nele e não some quando ela desliga.",
+      s3: ["falha", "💥 O sistema precisa de um disco ligado à máquina. O S3 guarda objetos por endereço; não serve de disco do sistema."],
+      inst: ["falha", "💥 Parou a máquina, sumiu o sistema! O armazenamento de instância é temporário."],
+      glacier: ["falha", "🧊 Até 12 horas para abrir o sistema? A máquina nem liga."],
+      outro: ["falha", "💥 O sistema da máquina precisa de um disco de bloco ligado a ela: o EBS."] },
+    fotos: { certo: "s3",
+      s3: "Milhões de arquivos, cada um com o seu endereço, abertos pela internet, com os 11 noves.",
+      glacier: ["falha", "🧊 A foto do show de hoje levando até 12 horas para abrir? O cliente desistiu."],
+      inst: ["falha", "💥 Parou a máquina, sumiram as fotos."],
+      ebs: ["meh", "Um disco preso a uma máquina, que você aumenta na mão. Para milhões de arquivos na internet, o S3."],
+      efs: ["meh", "Funciona para as máquinas, mas para entregar milhões de arquivos na internet, o S3 é o certo."],
+      outro: ["meh", "O Storage Gateway é para o escritório usar a nuvem. As fotos já estão na nuvem: S3."] },
+    pasta: { certo: "efs",
+      efs: "Várias máquinas Linux lendo e gravando a mesma pasta, ao mesmo tempo.",
+      ebs: ["falha", "💥 O EBS é o disco de uma máquina. Várias máquinas Linux na mesma pasta é EFS."],
+      s3: ["meh", "Dá para guardar, mas não é uma pasta que as máquinas usam como disco compartilhado: EFS."],
+      outro: ["falha", "💥 Não serve de pasta compartilhada para várias máquinas Linux. É o EFS."] },
+    antigos: { certo: "glacier",
+      glacier: "Cinco anos guardados pelo menor preço. Se o contador pedir, ele espera até 12 horas.",
+      inst: ["falha", "💥 Parou a máquina, sumiram cinco anos de ingressos. O contador não vai gostar."],
+      s3: ["meh", "💸 Funciona, mas você paga o preço de \"uso o tempo todo\" por algo que quase ninguém abre."],
+      ebs: ["meh", "💸 Um disco pago todo mês, ligado a uma máquina, para algo que quase ninguém abre."],
+      outro: ["meh", "💸 Funciona, mas para guardar por anos e quase nunca abrir, a gaveta mais barata é o Glacier Deep Archive."] },
+    temp: { certo: "inst",
+      inst: "Rapidíssimo e preso à máquina. Se sumir quando ela parar, tudo bem: era temporário.",
+      glacier: ["falha", "🧊 Um arquivo temporário que leva 12 horas para abrir? Não."],
+      outro: ["meh", "Funciona, mas você paga para guardar com cuidado algo que pode sumir. O armazenamento de instância resolve."] },
+    backups: { certo: "gw",
+      gw: "O escritório enxerga a nuvem como um disco local, e os backups vão para a AWS.",
+      ebs: ["falha", "💥 O EBS liga em máquinas da AWS, não na salinha do escritório."],
+      inst: ["falha", "💥 Backup em disco temporário? Na primeira parada, some tudo."],
+      outro: ["meh", "Os backups podem acabar no S3, mas o pedido era o escritório usar a nuvem como um disco local: Storage Gateway."] }
+  };
   document.querySelectorAll("[data-central]").forEach(function (box) {
     const linhas = box.querySelectorAll("[data-tarefa]");
     const placar = box.querySelector("[data-placar]");
@@ -1465,9 +1505,10 @@
         l.className = "central-linha";
         if (!sel) { faltam++; saida.textContent = "Escolha um motor."; return; }
         const m = sel.dataset.motor;
-        const r = CENTRAL[t];
-        const tipo = m === r.certo ? "certo" : r[m][0];
-        const texto = m === r.certo ? "✅ " + r[m] : r[m][1];
+        const r = CENTRAIS[box.dataset.central || "computacao"][t];
+        const res = r[m] || r.outro;
+        const tipo = m === r.certo ? "certo" : res[0];
+        const texto = m === r.certo ? "✅ " + r[m] : res[1];
         if (tipo === "certo") certos++;
         const mostra = function () {
           l.classList.add("rodando", tipo);
@@ -1476,10 +1517,13 @@
         if (pausado()) mostra(); else espera.push(setTimeout(mostra, 150 + i * 450));
       });
       const fim = function () {
-        placar.textContent = certos + " de 5";
-        fala.innerHTML = faltam ? `Faltou escolher o motor de ${faltam} tarefa${faltam > 1 ? "s" : ""}.` :
-          certos === 5 ? "🏆 <strong>Central montada!</strong> Cada tarefa no motor certo: servidor, função, contêiner, atalho e spot." :
-          `<strong>${certos} de 5 no motor certo.</strong> As amarelas funcionam, mas não são a melhor escolha; as vermelhas quebram. Troque e rode de novo.`;
+        const n = linhas.length;
+        const gav = box.dataset.central === "armazenamento";
+        placar.textContent = certos + " de " + n;
+        fala.innerHTML = faltam ? `Faltou escolher ${gav ? "a gaveta" : "o motor"} de ${faltam} ${gav ? "pedido" : "tarefa"}${faltam > 1 ? "s" : ""}.` :
+          certos === n ? (gav ? "🏆 <strong>Gavetas organizadas!</strong> Cada dado no lugar certo: disco, balde, pasta, depósito, temporário e ponte." :
+            "🏆 <strong>Central montada!</strong> Cada tarefa no motor certo: servidor, função, contêiner, atalho e spot.") :
+          `<strong>${certos} de ${n} ${gav ? "na gaveta certa" : "no motor certo"}.</strong> As amarelas funcionam, mas não são a melhor escolha; as vermelhas quebram. Troque e rode de novo.`;
       };
       if (pausado()) fim(); else espera.push(setTimeout(fim, 150 + linhas.length * 450));
     });
@@ -1694,5 +1738,113 @@
     });
     vai.addEventListener("click", envia);
     limpa();
+  });
+
+  // ===================== 24. a vida de uma foto =====================
+  const IDADES = [
+    { dias: 0, txt: "hoje" }, { dias: 7, txt: "1 semana" }, { dias: 30, txt: "30 dias" },
+    { dias: 90, txt: "90 dias" }, { dias: 365, txt: "1 ano" }, { dias: 1825, txt: "5 anos" }
+  ];
+  const GAVETAS = {
+    std: { nome: "S3 Standard", dia: "em cima da mesa", custo: "💰💰💰💰", abre: "na hora (milissegundos)" },
+    ia: { nome: "S3 Standard-IA", dia: "na gaveta do armário", custo: "💰💰", abre: "na hora (milissegundos), pagando um pouco por abrir" },
+    deep: { nome: "S3 Glacier Deep Archive", dia: "no depósito em outra cidade", custo: "💰 (centavos)", abre: "em até 12 horas" }
+  };
+  document.querySelectorAll("[data-vida]").forEach(function (box) {
+    const barra = box.querySelector("input[type=range]");
+    const idadeTxt = box.querySelector("[data-idade]");
+    const gavetas = box.querySelectorAll("[data-gaveta]");
+    const fala = box.querySelector(".casa-fala");
+    const regra = k => box.querySelector(`[data-regra="${k}"]`).getAttribute("aria-pressed") === "true";
+    function onde() {
+      const d = IDADES[barra.value].dias;
+      if (regra("deep") && d >= 365) return "deep";
+      if (regra("ia") && d >= 30) return "ia";
+      return "std";
+    }
+    function mostra(pedido) {
+      const g = onde();
+      idadeTxt.textContent = IDADES[barra.value].txt;
+      gavetas.forEach(function (el) {
+        const aqui = el.dataset.gaveta === g;
+        el.classList.toggle("aqui", aqui);
+        el.querySelector(".foto").textContent = aqui ? "🖼️" : "";
+      });
+      const G = GAVETAS[g];
+      fala.innerHTML = pedido ?
+        `📨 <strong>O contador pediu a foto.</strong> Ela está ${G.dia} (${G.nome}): chega <strong>${G.abre}</strong>.` +
+          (g === "deep" ? " Para um pedido de 5 anos atrás, tudo bem esperar." : "") :
+        `A foto tem <strong>${IDADES[barra.value].txt}</strong> e está ${G.dia}: <strong>${G.nome}</strong>. Custo para guardar: ${G.custo}.` +
+          (g === "std" && IDADES[barra.value].dias >= 365 ? ` 💸 ${IDADES[barra.value].txt} em cima da mesa, pagando o preço mais alto! Ligue as regras de ciclo de vida.` : "");
+    }
+    barra.addEventListener("input", () => mostra(false));
+    box.querySelectorAll("[data-regra]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        b.setAttribute("aria-pressed", String(b.getAttribute("aria-pressed") !== "true"));
+        b.querySelector(".sn").textContent = b.getAttribute("aria-pressed") === "true" ? "ligada" : "desligada";
+        mostra(false);
+      });
+    });
+    box.querySelector("[data-pedido-foto]").addEventListener("click", () => mostra(true));
+    mostra(false);
+  });
+
+  // ===================== 25. desliga e liga =====================
+  document.querySelectorAll("[data-desliga]").forEach(function (box) {
+    const discos = box.querySelectorAll("[data-disco]");
+    const fala = box.querySelector(".casa-fala");
+    const snap = box.querySelector(".dl-snap");
+    const ARQ = "📄📄📄";
+    let espera = [];
+    function enche() { discos.forEach(d => (d.querySelector(".arquivos").textContent = ARQ)); }
+    box.querySelector("[data-reinicia]").addEventListener("click", function () {
+      espera.forEach(clearTimeout);
+      espera = [];
+      enche();
+      box.classList.add("desligada");
+      fala.textContent = "⏻ Parando a máquina…";
+      const liga = function () {
+        box.classList.remove("desligada");
+        box.querySelector('[data-disco="inst"] .arquivos').textContent = "💨";
+        fala.innerHTML = "⏻ A máquina voltou. O <strong>EBS</strong> guardou tudo; o <strong>armazenamento de instância</strong> ficou vazio: ele é temporário e perde os dados quando a máquina para.";
+      };
+      if (pausado()) liga(); else espera.push(setTimeout(liga, 1100));
+    });
+    box.querySelector("[data-snapshot]").addEventListener("click", function () {
+      snap.hidden = false;
+      snap.classList.remove("nova");
+      void snap.offsetWidth;
+      snap.classList.add("nova");
+      fala.innerHTML = "📸 <strong>Snapshot feito:</strong> uma cópia do disco EBS neste momento. Dá para restaurar quando quiser, até em outra zona ou região.";
+    });
+    box.querySelector("[data-enche]").addEventListener("click", function () {
+      enche();
+      fala.textContent = "📄 Arquivos de volta nos dois discos.";
+    });
+    enche();
+  });
+
+  // ===================== 26. a matemática dos 11 noves =====================
+  document.querySelectorAll("[data-noves]").forEach(function (box) {
+    const barra = box.querySelector("input[type=range]");
+    const qtd = box.querySelector("[data-qtd]");
+    const anos = box.querySelector("[data-anos]");
+    const conta = box.querySelector("[data-conta-noves]");
+    const fala = box.querySelector(".casa-fala");
+    const POT = [1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000];
+    const NOMES = ["mil", "10 mil", "100 mil", "1 milhão", "10 milhões", "100 milhões", "1 bilhão"];
+    function mostra() {
+      const i = Number(barra.value);
+      const n = POT[i];
+      const a = 1 / (n * 1e-11); // chance de perder um objeto num ano: 0,000000001% = 1e-11
+      qtd.textContent = NOMES[i] + " de objetos";
+      anos.textContent = a >= 1 ? "1 a cada " + num(a) + " anos" : "";
+      conta.innerHTML = `1 ÷ (${num(n)} × 0,00000000001) = <strong>${num(a)}</strong> anos`;
+      fala.innerHTML = a >= 1e6 ? `🦕 Mais tempo do que existe gente na Terra. Com ${NOMES[i]} de objetos, perder um é quase impossível.` :
+        a >= 1000 ? `🏛️ Com ${NOMES[i]} de objetos, a expectativa é perder um a cada ${num(a)} anos. Um pendrive na gaveta não chega nem perto.` :
+        `📦 Com ${NOMES[i]} de objetos (um volume gigante), a conta cai para um a cada ${num(a)} anos. Ainda assim, guarde backup do que é importante.`;
+    }
+    barra.addEventListener("input", mostra);
+    mostra();
   });
 })();
