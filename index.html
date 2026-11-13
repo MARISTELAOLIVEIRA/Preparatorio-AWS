@@ -19,14 +19,15 @@
   - Área da turma (Teams e links dos vídeos): listas AREA_TURMA e VIDEOS_LINKS no script.
   - Módulos do "Meu progresso": js/modulos.js. Login opcional (Supabase): js/conta.js; painel: painel.html.
     Não há senha: os links só abrem com a conta institucional do Senac.
-  - Encontros: lista ENCONTROS (datas, laboratório, desafio, tarefas).
+  - Encontros: lista ENCONTROS (tema, aulas do encontro, laboratório, desafio, tarefas). Sem datas: o site serve para outras turmas;
+    o dia e a hora de cada encontro ficam no Teams e na Google Agenda (decisão de 13/11/2026).
   - Visual: assets/css/estilo.css e neon.css (comuns a todos os sites da Stela, não editar aqui)
     e css/aws.css (os componentes deste preparatório).
   ============================================================
 -->
 <link rel="stylesheet" href="assets/css/estilo.css">
 <link rel="stylesheet" href="assets/css/neon.css?v=5">
-<link rel="stylesheet" href="css/aws.css?v=6">
+<link rel="stylesheet" href="css/aws.css?v=7">
 </head>
 <body>
 <!-- ===================== BARRA DO TOPO (igual em todos os sites) ===================== -->
@@ -37,8 +38,7 @@
     </div>
     <button type="button" class="btn-menu" id="btn-menu" aria-expanded="false" aria-controls="menu">Menu</button>
     <nav class="nav" id="menu" aria-label="Seções do preparatório">
-      <a href="#proximo">Próximo encontro</a>
-      <a href="#trilha">Cronograma</a>
+      <a href="#trilha">Encontros</a>
       <a href="#cursos">Meu progresso</a>
       <a href="#videos">Aulas</a>
       <a href="#treinos">Treinos</a>
@@ -73,7 +73,7 @@
       <p class="quem"><span class="memoji" title="Profa. Maristela"><span class="memoji-brilho"><span class="memoji-hex"><span class="memoji-rosto"><img src="assets/img/memoji.png" alt="Memoji da Profa. Maristela" width="48" height="48"></span></span></span></span>&gt; Profa. Maristela_ · AWS Academy · Senac-DF</p>
       <p class="sub">Teoria em casa, prática no sábado. Tudo o que você precisa até a prova, em um só lugar.</p>
       <div class="botoes">
-        <a class="btn" href="#proximo">Ver o próximo encontro</a>
+        <a class="btn" href="#trilha">Ver os encontros</a>
         <a class="btn sec" href="https://awsacademy.instructure.com/" target="_blank" rel="noopener">Abrir a AWS Academy</a>
       </div>
       <a class="logo-faculdade" href="https://www.df.senac.br/" target="_blank" rel="noopener" title="Site da Faculdade de Tecnologia e Inovação Senac-DF"><img src="assets/img/logo-faculdade.webp" alt="Faculdade de Tecnologia e Inovação Senac-DF" width="768" height="210"></a>
@@ -92,18 +92,10 @@
 </header>
 
 <main>
-<section id="proximo">
-  <div class="wrap">
-    <h2>Próximo encontro</h2>
-    <p class="intro">Sábados alternados, das 8h30 às 11h50. Antes de vir, assista aos vídeos e faça as tarefas da quinzena.</p>
-    <div class="proximo corte" id="cartaoProximo"></div>
-  </div>
-</section>
-
 <section id="trilha">
   <div class="wrap">
-    <h2>Cronograma do semestre</h2>
-    <p class="intro">Toque em um encontro para ver o laboratório, o desafio e o que estudar na quinzena. A cor indica o domínio da prova: ciano para conceitos de nuvem, amarelo para cobrança, magenta para segurança e lilás para tecnologia e serviços.</p>
+    <h2>Encontros</h2>
+    <p class="intro">Encontros ao vivo pelo Teams, a cada quinze dias. O dia e a hora de cada um saem no Teams da turma. Antes de vir, assista aos vídeos e faça as tarefas da quinzena. Toque em um encontro para ver o laboratório, o desafio e o que estudar na quinzena. A cor indica o domínio da prova: ciano para conceitos de nuvem, amarelo para cobrança, magenta para segurança e lilás para tecnologia e serviços.</p>
     <ol class="trilha" id="listaTrilha"></ol>
   </div>
 </section>
@@ -204,16 +196,16 @@ const LINKS_TURMA=[
 ];
 const CORES={"Conceitos":"var(--itn)","Cobrança":"var(--srwe)","Segurança":"var(--ensa)","Tecnologia":"var(--tec)","Prova":"#ffffff","ACF":"var(--itn)","PREP":"var(--ensa)"};
 const ENCONTROS=[
- {d:"2026-08-01",c:"Conceitos",t:"Boas-vindas e conceitos de nuvem",lab:["Tour pelo console no Learner Lab"],des:["Nuvem no dia a dia"],casa:["Vídeos 1 e 2","Módulos 1 e 2"]},
- {d:"2026-08-15",c:"Cobrança",t:"Economia e cobrança na nuvem",lab:["AWS Pricing Calculator","Painel de faturamento e planos de suporte"],des:["Desafio do orçamento"],casa:["Vídeos 3 e 4","Módulos 3 e 4"]},
- {d:"2026-08-29",c:"Segurança",t:"Infraestrutura global e segurança",lab:["Introdução ao IAM"],des:["Quem é responsável?"],casa:["Vídeo 5","Módulo 5"]},
- {d:"2026-09-12",c:"Tecnologia",t:"Redes e entrega de conteúdo",lab:["Criar a VPC e lançar um servidor web"],des:["Arquitetura no quadro"],casa:["Vídeo 6","Módulo 6"]},
- {d:"2026-09-26",c:"Tecnologia",t:"Computação na nuvem",lab:["Introdução ao Amazon EC2"],des:["Corrida “Qual serviço?”","Simulado parcial dos módulos 1 a 6"],casa:["Vídeo 7","Módulo 7"]},
- {d:"2026-10-10",c:"Tecnologia",t:"Armazenamento",lab:["Amazon EBS","Bucket no Amazon S3"],des:["Escolha certa: S3, EBS, EFS ou Glacier"],casa:["Vídeo 8","Módulo 8"]},
- {d:"2026-10-24",c:"Tecnologia",t:"Bancos de dados",lab:["Servidor de banco de dados com Amazon RDS"],des:["Escolha certa: RDS, Aurora, DynamoDB ou Redshift"],casa:["Vídeo 9","Módulo 9"]},
- {d:"2026-11-07",c:"Tecnologia",t:"Arquitetura: Well-Architected",lab:["Análise de arquiteturas reais"],des:["Projeto relâmpago para um órgão público de Brasília"],casa:["Vídeos 10 e 11","Módulo 10 e exame final do Cloud Foundations"]},
- {d:"2026-11-21",rep:"Recesso escolar no dia 21/11: este encontro vai ser reposto durante a semana. A data nova sai aqui e no Teams.",c:"Tecnologia",t:"Escalabilidade, monitoramento e revisão",lab:["Load balancing, Auto Scaling e CloudWatch"],des:["Jeopardy da nuvem"],casa:["Vídeo 12","Skill Builder: Essentials e questões práticas"]},
- {d:"2026-12-05",c:"Prova",t:"Simulado final e caminho até a prova",lab:["Simulado completo com tempo de prova"],des:["Correção por domínio"],casa:["Tutorial do voucher","Plano de estudos até a prova"]}
+ {c:"Conceitos",t:"Boas-vindas e conceitos de nuvem",aulas:[1],lab:["Tour pelo console no Learner Lab"],des:["Nuvem no dia a dia"],casa:["Vídeos 1 e 2","Módulos 1 e 2"]},
+ {c:"Cobrança",t:"Economia e cobrança na nuvem",aulas:[2],lab:["AWS Pricing Calculator","Painel de faturamento e planos de suporte"],des:["Desafio do orçamento"],casa:["Vídeos 3 e 4","Módulos 3 e 4"]},
+ {c:"Segurança",t:"Infraestrutura global e segurança",aulas:[3,4],lab:["Introdução ao IAM"],des:["Quem é responsável?"],casa:["Vídeo 5","Módulo 5"]},
+ {c:"Tecnologia",t:"Redes e entrega de conteúdo",aulas:[5],lab:["Criar a VPC e lançar um servidor web"],des:["Arquitetura no quadro"],casa:["Vídeo 6","Módulo 6"]},
+ {c:"Tecnologia",t:"Computação na nuvem",aulas:[6],lab:["Introdução ao Amazon EC2"],des:["Corrida “Qual serviço?”","Simulado parcial dos módulos 1 a 6"],casa:["Vídeo 7","Módulo 7"]},
+ {c:"Tecnologia",t:"Armazenamento",aulas:[7],lab:["Amazon EBS","Bucket no Amazon S3"],des:["Escolha certa: S3, EBS, EFS ou Glacier"],casa:["Vídeo 8","Módulo 8"]},
+ {c:"Tecnologia",t:"Bancos de dados",aulas:[8],lab:["Servidor de banco de dados com Amazon RDS"],des:["Escolha certa: RDS, Aurora, DynamoDB ou Redshift"],casa:["Vídeo 9","Módulo 9"]},
+ {c:"Tecnologia",t:"Arquitetura: Well-Architected",aulas:[9],lab:["Análise de arquiteturas reais"],des:["Projeto relâmpago para um órgão público de Brasília"],casa:["Vídeos 10 e 11","Módulo 10 e exame final do Cloud Foundations"]},
+ {c:"Tecnologia",t:"Escalabilidade, monitoramento e revisão",aulas:[10,11],lab:["Load balancing, Auto Scaling e CloudWatch"],des:["Jeopardy da nuvem"],casa:["Vídeo 12","Skill Builder: Essentials e questões práticas"]},
+ {c:"Prova",t:"Simulado final e caminho até a prova",aulas:[12],lab:["Simulado completo com tempo de prova"],des:["Correção por domínio"],casa:["Tutorial do voucher","Plano de estudos até a prova"]}
 ];
 /* MODULOS e NOMES (o "Meu progresso") ficam em js/modulos.js */
 const VIDEOS=[ /* os links das gravações ficam em VIDEOS_LINKS */
@@ -265,11 +257,6 @@ const AULAS_NO_AR=[1,2,3,4,5,6,7,8,9,10,11,12];
 /* ============================================================== */
 
 const $=s=>document.querySelector(s);
-const fmt=d=>{const [a,m,dd]=d.split("-");return dd+"/"+m};
-/* encontro com rep: o sábado caiu (recesso) e a reposição ainda não tem data */
-const quandoE=e=>e.rep?"a definir":fmt(e.d);
-const hoje=new Date();hoje.setHours(0,0,0,0);
-const dataDe=s=>{const [a,m,d]=s.split("-").map(Number);return new Date(a,m-1,d)};
 
 /* traceroute do hero */
 (function(){
@@ -280,25 +267,15 @@ const dataDe=s=>{const [a,m,d]=s.split("-").map(Number);return new Date(a,m-1,d)
   const c=document.createElement('div');c.innerHTML='<span class="p">maristela@aws:~$</span> <span class="cursor"></span>';c.className='hop';c.style.display='block';box.appendChild(c);setTimeout(()=>c.classList.add('on'),matchMedia('(prefers-reduced-motion: reduce)').matches?0:500+5*650);
 })();
 
-/* próximo encontro + trilha */
+/* os encontros, numerados e sem datas (o site serve para outras turmas; as datas ficam no Teams), com as aulas de cada um */
 (function(){
-  let idx=ENCONTROS.findIndex(e=>dataDe(e.d)>=hoje);
-  const fim=idx===-1;
   const lista=$("#listaTrilha");
+  const ul=a=>"<ul>"+a.map(x=>`<li>${x}</li>`).join("")+"</ul>";
   ENCONTROS.forEach((e,i)=>{
     const li=document.createElement("li");li.style.setProperty("--c",CORES[e.c]);
-    if(!fim&&i<idx) li.classList.add("feito"); if(i===idx) li.classList.add("agora");
-    const ul=a=>"<ul>"+a.map(x=>`<li>${x}</li>`).join("")+"</ul>";
-    li.innerHTML=`<span class="no">${String(i+1).padStart(2,"0")}</span><details ${i===idx?"open":""}><summary><span class="d">${quandoE(e)}</span><h3>${e.t}</h3><span class="tag">${e.c}</span></summary><div class="corpo">${e.rep?`<p class="aviso-rep">${e.rep}</p>`:""}<div><h4>Laboratório</h4>${ul(e.lab)}</div><div><h4>Desafio</h4>${ul(e.des)}</div><div><h4>Para a quinzena</h4>${ul(e.casa)}</div></div></details>`;
+    li.innerHTML=`<span class="no">${String(i+1).padStart(2,"0")}</span><details><summary><span class="d">Encontro ${i+1}</span><h3>${e.t}</h3><span class="tag">${e.c}</span></summary><div class="corpo"><div><h4>Aulas</h4><ul>${e.aulas.map(n=>{const v=VIDEOS[n-1],nn=String(n).padStart(2,"0");return AULAS_NO_AR.includes(n)?`<li><a href="aulas/aula-${nn}.html">Aula ${n}: ${v.t}</a></li>`:`<li>Aula ${n}: ${v.t}</li>`}).join("")}</ul></div><div><h4>Laboratório</h4>${ul(e.lab)}</div><div><h4>Desafio</h4>${ul(e.des)}</div><div><h4>Para a quinzena</h4>${ul(e.casa)}</div></div></details>`;
     lista.appendChild(li);
   });
-  const c=$("#cartaoProximo");
-  if(fim){c.innerHTML=`<div class="data">Fim</div><div><h3>O semestre terminou</h3><p>Agora é com você: agende a prova com o voucher e siga o seu plano de estudos.</p></div>`;return}
-  const e=ENCONTROS[idx];c.style.borderLeftColor=CORES[e.c];
-  const dias=Math.round((dataDe(e.d)-hoje)/864e5);
-  const quando=e.rep?"reposição":dias===0?"é hoje!":dias===1?"amanhã":`em ${dias} dias`;
-  const ant=ENCONTROS[idx-1];
-  c.innerHTML=`<div class="data">${e.rep?"A definir":fmt(e.d)}<small>${quando}</small></div><div><h3>Encontro ${idx+1}: ${e.t}</h3>${e.rep?`<p style="margin:.3rem 0 0;font-weight:700">${e.rep}</p>`:""}<p style="margin:.3rem 0 0">No laboratório: ${e.lab.join("; ")}. Desafio: ${e.des.join(" e ")}.</p>${ant?`<p style="margin:.8rem 0 0;font-weight:700">Antes de vir:</p><ul>${ant.casa.map(x=>`<li>${x}</li>`).join("")}</ul>`:""}</div>`;
 })();
 
 /* progresso nos cursos (no navegador; com login, também na nuvem: js/conta.js) */
