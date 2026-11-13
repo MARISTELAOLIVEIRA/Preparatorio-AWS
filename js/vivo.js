@@ -1,6 +1,6 @@
 /*
   vivo.js: as peças interativas das aulas "vivas" do Preparatório AWS. Só deste site.
-  versão 13 · 2026-11-11 · as 12 aulas do preparatório (da nuvem do zero até o dia da prova)
+  versão 14 · 2026-11-13 · as 12 aulas (a fila e o plano conferem se a caixa é deles: aulas 1 e 2 sem erro)
 
   1. [data-gancho]  a contagem para a abertura das vendas e a votação "o site aguenta?"
   2. [data-sim]     simulador "A noite da abertura das vendas": salinha com 2, salinha com 20 ou nuvem
@@ -2384,6 +2384,8 @@
 
   // ===================== 34. a fila do supermercado =====================
   document.querySelectorAll("[data-fila]").forEach(function (box) {
+    // o número da fila do gancho da aula 1 também usa data-fila: só segue se for a fila do supermercado
+    if (!box.querySelector("[data-horizontal]")) return;
     const caixasEl = box.querySelector(".fila-caixas");
     const filaEl = box.querySelector(".fila-clientes");
     const fala = box.querySelector(".casa-fala");
@@ -2659,6 +2661,8 @@
   ];
   document.querySelectorAll("[data-plano]").forEach(function (box) {
     const barra = box.querySelector("input[type=range]");
+    // os botões dos planos de suporte da aula 2 também usam data-plano: só segue se for o plano de revisão
+    if (!barra) return;
     const diasTxt = box.querySelector("[data-dias]");
     const lista = box.querySelector(".plano-lista");
     function monta() {
